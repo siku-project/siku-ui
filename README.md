@@ -9,7 +9,7 @@ Fondations, tokens, composants Svelte 5 et outils pour toutes les interfaces Fiv
 - **Outils** : `siku check` (règles + compatibilité), `siku doctor`, `siku ai sync` (Claude Code / Codex), `siku init`.
 
 ```bash
-npm i "github:OWNER/siku-ui#semver:^1.0.0"
+npm i "github:siku-project/siku-ui#semver:^1.0.0"
 ```
 
 ```ts

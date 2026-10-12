@@ -4,7 +4,7 @@
 //   siku doctor [dossier-web]    configuration Vite/Tailwind/entrée d'une ressource
 //   siku ai sync [dossier]       installe/actualise CLAUDE.md, AGENTS.md, skill et hook Claude Code
 //   siku ai check [dossier]      échoue si les instructions IA ne correspondent pas à la version installée
-//   siku init <dossier> [--repo=OWNER/siku-ui]  crée une ressource complète depuis le gabarit
+//   siku init <dossier> [--repo=siku-project/siku-ui]  crée une ressource complète depuis le gabarit
 import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, mkdirSync, cpSync, realpathSync } from 'node:fs';
 import { join, resolve, relative, dirname, extname, basename } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -179,14 +179,13 @@ function cmdInit() {
   cpSync(join(PKG_ROOT, 'templates', 'resource'), target, { recursive: true });
   const fx = join(target, 'fxmanifest.lua');
   writeFileSync(fx, readFileSync(fx, 'utf8').replace("name 'siku_example'", `name '${name}'`));
-  const repoFlag = rest.find((a) => a.startsWith('--repo='))?.slice(7) ?? process.env.SIKU_UI_REPO;
+  const repoFlag = rest.find((a) => a.startsWith('--repo='))?.slice(7) ?? process.env.SIKU_UI_REPO ?? 'siku-project/siku-ui';
   const webPkg = join(target, 'web', 'package.json');
   const wp = JSON.parse(readFileSync(webPkg, 'utf8'));
   wp.name = `${name}-web`;
   if (repoFlag) wp.dependencies['@siku/ui'] = `github:${repoFlag}#semver:^${PKG.version.split('.')[0]}.0.0`;
   writeFileSync(webPkg, JSON.stringify(wp, null, 2) + '\n');
   console.log(C.green(`✓ ressource « ${name} » créée (fxmanifest, client Lua, web/, CI)`));
-  if (!repoFlag) console.log(C.yellow('  Remplacer OWNER dans web/package.json (ou relancer avec --repo=OWNER/siku-ui, ou SIKU_UI_REPO).'));
   console.log(`  Ensuite : cd ${relative(process.cwd(), target) || '.'}/web && npm install && npx siku ai sync .. && npm run dev`);
 }
 
@@ -198,5 +197,5 @@ if (isMain) switch (cmd) {
   case 'init': cmdInit(); break;
   case '--version': case '-v': console.log(PKG.version); break;
   default:
-    console.log(`siku ${PKG.version}\n  siku check [chemins…] [--json] [--warn-only]\n  siku doctor [dossier-web]\n  siku ai sync [dossier-ressource] | siku ai check [dossier-ressource]\n  siku init <dossier-ressource> [--repo=OWNER/siku-ui]`);
+    console.log(`siku ${PKG.version}\n  siku check [chemins…] [--json] [--warn-only]\n  siku doctor [dossier-web]\n  siku ai sync [dossier-ressource] | siku ai check [dossier-ressource]\n  siku init <dossier-ressource> [--repo=siku-project/siku-ui]`);
 }

@@ -9,7 +9,7 @@
     "ai:sync": "siku ai sync .."
   },
   "dependencies": {
-    "@siku/ui": "github:OWNER/siku-ui#semver:^1.0.0"
+    "@siku/ui": "github:siku-project/siku-ui#semver:^1.0.0"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.3.1",

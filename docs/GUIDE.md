@@ -1,12 +1,12 @@
 # Guide d’intégration — design system SIKU
 
-Ce guide explique où vit le design system, comment l’installer dans une ressource FiveM, comment le garder à jour et comment Claude Code et Codex l’appliquent automatiquement. Remplacer `OWNER` par ton compte ou ton organisation GitHub partout.
+Ce guide explique où vit le design system, comment l’installer dans une ressource FiveM, comment le garder à jour et comment Claude Code et Codex l’appliquent automatiquement. Organisation GitHub : `siku-project`.
 
 ---
 
 ## 1. Où vit le design system
 
-**Un dépôt GitHub privé : `OWNER/siku-ui`.** Il contient un seul package, `@siku/ui`, plus sa doc et ses outils.
+**Un dépôt GitHub privé : `siku-project/siku-ui`.** Il contient un seul package, `@siku/ui`, plus sa doc et ses outils.
 
 ```
 siku-ui/
@@ -37,7 +37,7 @@ siku-ui/
 ```bash
 cd siku-ui
 git add -A && git commit -m "feat: @siku/ui 1.0.0"
-gh repo create OWNER/siku-ui --private --source . --push
+gh repo create siku-project/siku-ui --private --source . --push
 # puis Actions → release → Run workflow → 1.0.0
 ```
 
@@ -55,7 +55,7 @@ siku_inventory/
 
 ```bash
 cd siku_inventory/web
-npm i "github:OWNER/siku-ui#semver:^1.0.0"
+npm i "github:siku-project/siku-ui#semver:^1.0.0"
 npx siku doctor .           # liste ce qui manque dans la configuration
 npx siku ai sync ..         # CLAUDE.md, AGENTS.md, skill et hook Claude Code à la racine de la ressource
 ```
@@ -102,7 +102,7 @@ Côté Lua, copier `templates/resource/client/siku_ui.lua` dans `client/` et l�
 ## 3. Nouvelle ressource, automatiquement
 
 ```bash
-npx --yes --package "github:OWNER/siku-ui#semver:^1.0.0" siku init siku_radio --repo=OWNER/siku-ui
+npx --yes --package "github:siku-project/siku-ui#semver:^1.0.0" siku init siku_radio --repo=siku-project/siku-ui
 cd siku_radio/web && npm install
 npx siku ai sync ..        # CLAUDE.md, AGENTS.md, skill, hook
 npm run dev                # navigateur, données simulées
@@ -110,7 +110,7 @@ npm run dev                # navigateur, données simulées
 
 La ressource créée contient `fxmanifest.lua` (nom = dossier), `client/siku_ui.lua` (pont jeu ↔ interface), `client/main.lua` (commande d’exemple), `web/` (Vite + Svelte 5 + Tailwind v3 + @siku/ui, déjà configuré) et `.github/workflows/ui.yml`.
 
-Variante : garder le dossier `templates/resource/` du dépôt comme **dépôt modèle GitHub** (*Settings → Template repository*). `gh repo create OWNER/siku_radio --private --template OWNER/siku-resource-template` crée une ressource complète : fxmanifest, client Lua, `web/` configuré, CI, et (après `npm install`) `npx siku ai sync ..`.
+Variante : garder le dossier `templates/resource/` du dépôt comme **dépôt modèle GitHub** (*Settings → Template repository*). `gh repo create siku-project/siku_radio --private --template siku-project/siku-resource-template` crée une ressource complète : fxmanifest, client Lua, `web/` configuré, CI, et (après `npm install`) `npx siku ai sync ..`.
 
 ## 4. Importer composants, styles et tokens
 
@@ -134,7 +134,7 @@ Les polices sont référencées par `styles.css` ; Vite les copie dans `html/ass
 | Changement | Dans la ressource |
 |---|---|
 | Correctif ou mineure (1.0.0 → 1.3.2) | `npm update @siku/ui` puis `npx siku ai sync ..`, `npm run check`, `npm run build` |
-| Majeure (1.x → 2.0) | Lire `node_modules/@siku/ui/CHANGELOG.md` (section Migration), `npm i "github:OWNER/siku-ui#semver:^2.0.0"`, `npx siku ai sync ..`, `npm run check` |
+| Majeure (1.x → 2.0) | Lire `node_modules/@siku/ui/CHANGELOG.md` (section Migration), `npm i "github:siku-project/siku-ui#semver:^2.0.0"`, `npx siku ai sync ..`, `npm run check` |
 | Vérifier sa version | `npx siku --version` |
 
 `#semver:^1.0.0` + `package-lock.json` : chaque ressource reste sur la version verrouillée jusqu’à ce que tu fasses `npm update`. Une évolution du design system ne casse jamais une ressource existante sans action de ta part. La CI de la ressource exécute `npx siku ai check ..` : elle échoue si les instructions des assistants ne correspondent plus à la version installée (rappel de lancer `ai sync`).
@@ -205,5 +205,5 @@ Une exception reste possible, mais visible : `/* siku-allow : <raison, lien d’
 - **`siku check` lit le code, pas le rendu.** Il attrape les couleurs en dur, les flous, les fonctions CSS hors CEF, les composants recréés ; il ne juge pas une composition. Pour l’aspect : `npm run dev` à 1920×1080 et 1280×720, et revue humaine des captures dans la PR.
 - **CEF réel** : les règles ciblent Chromium 103 (version du CEF FiveM au moment de la rédaction). Si FiveM met à jour son CEF, ajuster `target` et les règles dans `bin/siku.mjs` ; tester une fois en jeu après chaque majeure.
 - **Lisibilité du HUD** : vérifiée sur des décors simulés (doc, page « Lisibilité en jeu ») ; la validation finale se fait en jeu (neige de jour, néons, couchant).
-- **Dépôt privé** : chaque machine/CI qui installe @siku/ui doit pouvoir lire `OWNER/siku-ui` (clé SSH ou jeton). En CI, secret `SIKU_UI_TOKEN` (lecture seule) déjà prévu dans `ui.yml`.
+- **Dépôt privé** : chaque machine/CI qui installe @siku/ui doit pouvoir lire `siku-project/siku-ui` (clé SSH ou jeton). En CI, secret `SIKU_UI_TOKEN` (lecture seule) déjà prévu dans `ui.yml`.
 - **Comportement des outils** : la syntaxe d’import de CLAUDE.md, les hooks et les skills de Claude Code, et la lecture d’AGENTS.md par Codex correspondent à leur documentation au moment de la rédaction ; en cas de doute, consulter la doc officielle de chaque outil.
