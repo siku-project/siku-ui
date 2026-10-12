@@ -1,0 +1,69 @@
+{
+  "name": "@siku/ui",
+  "version": "1.0.0",
+  "description": "Design system SIKU pour les interfaces FiveM : tokens, composants Svelte 5, styles, polices et runtime NUI.",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "svelte": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles/siku.css",
+    "./tokens.css": "./dist/styles/tokens.css",
+    "./tokens.json": "./tokens/tokens.json",
+    "./tailwind-preset": "./tailwind/preset.cjs",
+    "./fonts/*": "./dist/fonts/*",
+    "./ai/*": "./ai/*",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "siku": "./bin/siku.mjs"
+  },
+  "files": [
+    "dist",
+    "tokens",
+    "tailwind",
+    "ai",
+    "bin",
+    "templates",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "tokens": "node scripts/build-tokens.mjs",
+    "ai": "node scripts/build-ai.mjs",
+    "build": "npm run tokens && svelte-package -i src/lib -o dist && npm run ai && node -e \"require('fs').writeFileSync('dist/.version', require('./package.json').version)\"",
+    "prepare": "node scripts/prepare.mjs",
+    "check": "npm run tokens && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings && node bin/siku.mjs check src/lib docs/src --self",
+    "test": "vitest run",
+    "docs:dev": "vite --config docs/vite.config.ts",
+    "docs:build": "vite build --config docs/vite.config.ts && vite build --config docs/vite.embed.config.ts",
+    "verify": "npm run check && npm test && npm run build && npm run docs:build && node scripts/verify-fixture.mjs"
+  },
+  "peerDependencies": {
+    "svelte": "^5.20.0"
+  },
+  "devDependencies": {
+    "@sveltejs/package": "^3.0.0",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "@types/node": "^22.20.5",
+    "jsdom": "^30.0.0",
+    "svelte": "^5.57.0",
+    "svelte-check": "^4.7.6",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^6.0.0",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.0"
+  }
+}

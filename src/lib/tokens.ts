@@ -1,0 +1,167 @@
+// SIKU — generated from tokens.json (v4). Ne pas modifier.
+export const colorTokens = {
+  "n-0": "#ffffff",
+  "n-25": "#f5f8fb",
+  "n-50": "#e9eef3",
+  "n-100": "#d3dae2",
+  "n-200": "#b4bdc8",
+  "n-300": "#939daa",
+  "n-400": "#8a94a1",
+  "n-500": "#5c6672",
+  "n-600": "#424a55",
+  "n-700": "#2e353e",
+  "n-750": "#252b33",
+  "n-800": "#1d2229",
+  "n-850": "#171b21",
+  "n-900": "#12151a",
+  "n-925": "#0f1216",
+  "n-950": "#0c0e12",
+  "n-1000": "#07080a",
+  "glacier-100": "#ddf1ff",
+  "glacier-300": "#8cccf5",
+  "glacier-500": "#3592d6",
+  "glacier-900": "#0e2638",
+  "green-300": "#6fcf97",
+  "red-300": "#f2726a",
+  "amber-300": "#f2b75b",
+  "bg-void": "{n-1000}",
+  "bg-base": "{n-900}",
+  "bg-raised": "{n-850}",
+  "bg-sunken": "{n-925}",
+  "bg-control": "{n-800}",
+  "bg-control-hover": "{n-750}",
+  "bg-control-active": "{n-700}",
+  "bg-inverse": "{n-25}",
+  "bg-inverse-hover": "{n-50}",
+  "bg-inverse-active": "{n-100}",
+  "fg-primary": "{n-25}",
+  "fg-secondary": "{n-200}",
+  "fg-tertiary": "{n-400}",
+  "fg-disabled": "{n-500}",
+  "fg-inverse": "{n-950}",
+  "border-subtle": "rgba(233,238,243,0.07)",
+  "border-default": "rgba(233,238,243,0.13)",
+  "border-strong": "rgba(233,238,243,0.24)",
+  "track": "rgba(233,238,243,0.14)",
+  "focus-ring": "{n-25}",
+  "selection": "{n-25}",
+  "accent": "{glacier-300}",
+  "accent-subtle": "rgba(140,204,245,0.12)",
+  "success": "{green-300}",
+  "success-subtle": "rgba(111,207,151,0.12)",
+  "danger": "{red-300}",
+  "danger-subtle": "rgba(242,114,106,0.12)",
+  "warning": "{amber-300}",
+  "warning-subtle": "rgba(242,183,91,0.12)",
+  "container-foreign": "{glacier-300}",
+  "container-foreign-border": "rgba(140,204,245,0.4)",
+  "status-health": "{n-25}",
+  "status-armor": "{glacier-300}",
+  "status-need": "{n-200}",
+  "status-critical": "{red-300}",
+  "scrim": "rgba(7,8,10,0.62)",
+  "button-primary-bg": "{bg-inverse}",
+  "button-primary-fg": "{fg-inverse}",
+  "button-secondary-bg": "{bg-control}",
+  "slot-bg": "{bg-control}",
+  "slot-bg-empty": "{bg-sunken}",
+  "slot-ring-selected": "{selection}",
+  "gauge-fill": "{n-25}",
+  "gauge-track": "{track}",
+  "hold-progress": "{accent}",
+  "slot-drop": "{accent}",
+  "plate-fg": "{container-foreign}",
+  "plate-border": "{container-foreign-border}"
+} as const;
+export type ColorToken = keyof typeof colorTokens;
+export const tokens = {
+  "spacing": {
+    "space-0-5": "0.125rem",
+    "space-1": "0.25rem",
+    "space-2": "0.5rem",
+    "space-3": "0.75rem",
+    "space-4": "1rem",
+    "space-5": "1.25rem",
+    "space-6": "1.5rem",
+    "space-8": "2rem",
+    "space-10": "2.5rem",
+    "space-12": "3rem",
+    "space-16": "4rem",
+    "space-24": "6rem"
+  },
+  "radius": {
+    "radius-xs": "0.25rem",
+    "radius-sm": "0.375rem",
+    "radius-md": "0.5rem",
+    "radius-lg": "0.75rem",
+    "radius-xl": "1rem",
+    "radius-full": "999px"
+  },
+  "shadow": {
+    "shadow-float": "0 24px 64px -24px rgba(0,0,0,0.7)",
+    "shadow-overlay": "0 32px 80px -16px rgba(0,0,0,0.75)",
+    "shadow-text": "0 1px 2px rgba(0,0,0,0.6)"
+  },
+  "size": {
+    "control-sm": "2rem",
+    "control-md": "2.5rem",
+    "control-lg": "3rem",
+    "slot-sm": "4rem",
+    "slot-md": "6rem",
+    "icon-sm": "1rem",
+    "icon-md": "1.25rem",
+    "icon-lg": "2rem",
+    "border-hairline": "1px",
+    "border-focus": "2px",
+    "ring-selected": "1.5px",
+    "text-floor-xs": "10px",
+    "text-floor-sm": "12px",
+    "text-floor-md": "13px",
+    "text-floor-lg": "14px",
+    "text-floor-xl": "15px",
+    "text-floor-2xl": "17px",
+    "text-floor-3xl": "19px",
+    "control-touch": "3rem"
+  },
+  "duration": {
+    "duration-instant": "80ms",
+    "duration-fast": "140ms",
+    "duration-base": "200ms",
+    "duration-slow": "320ms",
+    "duration-hold": "1200ms"
+  },
+  "easing": {
+    "ease-standard": "cubic-bezier(0.2,0,0,1)",
+    "ease-exit": "cubic-bezier(0.4,0,1,1)",
+    "ease-linear": "linear"
+  },
+  "opacity": {
+    "opacity-scrim-light": "0.45",
+    "opacity-scrim": "0.62",
+    "opacity-scrim-heavy": "0.85",
+    "opacity-disabled": "0.42"
+  },
+  "zIndex": {
+    "z-hud": "10",
+    "z-panel": "20",
+    "z-overlay": "30",
+    "z-toast": "40",
+    "z-tooltip": "50"
+  },
+  "breakpoint": {
+    "screen-720": "1280px",
+    "screen-1080": "1920px",
+    "screen-1440": "2560px",
+    "screen-ultrawide": "3440px"
+  },
+  "scale": {
+    "ui-scale-min": "0.6667",
+    "ui-scale-max": "2",
+    "density-compact-below": "900px",
+    "frame-aspect": "1.7778"
+  }
+} as const;
+export const textStyles = ["t-figure-xl","t-figure","t-figure-sm","t-title-lg","t-title","t-heading","t-subheading","t-body","t-body-sm","t-caption","t-key","t-code"] as const;
+export type TextStyle = (typeof textStyles)[number];
+/** Référence CSS d'un token : cssVar('bg-base') → 'var(--bg-base)' */
+export const cssVar = (name: ColorToken | string) => `var(--${name})`;

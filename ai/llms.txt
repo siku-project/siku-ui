@@ -1,0 +1,7 @@
+# @siku/ui 1.0.0
+
+> Design system SIKU pour les interfaces FiveM (Svelte 5, Tailwind v3, CEF Chromium 103).
+
+- [Règles et architecture](SIKU.md)
+- [Composants](components.md)
+- [Tokens](tokens.md)

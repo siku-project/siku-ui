@@ -1,0 +1,15 @@
+# siku-ui : types, règles, tests (contrastes, catalogue, échelle, CLI), build du package et de la doc,
+# puis vérification de bout en bout dans une ressource générée depuis le gabarit (build Chromium 103).
+name: ci
+on: [push, pull_request]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci --ignore-scripts
+      - run: npm run verify
+      - uses: actions/upload-artifact@v4
+        with: { name: docs, path: docs/dist }

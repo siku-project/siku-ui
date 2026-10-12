@@ -1,0 +1,29 @@
+# Publication d'une version : Actions → release → Run workflow (version: 1.2.0).
+# Crée le tag vX.Y.Z qui CONTIENT dist/ et n'a plus de script prepare : l'installation dans une ressource
+# ne télécharge ni n'exécute aucun outil de build ;
+# main reste sans fichiers générés. Les ressources suivent via "#semver:^1.0.0".
+name: release
+on:
+  workflow_dispatch:
+    inputs:
+      version: { description: 'Version (semver, ex. 1.2.0)', required: true }
+permissions: { contents: write }
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci --ignore-scripts
+      - run: npm version ${{ inputs.version }} --no-git-tag-version
+      - run: grep -q "## ${{ inputs.version }}" CHANGELOG.md || (echo "Ajouter la section ## ${{ inputs.version }} au CHANGELOG" && exit 1)
+      - run: npm run verify
+      - run: |
+          git config user.name "siku-release"; git config user.email "release@siku.local"
+          git add package.json package-lock.json && git commit -m "release: v${{ inputs.version }}" && git push origin HEAD:main
+          git checkout -b release-tmp && npm pkg delete scripts.prepare && git add -f dist package.json && git commit -m "build: v${{ inputs.version }} (dist, sans prepare)"
+          git tag v${{ inputs.version }} && git push origin v${{ inputs.version }}
+      - uses: softprops/action-gh-release@v2
+        with: { tag_name: 'v${{ inputs.version }}', body_path: CHANGELOG.md, files: docs/embed/siku-docs.js }

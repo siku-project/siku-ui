@@ -1,0 +1,17 @@
+# Vérifie l'interface à chaque push/PR : types, règles SIKU, configuration, instructions IA à jour, build CEF.
+name: ui
+on: [push, pull_request]
+jobs:
+  ui:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: web } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: web/package-lock.json }
+      # Dépôt privé siku-ui : jeton en lecture (Settings → Secrets → SIKU_UI_TOKEN, scope contents:read)
+      - run: git config --global url."https://x-access-token:${{ secrets.SIKU_UI_TOKEN }}@github.com/".insteadOf "https://github.com/"
+      - run: npm ci
+      - run: npm run check
+      - run: npx siku ai check ..
+      - run: npm run build
