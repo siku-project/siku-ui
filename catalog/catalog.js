@@ -170,8 +170,8 @@ export const components = [
     props: [p('key', 'string', "'E'", ''), p('label', 'string', '—', ''), p('detail', 'string', '—', ''), p('duration', 'number', '1200', 'ms'), p('disabled', 'boolean', 'false', ''), p('oncomplete', '() => void', '—', ''), p('progress', 'number', '0', 'bind:progress (0–1)')],
     example: `<HoldAction key="E" label="Crochetage" duration={2500} oncomplete={() => fetchNui('lockpick:done')} />` },
   { name: 'HudAnchor', group: 'game', summary: 'Place un groupe du HUD dans un coin, à l’intérieur de la zone sûre GTA.',
-    use: ['besideMinimap aligne à droite de la mini-carte native (env Lua).', 'scrim ajoute le voile local.'], avoid: ['Positions en px codées en dur.'],
-    props: [p('corner', "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'top' | 'bottom'", '—', ''), p('scrim', 'boolean', 'false', ''), p('besideMinimap', 'boolean', 'false', ''), p('children', 'Snippet', '—', '')],
+    use: ['besideMinimap aligne à droite de la mini-carte native (env Lua).', 'Voile local actif par défaut : indispensable sur les décors clairs.'], avoid: ['Positions en px codées en dur.'],
+    props: [p('corner', "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'top' | 'bottom'", '—', ''), p('scrim', 'boolean', 'true', 'Voile local. Ne le désactiver que si le groupe repose déjà sur une surface.'), p('besideMinimap', 'boolean', 'false', ''), p('children', 'Snippet', '—', '')],
     example: `<HudAnchor corner="bottom-right" scrim>\n  <Stat size="xl" value="84" minor=" km/h" hud />\n</HudAnchor>` },
   // ───────── Structure
   { name: 'Screen', group: 'layout', summary: 'Famille « écran plein » : voile, cadre 16:9 centré, Échap pour fermer.',

@@ -56,11 +56,11 @@
   {#if !embedded}<h1 class="t-title-lg">Lisibilité en jeu</h1>{/if}
   <p class="lead">Le HUD n’a pas de plaque : ombre de texte et voile local. Test sur quatre décors difficiles.</p>
   <Segmented bind:value={bg} options={[{ value: 'city', label: 'Ville la nuit' }, { value: 'snow', label: 'Neige en plein jour' }, { value: 'sunset', label: 'Couchant saturé' }, { value: 'neon', label: 'Néons' }]} />
-  <div class="leg leg--{bg}"><div class="sk-hud-scrim sk-hud-scrim--bottom-left" style="position:absolute;width:70%;height:90%"></div>
+  <div class="leg leg--{bg}"><div class="sk-hud-scrim sk-hud-scrim--bottom-left" style="position:absolute;width:85%;height:100%"></div><div class="sk-hud-scrim sk-hud-scrim--bottom-right" style="position:absolute;width:45%;height:90%"></div>
     <div class="legin sk-hud-text"><b class="t-heading">Vinewood Boulevard</b><span class="t-body-sm" style="color:var(--fg-secondary)">Downtown Vinewood, 21:42</span>
       <div class="g"><Gauge kind="health" value={100} /><Gauge kind="armor" value={64} /><Gauge kind="thirst" value={18} /></div></div>
     <div class="legr sk-hud-text"><Stat size="xl" value="84" minor=" km/h" hud /></div></div>
-  <p class="note">Décor clair (neige) : le voile local à 82 % garantit ≥ 4,5:1 sous le texte ; l’ombre de texte couvre les éclats ponctuels. Le chiffre de vitesse, sans voile, s’appuie sur sa taille (80 px) et son ombre.</p>
+  <p class="note">Test réel : sans voile, l’ombre de texte seule ne suffit pas sur la neige en plein jour (le chiffre de vitesse devenait illisible). Règle retenue : chaque groupe du HUD ancré à un coin reçoit un voile local (HudAnchor le pose par défaut), assez large pour couvrir tout son contenu ; l’ombre de texte traite les éclats ponctuels.</p>
 {/if}
 </article>
 
@@ -83,7 +83,7 @@
   .leg{position:relative;height:22rem;border-radius:var(--radius-lg);overflow:hidden;margin-top:1rem}
   /* siku-allow-next-line : décors simulés de GTA pour le test de lisibilité */
   .leg--city{background:linear-gradient(180deg,#1b2333,#3b3346 55%,#0d0e11)} .leg--snow{background:linear-gradient(180deg,#cfe3f5,#f4f7fa 50%,#dfe7ee)} .leg--sunset{background:linear-gradient(180deg,#ff8a3d,#ffcf6b 45%,#7a3b2a)} .leg--neon{background:linear-gradient(120deg,#ff2bd6,#2bd0ff 50%,#0d0e11)}
-  .legin{position:absolute;left:2rem;bottom:2rem;display:flex;flex-direction:column;gap:.25rem}.g{display:grid;grid-template-columns:repeat(3,10rem);gap:1.25rem;margin-top:1rem}
-  .legr{position:absolute;right:2rem;bottom:2rem}
+  .legin{position:absolute;z-index:11;left:2rem;bottom:2rem;display:flex;flex-direction:column;gap:.25rem}.g{display:grid;grid-template-columns:repeat(3,10rem);gap:1.25rem;margin-top:1rem}
+  .legr{position:absolute;z-index:11;right:2rem;bottom:2rem}
   .note{font-size:var(--fs-body-sm);color:var(--fg-tertiary);max-width:46rem}
 </style>

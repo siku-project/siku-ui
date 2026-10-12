@@ -815,14 +815,14 @@ Action à maintenir : se remplit tant que la touche est tenue, se vide au relâc
 
 Place un groupe du HUD dans un coin, à l’intérieur de la zone sûre GTA.
 
-**Utiliser** : besideMinimap aligne à droite de la mini-carte native (env Lua). scrim ajoute le voile local.
+**Utiliser** : besideMinimap aligne à droite de la mini-carte native (env Lua). Voile local actif par défaut : indispensable sur les décors clairs.
 
 **Éviter** : Positions en px codées en dur.
 
 | Prop | Type | Défaut | Description |
 |---|---|---|---|
 | `corner` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right' \| 'top' \| 'bottom'` | — |  |
-| `scrim` | `boolean` | false |  |
+| `scrim` | `boolean` | true | Voile local. Ne le désactiver que si le groupe repose déjà sur une surface. |
 | `besideMinimap` | `boolean` | false |  |
 | `children` | `Snippet` | — |  |
 
