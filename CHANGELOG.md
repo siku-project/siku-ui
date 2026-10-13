@@ -2,6 +2,10 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.1.1
+
+- Documentation : avec Bun, la dépendance se déclare en `git+ssh://git@github.com/siku-project/siku-ui.git#vX.Y.Z` (Bun traite `git+https://github.com/…` comme un raccourci GitHub sans authentification) ; en CI, réécriture `ssh://git@github.com/` → HTTPS avec jeton. Gabarit de ressource et workflow `ui.yml` alignés.
+
 ## 1.1.0
 
 Le design system devient commun aux interfaces FiveM et aux applications web.
@@ -11,7 +15,7 @@ Le design system devient commun aux interfaces FiveM et aux applications web.
 - Icônes : `activity`, `database`, `globe`, `layers`, `server` (61 icônes).
 - `siku check --web` : désactive les règles Chromium 103, garde les règles de design (couleurs, polices, composants recréés, surcharges `sk-`). `siku ai sync --web` : bloc d’instructions, skill et hook adaptés à une application SvelteKit à la racine.
 - `version` exportée générée depuis `package.json` (`src/lib/version.ts`).
-- Outils : Bun (`bun.lock`, `bun run verify`, CI et release sur `setup-bun`). Les ressources npm installées depuis un tag ne changent pas. Les projets Bun épinglent un tag : `git+https://github.com/siku-project/siku-ui.git#v1.1.0`.
+- Outils : Bun (`bun.lock`, `bun run verify`, CI et release sur `setup-bun`). Les ressources npm installées depuis un tag ne changent pas. Les projets Bun épinglent un tag : `git+ssh://git@github.com/siku-project/siku-ui.git#v1.1.0`.
 
 ## 1.0.0
 

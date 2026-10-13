@@ -38,10 +38,10 @@ Le dépôt `siku-project/siku-ui` existe (privé) ; chaque version passe par le 
 
 ## 1 bis. Installer dans une application web (SvelteKit, Bun)
 
-Bun ne comprend pas `#semver:` : on épingle un tag, le lockfile fixe le commit.
+Bun ne comprend pas `#semver:` et traite une URL `git+https://github.com/…` comme un raccourci GitHub (tarball API, sans authentification) : on déclare l'URL `git+ssh://` d'un tag, le lockfile fixe le commit. En local, la clé SSH GitHub suffit.
 
 ```bash
-bun add "git+https://github.com/siku-project/siku-ui.git#v1.1.0"
+bun add "git+ssh://git@github.com/siku-project/siku-ui.git#v1.1.0"
 bunx siku ai sync . --web          # CLAUDE.md, AGENTS.md, skill web, hook (mode web)
 ```
 
@@ -56,7 +56,7 @@ bunx siku ai sync . --web          # CLAUDE.md, AGENTS.md, skill web, hook (mode
 import { Button, Surface, Table } from '@siku/ui';   // pas d'initSiku() : la page suit le navigateur
 ```
 
-Scripts : `"lint": "… && siku check src --web"`. En CI et dans Docker, le dépôt privé se lit avec un jeton (Contents : lecture) injecté par `git config --global url."https://x-access-token:$TOKEN@github.com/".insteadOf "https://github.com/"` avant `bun install`, jamais dans l'image ni dans le code. Mise à jour : `bun add git+https://github.com/siku-project/siku-ui.git#v1.2.0` puis `bunx siku ai sync . --web`.
+Scripts : `"lint": "… && siku check src --web"`. En CI et dans Docker (sans clé SSH), le dépôt privé se lit avec un jeton (Contents : lecture) qui réécrit l'URL SSH en HTTPS : `git config --global url."https://x-access-token:$TOKEN@github.com/".insteadOf "ssh://git@github.com/"` avant `bun install` (dans un Dockerfile : `--mount=type=secret` et variables `GIT_CONFIG_*` le temps de la commande), jamais dans l'image ni dans le code. Mise à jour : `bun add git+ssh://git@github.com/siku-project/siku-ui.git#v1.2.0` puis `bunx siku ai sync . --web`.
 
 ## 2. Installer dans une ressource existante
 
@@ -72,7 +72,7 @@ siku_inventory/
 
 ```bash
 cd siku_inventory/web
-bun add "git+https://github.com/siku-project/siku-ui.git#v1.1.0"
+bun add "git+ssh://git@github.com/siku-project/siku-ui.git#v1.1.0"
 bunx siku doctor .          # liste ce qui manque dans la configuration
 bunx siku ai sync ..        # CLAUDE.md, AGENTS.md, skill et hook Claude Code à la racine de la ressource
 ```
@@ -150,8 +150,8 @@ Les polices sont référencées par `styles.css` ; Vite les copie dans `html/ass
 
 | Changement | Dans la ressource |
 |---|---|
-| Correctif ou mineure (1.0.0 → 1.3.2) | `bun add git+https://github.com/siku-project/siku-ui.git#vX.Y.Z` puis `bunx siku ai sync ..`, `bun run check`, `bun run build` |
-| Majeure (1.x → 2.0) | Lire `node_modules/@siku/ui/CHANGELOG.md` (section Migration), `bun add "git+https://github.com/siku-project/siku-ui.git#v2.0.0"`, `bunx siku ai sync ..`, `bun run check` |
+| Correctif ou mineure (1.0.0 → 1.3.2) | `bun add git+ssh://git@github.com/siku-project/siku-ui.git#vX.Y.Z` puis `bunx siku ai sync ..`, `bun run check`, `bun run build` |
+| Majeure (1.x → 2.0) | Lire `node_modules/@siku/ui/CHANGELOG.md` (section Migration), `bun add "git+ssh://git@github.com/siku-project/siku-ui.git#v2.0.0"`, `bunx siku ai sync ..`, `bun run check` |
 | Vérifier sa version | `bunx siku --version` |
 
 `#semver:^1.0.0` + `package-lock.json` : chaque ressource reste sur la version verrouillée jusqu’à ce que tu fasses `npm update`. Une évolution du design system ne casse jamais une ressource existante sans action de ta part. La CI de la ressource exécute `bunx siku ai check ..` : elle échoue si les instructions des assistants ne correspondent plus à la version installée (rappel de lancer `ai sync`).
