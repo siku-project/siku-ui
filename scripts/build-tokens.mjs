@@ -3,6 +3,8 @@
 //   src/lib/styles/tokens.css   variables CSS + classes de texte .t-*
 //   src/lib/tokens.ts           noms et valeurs typés
 //   tailwind/preset.cjs         preset Tailwind v3
+//   tailwind/theme.css          thème Tailwind v4 (@theme)
+//   src/lib/version.ts          version du package
 //   ai/tokens.md                référence pour les assistants
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
@@ -95,6 +97,24 @@ out('tailwind/preset.cjs', `// SIKU — preset Tailwind v3, generated from token
 module.exports = ${JSON.stringify(preset, null, 2)};
 module.exports.theme.extend.fontSize = ${JSON.stringify(Object.fromEntries(styles.map((s) => [s.name.slice(2), [floors[s.name] ? `max(var(--${floors[s.name]}), ${s.fontSize})` : s.fontSize, { lineHeight: s.lineHeight, fontWeight: String(s.fontWeight), ...(s.letterSpacing ? { letterSpacing: s.letterSpacing } : {}) }]])), null, 2)};
 `);
+
+// Tailwind v4 theme (CSS-first) : @import '@siku/ui/tailwind.css' après @import 'tailwindcss'
+const pkg = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'));
+let theme = `/* SIKU — thème Tailwind v4, generated from tokens.json (v${src.version}). Ne pas modifier.\n   Usage : @import "tailwindcss"; @import "@siku/ui/tailwind.css"; (après @import "@siku/ui/web.css") */\n@theme {\n`;
+theme += `  --color-*: initial;\n`;
+theme += sem.map((n) => `  --color-${n}: var(--${n});`).join('\n') + '\n';
+theme += `  --font-sans: var(--font-sans);\n  --font-mono: var(--font-mono);\n`;
+theme += Object.keys(byFamily.spacing).map((n) => `  --spacing-${n.slice(6)}: var(--${n});`).join('\n') + '\n';
+theme += Object.keys(byFamily.radius).map((n) => `  --radius-${n.slice(7)}: var(--${n});`).join('\n') + '\n';
+theme += Object.keys(byFamily.shadow).map((n) => `  --shadow-${n.slice(7)}: var(--${n});`).join('\n') + '\n';
+theme += Object.keys(byFamily.duration).map((n) => `  --duration-${n.slice(9)}: var(--${n});`).join('\n') + '\n';
+theme += Object.keys(byFamily.easing).map((n) => `  --ease-${n.slice(5)}: var(--${n});`).join('\n') + '\n';
+theme += Object.keys(byFamily.zIndex).map((n) => `  --z-index-${n.slice(2)}: var(--${n});`).join('\n') + '\n';
+theme += styles.map((s) => `  --text-${s.name.slice(2)}: var(--fs-${s.name.slice(2)});\n  --text-${s.name.slice(2)}--line-height: var(--lh-${s.name.slice(2)});`).join('\n') + '\n';
+theme += Object.keys(byFamily.breakpoint).map((n) => `  --breakpoint-${n.slice(7)}: var(--${n});`).join('\n') + '\n';
+theme += '}\n';
+out('tailwind/theme.css', theme);
+out('src/lib/version.ts', `// SIKU — generated from package.json. Ne pas modifier.\nexport const version = '${pkg.version}';\n`);
 
 // AI reference
 let md = `# Tokens SIKU (v${src.version})\n\n> Généré depuis tokens/tokens.json. ${src.meta.note}\n\n`;

@@ -1,6 +1,6 @@
 # @siku/ui — design system SIKU
 
-Fondations, tokens, composants Svelte 5 et outils pour toutes les interfaces FiveM de l’écosystème SIKU.
+Fondations, tokens, composants Svelte 5 et outils pour toutes les interfaces de l’écosystème SIKU : ressources FiveM (NUI) et applications web (SvelteKit).
 
 - **Identité** : neutres graphite froids, blanc glace comme lumière (texte, action, sélection, focus), glacier rare pour ce qui est en cours. Instrument Sans + Geist Mono.
 - **41 composants** typés et accessibles (clavier, manette, ARIA) : actions, saisie, navigation, retours, données, jeu (emplacements, grilles, jauges, invites, actions maintenues, HUD), structure.
@@ -9,12 +9,18 @@ Fondations, tokens, composants Svelte 5 et outils pour toutes les interfaces Fiv
 - **Outils** : `siku check` (règles + compatibilité), `siku doctor`, `siku ai sync` (Claude Code / Codex), `siku init`.
 
 ```bash
-npm i "github:siku-project/siku-ui#semver:^1.0.0"
+bun add "git+https://github.com/siku-project/siku-ui.git#v1.1.0"     # Bun (tag épinglé, le lockfile fixe le commit)
+npm i "github:siku-project/siku-ui#semver:^1.0.0"                     # npm (plage semver)
 ```
 
 ```ts
+// Ressource FiveM
 import '@siku/ui/styles.css';
 import { initSiku, Button } from '@siku/ui';
+
+// Application web (SvelteKit) : pas d'initSiku, base responsive, thème Tailwind v4
+import '@siku/ui/web.css';
+import { Button, Surface } from '@siku/ui';
 ```
 
 - [Guide d’intégration](docs/GUIDE.md) — installation, mise à jour, assistants IA, limites.
@@ -25,7 +31,7 @@ import { initSiku, Button } from '@siku/ui';
 ## Développer
 
 ```bash
-npm install
-npm run docs:dev     # doc interactive
-npm run verify       # types, règles, tests, build, ressource de test Chromium 103
+bun install
+bun run docs:dev     # doc interactive
+bun run verify       # types, règles, tests, build, ressource de test Chromium 103
 ```

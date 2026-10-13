@@ -33,3 +33,14 @@ describe('architecture', () => {
   });
   it('sélection et focus sont deux tokens', () => expect(colors['selection']).toBeDefined());
 });
+
+describe('thème Tailwind v4', () => {
+  it('expose les tokens sémantiques et les styles de texte', async () => {
+    const { readFileSync } = await import('node:fs');
+    const theme = readFileSync(new URL('../tailwind/theme.css', import.meta.url), 'utf8');
+    expect(theme).toContain('@theme {');
+    expect(theme).toContain('--color-bg-base: var(--bg-base);');
+    expect(theme).toContain('--text-body: var(--fs-body);');
+    expect(theme).not.toContain('--color-n-900');
+  });
+});

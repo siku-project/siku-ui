@@ -1,6 +1,6 @@
 # SIKU — référence pour les assistants de développement
 
-Tu travailles sur une ressource FiveM de l’écosystème SIKU. Ses interfaces (Svelte 5 + TypeScript + Vite + Tailwind v3, rendues par le CEF de FiveM) **doivent** être construites avec le design system officiel `@siku/ui`. Ce fichier est livré avec le package installé : il correspond exactement à la version que la ressource utilise.
+Tu travailles sur une interface de l’écosystème SIKU : une ressource FiveM (Svelte 5 + TypeScript + Vite + Tailwind v3, rendue par le CEF de FiveM) ou une application web (SvelteKit, navigateurs modernes). Dans les deux cas, elle **doit** être construite avec le design system officiel `@siku/ui`. Ce fichier est livré avec le package installé : il correspond exactement à la version que la ressource utilise.
 
 Fichiers associés (même dossier) :
 - `components.md` — chaque composant : rôle, props typées, règles, exemple.
@@ -13,7 +13,15 @@ Fichiers associés (même dossier) :
 2. **Tokens uniquement.** Couleurs, rayons, espacements, ombres, durées, typographie : `var(--token)` en CSS, classes du preset en Tailwind (`bg-bg-raised`, `text-fg-secondary`, `border-border-subtle`, `rounded-md`, `p-4`, `text-body`), ou styles `t-*`. Jamais de `#hex`, `rgb()`, `font-family` ou `font-size` en px dans la ressource.
 3. **CEF = Chromium 103.** Interdits : `backdrop-filter` et tout flou, `:has()`, `@container`, `color-mix()`, unités `dvh/svh/lvh`, `text-wrap: balance`, nesting CSS natif, `popover`, `Array.prototype.toSorted/toReversed`, `Object.groupBy`, `Promise.withResolvers`. Build Vite : `target: 'chrome103'`.
 4. **Clavier et manette.** Toute action a sa touche visible (`Key`, `Hint`, prop `key` des boutons). Tout ce qui est interactif est focusable et montre l’anneau `.is-focus`/`:focus-visible`. Rien d’indispensable au seul survol.
-5. **Vérifier.** Après chaque modification : `npm run check` dans le dossier `web/` (`siku check` + `siku doctor`). Corriger toutes les erreurs avant de rendre la main.
+5. **Vérifier.** Après chaque modification : `bun run check` dans le dossier `web/` (`siku check` + `siku doctor`). Corriger toutes les erreurs avant de rendre la main.
+
+## 1 bis. Application web (SvelteKit)
+
+Mêmes règles 1, 2 et 4 ; la règle 3 (Chromium 103) ne s’applique pas, la règle 5 devient `bun run lint` (qui lance `siku check src --web`).
+- Styles : `import '@siku/ui/web.css'` (jamais `styles.css`) dans le layout racine ; Tailwind v4 : `@import "tailwindcss"; @import "@siku/ui/tailwind.css";`.
+- Ne jamais appeler `initSiku()`, `applyScale()`, `fetchNui()`, `onNuiMessage()` : la page suit le navigateur (1 rem = 16 px, responsive, zoom natif). `Screen`, `HudAnchor`, `Prompt`, `HoldAction`, `Key`, `Hint`, `Slot*`, `Gauge` sont des composants de jeu ; les autres sont génériques.
+- Identité : sombre (`bg-base`), blanc glace pour le texte et l’action principale, glacier rare. Une application web n’a pas de thème clair.
+- Composant générique manquant : l’ajouter dans `siku-ui` (branche, catalogue, `bun run verify`, PR, release), puis mettre à jour la dépendance. Seuls les composants métier de l’application vivent dans l’application.
 
 ## 2. Mettre en place une interface
 
@@ -77,4 +85,4 @@ Communication Lua : `fetchNui(event, data, mock)` (callbacks `RegisterNUICallbac
 - **Variante manquante** : ne pas surcharger `.sk-*` dans la ressource. Écrire dans la PR/la réponse : « Proposition @siku/ui : <composant> — variante <nom> — besoin — capture ». En attendant, une exception locale est permise avec un commentaire `siku-allow : <raison, lien issue>`.
 - **Nouveau composant** : seulement s’il sert au moins deux ressources ; sinon, composer dans la ressource à partir des composants et tokens existants (fichier dans `src/lib/`, nom qui ne duplique pas un composant SIKU).
 - **Token** : ne jamais en créer dans une ressource. Une valeur récurrente manquante = proposition au dépôt `siku-ui`.
-- Mise à jour : `npm update @siku/ui` (même majeure) ; changement de majeure = lire `CHANGELOG.md` du package, puis `npx siku ai sync ..` pour actualiser les instructions.
+- Mise à jour : npm `npm update @siku/ui` (même majeure), Bun `bun add git+https://github.com/siku-project/siku-ui.git#vX.Y.Z` ; changement de majeure = lire `CHANGELOG.md` du package, puis `bunx siku ai sync ..` (ou `-- --web` pour une application) pour actualiser les instructions.
