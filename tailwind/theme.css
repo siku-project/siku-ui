@@ -92,6 +92,8 @@
   --text-figure--line-height: var(--lh-figure);
   --text-figure-sm: var(--fs-figure-sm);
   --text-figure-sm--line-height: var(--lh-figure-sm);
+  --text-display: var(--fs-display);
+  --text-display--line-height: var(--lh-display);
   --text-title-lg: var(--fs-title-lg);
   --text-title-lg--line-height: var(--lh-title-lg);
   --text-title: var(--fs-title);

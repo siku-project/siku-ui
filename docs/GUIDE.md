@@ -41,7 +41,7 @@ Le dépôt `siku-project/siku-ui` existe (privé) ; chaque version passe par le 
 Bun ne comprend pas `#semver:` et traite une URL `git+https://github.com/…` comme un raccourci GitHub (tarball API, sans authentification) : on déclare l'URL `git+ssh://` d'un tag, le lockfile fixe le commit. En local, la clé SSH GitHub suffit.
 
 ```bash
-bun add "git+ssh://git@github.com/siku-project/siku-ui.git#v1.1.0"
+bun add "git+ssh://git@github.com/siku-project/siku-ui.git#v1.2.0"
 bunx siku ai sync . --web          # CLAUDE.md, AGENTS.md, skill web, hook (mode web)
 ```
 
@@ -72,7 +72,7 @@ siku_inventory/
 
 ```bash
 cd siku_inventory/web
-bun add "git+ssh://git@github.com/siku-project/siku-ui.git#v1.1.0"
+bun add "git+ssh://git@github.com/siku-project/siku-ui.git#v1.2.0"
 bunx siku doctor .          # liste ce qui manque dans la configuration
 bunx siku ai sync ..        # CLAUDE.md, AGENTS.md, skill et hook Claude Code à la racine de la ressource
 ```

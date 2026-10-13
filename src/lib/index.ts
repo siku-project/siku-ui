@@ -19,6 +19,7 @@ export { default as Modal } from './components/Modal.svelte';
 export { default as Tooltip } from './components/Tooltip.svelte';
 export { default as Toast } from './components/Toast.svelte';
 export { default as Toaster } from './components/Toaster.svelte';
+export { default as Notice } from './components/Notice.svelte';
 export { default as Meter } from './components/Meter.svelte';
 export { default as Segments } from './components/Segments.svelte';
 export { default as Spinner } from './components/Spinner.svelte';

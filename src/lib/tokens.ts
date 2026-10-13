@@ -121,6 +121,7 @@ export const tokens = {
     "text-floor-xl": "15px",
     "text-floor-2xl": "17px",
     "text-floor-3xl": "19px",
+    "text-floor-4xl": "28px",
     "control-touch": "3rem"
   },
   "duration": {
@@ -161,7 +162,7 @@ export const tokens = {
     "frame-aspect": "1.7778"
   }
 } as const;
-export const textStyles = ["t-figure-xl","t-figure","t-figure-sm","t-title-lg","t-title","t-heading","t-subheading","t-body","t-body-sm","t-caption","t-key","t-code"] as const;
+export const textStyles = ["t-figure-xl","t-figure","t-figure-sm","t-display","t-title-lg","t-title","t-heading","t-subheading","t-body","t-body-sm","t-caption","t-key","t-code"] as const;
 export type TextStyle = (typeof textStyles)[number];
 /** Référence CSS d'un token : cssVar('bg-base') → 'var(--bg-base)' */
 export const cssVar = (name: ColorToken | string) => `var(--${name})`;

@@ -158,6 +158,14 @@ module.exports.theme.extend.fontSize = {
       "letterSpacing": "-0.02em"
     }
   ],
+  "display": [
+    "max(var(--text-floor-4xl), 3.25rem)",
+    {
+      "lineHeight": "3.5rem",
+      "fontWeight": "600",
+      "letterSpacing": "-0.035em"
+    }
+  ],
   "title-lg": [
     "max(var(--text-floor-3xl), 1.75rem)",
     {
