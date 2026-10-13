@@ -50,4 +50,4 @@ export { fetchNui, onNuiMessage, debugNui, isBrowser, resourceName } from './run
 export { initInput, inputMode, fromGamepad, type InputMode } from './runtime/input';
 export { trapFocus, gridMove } from './runtime/focus';
 export { toast, toasts, type ToastItem, type ToastTone } from './runtime/toast';
-export const version = '1.0.0';
+export { version } from './version';

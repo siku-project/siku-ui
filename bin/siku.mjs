@@ -21,15 +21,15 @@ const LIB_COMPONENTS = ['Button', 'ButtonGroup', 'Key', 'Hint', 'TextField', 'Ch
 // ───────────────────────── règles
 // level: error = bloque la CI ; warn = à justifier. self: s'applique aussi au dépôt du design system.
 const RULES = [
-  { id: 'no-backdrop-blur', level: 'error', self: true, re: /backdrop-filter|filter\s*:\s*blur|\bbackdrop-blur\b|\bblur-(sm|md|lg|xl|2xl|3xl|none)\b/, msg: 'Aucun flou en jeu (backdrop-filter / blur) : utiliser un voile bg-void + opacity-scrim-*.' },
-  { id: 'cef-has', level: 'error', self: true, re: /:has\(/, msg: ':has() n’existe pas dans Chromium 103 (CEF FiveM).' },
-  { id: 'cef-container', level: 'error', self: true, re: /@container|container-type\s*:/, msg: 'Container queries absentes de Chromium 103.' },
-  { id: 'cef-color-mix', level: 'error', self: true, re: /color-mix\(/, msg: 'color-mix() absent de Chromium 103 : utiliser un token *-subtle.' },
-  { id: 'cef-viewport-units', level: 'error', self: true, re: /\b\d+(\.\d+)?(dvh|svh|lvh|dvw|svw|lvw)\b/, msg: 'Unités dvh/svh/lvh absentes de Chromium 103 : utiliser vh/vw.' },
-  { id: 'cef-text-wrap', level: 'error', self: true, re: /text-wrap\s*:\s*(balance|pretty)/, msg: 'text-wrap: balance/pretty absent de Chromium 103.' },
-  { id: 'cef-css-nesting', level: 'error', self: true, ext: ['.css'], re: /^\s*&[\s.:[>]/m, msg: 'Nesting CSS natif absent de Chromium 103 (passer par PostCSS ou aplatir).' },
-  { id: 'cef-js-api', level: 'error', self: true, ext: ['.ts', '.js', '.svelte'], re: /\.(toSorted|toReversed|toSpliced)\(|Object\.groupBy|Map\.groupBy|Promise\.withResolvers|\.isWellFormed\(|Array\.fromAsync/, msg: 'API JavaScript postérieure à Chromium 103.' },
-  { id: 'cef-popover', level: 'error', self: true, re: /\bpopover=|showPopover\(/, msg: 'API popover absente de Chromium 103 : utiliser Menu / Tooltip.' },
+  { id: 'no-backdrop-blur', level: 'error', self: true, cef: true, re: /backdrop-filter|filter\s*:\s*blur|\bbackdrop-blur\b|\bblur-(sm|md|lg|xl|2xl|3xl|none)\b/, msg: 'Aucun flou en jeu (backdrop-filter / blur) : utiliser un voile bg-void + opacity-scrim-*.' },
+  { id: 'cef-has', level: 'error', self: true, cef: true, re: /:has\(/, msg: ':has() n’existe pas dans Chromium 103 (CEF FiveM).' },
+  { id: 'cef-container', level: 'error', self: true, cef: true, re: /@container|container-type\s*:/, msg: 'Container queries absentes de Chromium 103.' },
+  { id: 'cef-color-mix', level: 'error', self: true, cef: true, re: /color-mix\(/, msg: 'color-mix() absent de Chromium 103 : utiliser un token *-subtle.' },
+  { id: 'cef-viewport-units', level: 'error', self: true, cef: true, re: /\b\d+(\.\d+)?(dvh|svh|lvh|dvw|svw|lvw)\b/, msg: 'Unités dvh/svh/lvh absentes de Chromium 103 : utiliser vh/vw.' },
+  { id: 'cef-text-wrap', level: 'error', self: true, cef: true, re: /text-wrap\s*:\s*(balance|pretty)/, msg: 'text-wrap: balance/pretty absent de Chromium 103.' },
+  { id: 'cef-css-nesting', level: 'error', self: true, cef: true, ext: ['.css'], re: /^\s*&[\s.:[>]/m, msg: 'Nesting CSS natif absent de Chromium 103 (passer par PostCSS ou aplatir).' },
+  { id: 'cef-js-api', level: 'error', self: true, cef: true, ext: ['.ts', '.js', '.svelte'], re: /\.(toSorted|toReversed|toSpliced)\(|Object\.groupBy|Map\.groupBy|Promise\.withResolvers|\.isWellFormed\(|Array\.fromAsync/, msg: 'API JavaScript postérieure à Chromium 103.' },
+  { id: 'cef-popover', level: 'error', self: true, cef: true, re: /\bpopover=|showPopover\(/, msg: 'API popover absente de Chromium 103 : utiliser Menu / Tooltip.' },
   { id: 'no-literal-color', level: 'error', self: false, ext: ['.css', '.svelte'], re: /#[0-9a-fA-F]{3,8}\b(?![\w-])|\brgba?\(\s*\d|\bhsla?\(\s*\d/, msg: 'Couleur codée en dur : utiliser un token (var(--bg-base), var(--fg-secondary)…).' },
   { id: 'no-arbitrary-tw-color', level: 'error', self: false, re: /\b(bg|text|border|ring|fill|stroke|from|to|via|shadow)-\[(#|rgb|hsl)/, msg: 'Couleur Tailwind arbitraire : utiliser une classe du preset SIKU (bg-bg-raised, text-fg-secondary…).' },
   { id: 'no-font-family', level: 'error', self: false, ext: ['.css', '.svelte'], re: /font-family\s*:\s*(?!var\(--font-|inherit)/, msg: 'Police hors système : var(--font-sans) ou var(--font-mono).' },
@@ -49,7 +49,7 @@ function walk(p, out = []) {
   return out;
 }
 
-export function checkFiles(files, { self = false } = {}) {
+export function checkFiles(files, { self = false, web = false } = {}) {
   const findings = [];
   for (const f of files) {
     const name = basename(f);
@@ -61,6 +61,7 @@ export function checkFiles(files, { self = false } = {}) {
     const src = raw.replace(/\/\*[\s\S]*?\*\//g, blank).replace(/<!--[\s\S]*?-->/g, blank).replace(/(^|[^:'"`])\/\/[^\n]*/g, (m, p1) => p1 + blank(m.slice(p1.length)));
     const allowLine = (i) => /siku-allow\b/.test(lines[i] ?? '') || /siku-allow-next-line/.test(lines[i - 1] ?? '');
     for (const r of RULES) {
+      if (web && r.cef) continue;
       if (self && !r.self) continue;
       if (r.ext && !r.ext.includes(extname(f))) continue;
       const re = new RegExp(r.re.source, r.re.flags.includes('m') ? 'gm' : 'g');
@@ -82,9 +83,10 @@ export function checkFiles(files, { self = false } = {}) {
 
 function cmdCheck() {
   const self = flags.has('--self');
+  const web = flags.has('--web');
   const targets = args.length ? args : ['src'];
   const files = targets.flatMap((t) => walk(resolve(t)));
-  const findings = checkFiles(files, { self });
+  const findings = checkFiles(files, { self, web });
   if (flags.has('--json')) { console.log(JSON.stringify(findings, null, 2)); }
   else {
     for (const f of findings) console.log(`${f.level === 'error' ? C.red('error') : C.yellow('warn ')} ${relative(process.cwd(), f.file)}:${f.line}  ${f.msg}  ${C.dim(`[${f.rule}]`)}\n        ${C.dim(f.text)}`);
@@ -103,7 +105,7 @@ function cmdDoctor() {
   const ok = (cond, label, fix) => results.push({ ok: !!cond, label, fix });
   const pkg = JSON.parse(read('package.json') ?? '{}');
   const dep = pkg.dependencies?.['@siku/ui'] ?? pkg.devDependencies?.['@siku/ui'];
-  ok(dep, `@siku/ui déclaré (${dep ?? 'absent'})`, 'npm i "github:<owner>/siku-ui#semver:^1.0.0"');
+  ok(dep, `@siku/ui déclaré (${dep ?? 'absent'})`, 'bun add "git+https://github.com/siku-project/siku-ui.git#vX.Y.Z"');
   ok(!dep || !/#(main|master|HEAD)$/.test(dep), 'version figée (tag ou semver), pas une branche', 'Utiliser #semver:^1.0.0');
   const vite = read('vite.config.ts') ?? read('vite.config.js') ?? '';
   ok(/base\s*:\s*['"]\.\/['"]/.test(vite), "vite : base './' (chemins relatifs pour nui://)", "base: './'");
@@ -121,9 +123,18 @@ function cmdDoctor() {
 
 // ───────────────────────── ai sync / check
 const BEGIN = '<!-- siku:begin -->', END = '<!-- siku:end -->';
-function block(kind) {
+function block(kind, web = false) {
   const v = PKG.version;
-  const common = `## Design system SIKU (@siku/ui ${v}) — obligatoire pour toute interface
+  const common = web ? `## Design system SIKU (@siku/ui ${v}) — obligatoire pour toute interface
+
+Cette application web utilise le design system officiel SIKU, commun aux interfaces FiveM et aux applications web. Avant de créer ou modifier une interface :
+
+1. Lire \`node_modules/@siku/ui/ai/SIKU.md\` (règles, identité, interdits), puis \`ai/components.md\` (composants, props, exemples) et \`ai/tokens.md\` (tokens).
+2. **Réutiliser** les composants de \`@siku/ui\` (\`import { Button, Surface, Table } from '@siku/ui'\`). Ne jamais recréer un composant générique qui existe (Button, Badge, Surface, TextField…). Composant générique manquant ou variante manquante : l’ajouter dans le dépôt \`siku-ui\` (branche, PR, release), puis mettre à jour la dépendance. Seuls les composants métier propres à l’application restent dans le projet.
+3. Styles : uniquement des tokens (\`var(--bg-base)\`, classes Tailwind du thème SIKU \`bg-bg-raised text-fg-secondary\`, styles \`t-*\`). Aucune couleur, police ou taille de texte codée en dur. Ne pas surcharger les classes \`sk-*\`.
+4. Contexte web : \`@siku/ui/web.css\` (pas \`styles.css\`), ne jamais appeler \`initSiku()\` ni les fonctions NUI (\`fetchNui\`, \`onNuiMessage\`). Les règles Chromium 103 ne s’appliquent pas ; la mise en page est responsive (desktop, tablette, mobile).
+5. Après chaque modification d’interface : \`bun run lint\` (inclut \`siku check src --web\`) et \`bun run check\` doivent passer.
+` : `## Design system SIKU (@siku/ui ${v}) — obligatoire pour toute interface
 
 Cette ressource utilise le design system officiel SIKU. Avant de créer ou modifier une interface (dossier \`web/\`) :
 
@@ -131,12 +142,12 @@ Cette ressource utilise le design system officiel SIKU. Avant de créer ou modif
 2. **Réutiliser** les composants de \`@siku/ui\` (\`import { Button, SlotGrid } from '@siku/ui'\`). Ne jamais recréer un composant qui existe ; si une variante manque, la proposer (voir « Faire évoluer » dans SIKU.md) au lieu de la coder localement.
 3. Styles : uniquement des tokens (\`var(--bg-base)\`, classes Tailwind du preset SIKU, styles \`t-*\`). Aucune couleur, police ou taille de texte codée en dur.
 4. Cible : CEF FiveM (Chromium 103). Aucun \`backdrop-filter\`/flou, pas de \`:has()\`, \`@container\`, \`color-mix()\`, \`dvh\`.
-5. Après chaque modification d’interface : \`npm run check\` dans \`web/\` (lance \`siku check\` + \`siku doctor\`) doit passer.
+5. Après chaque modification d’interface : \`bun run check\` dans \`web/\` (lance \`siku check\` + \`siku doctor\`) doit passer.
 `;
   const claude = `${common}
 @node_modules/@siku/ui/ai/SIKU.md
 `;
-  return `${BEGIN}\n<!-- Généré par « npx siku ai sync » (@siku/ui ${v}). Ne pas modifier entre les marqueurs. -->\n${kind === 'claude' ? claude : common}${END}`;
+  return `${BEGIN}\n<!-- Généré par « bunx siku ai sync » (@siku/ui ${v}). Ne pas modifier entre les marqueurs. -->\n${kind === 'claude' ? claude : common}${END}`;
 }
 function upsert(file, content, header) {
   const cur = existsSync(file) ? readFileSync(file, 'utf8') : `${header}\n\n`;
@@ -145,25 +156,26 @@ function upsert(file, content, header) {
 }
 function cmdAi(sub) {
   const dir = resolve(args[1] ?? '.');
+  const web = flags.has('--web');
   const webDir = existsSync(join(dir, 'web', 'package.json')) ? 'web/' : '';
   const fixPaths = (s) => (webDir ? s.replaceAll('node_modules/@siku/ui', `${webDir}node_modules/@siku/ui`).replaceAll('dans `web/`', 'dans `web/`') : s);
   const files = { claude: join(dir, 'CLAUDE.md'), agents: join(dir, 'AGENTS.md') };
   if (sub === 'check') {
     const bad = Object.entries(files).filter(([, f]) => !existsSync(f) || !readFileSync(f, 'utf8').includes(`@siku/ui ${PKG.version})`));
-    for (const [k, f] of bad) console.log(C.red(`✗ ${relative(process.cwd(), f)} absent ou pas à jour (attendu @siku/ui ${PKG.version}) — lancer « npx siku ai sync »`));
+    for (const [k, f] of bad) console.log(C.red(`✗ ${relative(process.cwd(), f)} absent ou pas à jour (attendu @siku/ui ${PKG.version}) — lancer « bunx siku ai sync »`));
     if (!bad.length) console.log(C.green(`✓ instructions IA à jour (@siku/ui ${PKG.version})`));
     process.exit(bad.length ? 1 : 0);
   }
-  upsert(files.claude, fixPaths(block('claude')), '# CLAUDE.md');
-  upsert(files.agents, fixPaths(block('agents')), '# AGENTS.md');
+  upsert(files.claude, fixPaths(block('claude', web)), '# CLAUDE.md');
+  upsert(files.agents, fixPaths(block('agents', web)), '# AGENTS.md');
   const skillDir = join(dir, '.claude', 'skills', 'siku-ui');
   mkdirSync(skillDir, { recursive: true });
-  writeFileSync(join(skillDir, 'SKILL.md'), fixPaths(readFileSync(join(PKG_ROOT, 'ai', 'skill', 'SKILL.md'), 'utf8')));
+  writeFileSync(join(skillDir, 'SKILL.md'), fixPaths(readFileSync(join(PKG_ROOT, 'ai', 'skill', web ? 'SKILL-web.md' : 'SKILL.md'), 'utf8')));
   const settingsPath = join(dir, '.claude', 'settings.json');
   const settings = existsSync(settingsPath) ? JSON.parse(readFileSync(settingsPath, 'utf8')) : {};
   settings.hooks ??= {};
   settings.hooks.PostToolUse ??= [];
-  const hookCmd = `node "$CLAUDE_PROJECT_DIR/${webDir}node_modules/@siku/ui/bin/siku-hook.mjs"`;
+  const hookCmd = `node "$CLAUDE_PROJECT_DIR/${webDir}node_modules/@siku/ui/bin/siku-hook.mjs"${web ? ' --web' : ''}`;
   if (!JSON.stringify(settings.hooks.PostToolUse).includes('siku-hook')) {
     settings.hooks.PostToolUse.push({ matcher: 'Edit|MultiEdit|Write', hooks: [{ type: 'command', command: hookCmd }] });
   }
@@ -186,7 +198,7 @@ function cmdInit() {
   if (repoFlag) wp.dependencies['@siku/ui'] = `github:${repoFlag}#semver:^${PKG.version.split('.')[0]}.0.0`;
   writeFileSync(webPkg, JSON.stringify(wp, null, 2) + '\n');
   console.log(C.green(`✓ ressource « ${name} » créée (fxmanifest, client Lua, web/, CI)`));
-  console.log(`  Ensuite : cd ${relative(process.cwd(), target) || '.'}/web && npm install && npx siku ai sync .. && npm run dev`);
+  console.log(`  Ensuite : cd ${relative(process.cwd(), target) || '.'}/web && bun install && bunx siku ai sync .. && bun run dev`);
 }
 
 const isMain = !!process.argv[1] && import.meta.url === pathToFileURL(realpathSync(resolve(process.argv[1]))).href;
@@ -197,5 +209,5 @@ if (isMain) switch (cmd) {
   case 'init': cmdInit(); break;
   case '--version': case '-v': console.log(PKG.version); break;
   default:
-    console.log(`siku ${PKG.version}\n  siku check [chemins…] [--json] [--warn-only]\n  siku doctor [dossier-web]\n  siku ai sync [dossier-ressource] | siku ai check [dossier-ressource]\n  siku init <dossier-ressource> [--repo=siku-project/siku-ui]`);
+    console.log(`siku ${PKG.version}\n  siku check [chemins…] [--json] [--warn-only] [--web]\n  siku doctor [dossier-web]\n  siku ai sync [dossier] [--web] | siku ai check [dossier]\n  siku init <dossier-ressource> [--repo=siku-project/siku-ui]`);
 }

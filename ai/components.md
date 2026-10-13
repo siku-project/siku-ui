@@ -60,6 +60,7 @@ Déclenche une action ; le libellé dit exactement ce qui se passe.
 |---|---|---|---|
 | `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'quiet' \| 'danger'` | 'secondary' | Emphase. |
 | `size` | `'sm' \| 'md' \| 'lg'` | 'md' | 32 / 40 / 48. |
+| `href` | `string` | — | Rend un lien <a> (navigation) avec le même rendu. |
 | `key` | `string` | — | Touche affichée. |
 | `icon` | `IconName` | — | Icône à gauche. |
 | `iconOnly` | `boolean` | false | Bouton carré ; label devient le nom accessible. |

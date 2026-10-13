@@ -10,4 +10,4 @@ description: Construire ou modifier une interface NUI d'une ressource FiveM SIKU
 3. Compose avec les composants existants (`import { … } from '@siku/ui'`). Si un composant manque, compose à partir des existants et signale la proposition de variante ; ne recrée jamais un composant SIKU.
 4. Styles : tokens seulement (`var(--…)`, preset Tailwind, styles `t-*`). Pas de couleur, police ni taille en dur. Pas de flou, `:has()`, `@container`, `color-mix()`, `dvh` (CEF = Chromium 103).
 5. Clavier/manette : touches visibles, focus visible, rien d'indispensable au survol. Utilise `fetchNui` / `onNuiMessage` pour Lua.
-6. Lance `npm run check` dans `web/` et corrige jusqu'à 0 erreur. Pour un rendu visuel, `npm run dev` puis vérifie à 1920×1080 et 1280×720 (densité compacte).
+6. Lance `bun run check` dans `web/` et corrige jusqu'à 0 erreur. Pour un rendu visuel, `bun run dev` puis vérifie à 1920×1080 et 1280×720 (densité compacte).

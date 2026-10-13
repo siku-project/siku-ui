@@ -1,10 +1,11 @@
 {
   "name": "@siku/ui",
   "version": "1.0.0",
-  "description": "Design system SIKU pour les interfaces FiveM : tokens, composants Svelte 5, styles, polices et runtime NUI.",
+  "description": "Design system SIKU : tokens, composants Svelte 5, styles, polices, runtime NUI et outils, pour les interfaces FiveM et les applications web.",
   "license": "UNLICENSED",
   "private": true,
   "type": "module",
+  "packageManager": "bun@1.3.13",
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -14,9 +15,11 @@
       "default": "./dist/index.js"
     },
     "./styles.css": "./dist/styles/siku.css",
+    "./web.css": "./dist/styles/web.css",
     "./tokens.css": "./dist/styles/tokens.css",
     "./tokens.json": "./tokens/tokens.json",
     "./tailwind-preset": "./tailwind/preset.cjs",
+    "./tailwind.css": "./tailwind/theme.css",
     "./fonts/*": "./dist/fonts/*",
     "./ai/*": "./ai/*",
     "./package.json": "./package.json"
@@ -43,13 +46,13 @@
   "scripts": {
     "tokens": "node scripts/build-tokens.mjs",
     "ai": "node scripts/build-ai.mjs",
-    "build": "npm run tokens && svelte-package -i src/lib -o dist && npm run ai && node -e \"require('fs').writeFileSync('dist/.version', require('./package.json').version)\"",
+    "build": "bun run tokens && svelte-package -i src/lib -o dist && bun run ai && node -e \"require('fs').writeFileSync('dist/.version', require('./package.json').version)\"",
     "prepare": "node scripts/prepare.mjs",
-    "check": "npm run tokens && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings && node bin/siku.mjs check src/lib docs/src --self",
+    "check": "bun run tokens && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings && node bin/siku.mjs check src/lib docs/src --self",
     "test": "vitest run",
     "docs:dev": "vite --config docs/vite.config.ts",
     "docs:build": "vite build --config docs/vite.config.ts && vite build --config docs/vite.embed.config.ts",
-    "verify": "npm run check && npm test && npm run build && npm run docs:build && node scripts/verify-fixture.mjs"
+    "verify": "bun run check && bun run test && bun run build && bun run docs:build && node scripts/verify-fixture.mjs"
   },
   "peerDependencies": {
     "svelte": "^5.20.0"

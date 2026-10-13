@@ -21,6 +21,11 @@ describe('siku check', () => {
   it('respecte siku-allow et ignore les commentaires', () => {
     expect(rules(file('c.css', '/* backdrop-filter interdit */\n.a{color:#fff} /* siku-allow : logo partenaire */'))).toEqual([]);
   });
+  it('désactive les règles CEF en mode web et garde les règles de design', () => {
+    const web = (p: string) => checkFiles([p], { web: true }).map((f: { rule: string }) => f.rule);
+    expect(web(file('w.svelte', '<script lang="ts">const a = [3, 1].toSorted();</script>\n<div style="height:100dvh;color:#fff"></div>'))).toEqual(['no-literal-color']);
+    expect(web(file('Badge.svelte', '<span>x</span>'))).toContain('no-duplicate-component');
+  });
   it('accepte une interface conforme', () => {
     expect(rules(file('d.svelte', '<script lang="ts">import { Button } from "@siku/ui";</script>\n<Button variant="primary">Ok</Button>\n<style>.a{color:var(--fg-primary);padding:var(--space-4)}</style>'))).toEqual([]);
   });

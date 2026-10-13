@@ -23,23 +23,40 @@ siku-ui/
 ├─ bin/siku.mjs                ← CLI : check, doctor, ai sync/check, init ; siku-hook.mjs (hook Claude Code)
 ├─ templates/resource/         ← gabarit de ressource (fxmanifest, client Lua, web/ Svelte)
 ├─ templates/ai/               ← blocs à copier dans ~/.claude/CLAUDE.md et ~/.codex/AGENTS.md
-├─ docs/                       ← doc interactive (npm run docs:dev), GUIDE.md
+├─ docs/                       ← doc interactive (bun run docs:dev), GUIDE.md
 ├─ tests/                      ← contrastes, catalogue ↔ composants, échelle, règles du CLI
 └─ .github/workflows/          ← ci.yml (verify), release.yml (tags de version)
 ```
 
 **Pourquoi un package unique dans un dépôt dédié** : tes ressources sont indépendantes (un dépôt ou un dossier chacune). Un monorepo de toutes les ressources imposerait une structure à tout l’écosystème ; un registre npm privé ajouterait un compte et des jetons à gérer. Un dépôt Git versionné par tags est le plus simple qui reste propre : chaque ressource déclare la version qu’elle accepte, et une fois buildée elle n’a plus besoin du package (tout est copié dans `html/`).
 
-**Publication d’une version** : sur GitHub, *Actions → release → Run workflow*, version `1.1.0`. Le workflow vérifie tout (`npm run verify`), crée le tag `v1.1.0` qui contient `dist/` déjà construit et sans script `prepare` : l’installation dans une ressource ne télécharge aucun outil de build.
+**Publication d’une version** : sur GitHub, *Actions → release → Run workflow*, version `1.1.0`. Le workflow vérifie tout (`bun run verify`), crée le tag `v1.1.0` qui contient `dist/` déjà construit et sans script `prepare` : l’installation dans une ressource ou une application ne télécharge aucun outil de build.
 
 **Créer le dépôt** (une fois) :
 
+Le dépôt `siku-project/siku-ui` existe (privé) ; chaque version passe par le workflow release.
+
+## 1 bis. Installer dans une application web (SvelteKit, Bun)
+
+Bun ne comprend pas `#semver:` : on épingle un tag, le lockfile fixe le commit.
+
 ```bash
-cd siku-ui
-git add -A && git commit -m "feat: @siku/ui 1.0.0"
-gh repo create siku-project/siku-ui --private --source . --push
-# puis Actions → release → Run workflow → 1.0.0
+bun add "git+https://github.com/siku-project/siku-ui.git#v1.1.0"
+bunx siku ai sync . --web          # CLAUDE.md, AGENTS.md, skill web, hook (mode web)
 ```
+
+```css
+/* src/routes/layout.css */
+@import 'tailwindcss';
+@import '@siku/ui/web.css';
+@import '@siku/ui/tailwind.css';
+```
+
+```ts
+import { Button, Surface, Table } from '@siku/ui';   // pas d'initSiku() : la page suit le navigateur
+```
+
+Scripts : `"lint": "… && siku check src --web"`. En CI et dans Docker, le dépôt privé se lit avec un jeton (Contents : lecture) injecté par `git config --global url."https://x-access-token:$TOKEN@github.com/".insteadOf "https://github.com/"` avant `bun install`, jamais dans l'image ni dans le code. Mise à jour : `bun add git+https://github.com/siku-project/siku-ui.git#v1.2.0` puis `bunx siku ai sync . --web`.
 
 ## 2. Installer dans une ressource existante
 
@@ -55,9 +72,9 @@ siku_inventory/
 
 ```bash
 cd siku_inventory/web
-npm i "github:siku-project/siku-ui#semver:^1.0.0"
-npx siku doctor .           # liste ce qui manque dans la configuration
-npx siku ai sync ..         # CLAUDE.md, AGENTS.md, skill et hook Claude Code à la racine de la ressource
+bun add "git+https://github.com/siku-project/siku-ui.git#v1.1.0"
+bunx siku doctor .          # liste ce qui manque dans la configuration
+bunx siku ai sync ..        # CLAUDE.md, AGENTS.md, skill et hook Claude Code à la racine de la ressource
 ```
 
 Puis appliquer ce que `doctor` signale :
@@ -95,22 +112,22 @@ export default { presets: [siku], content: ['./index.html', './src/**/*.{svelte,
 
 Côté Lua, copier `templates/resource/client/siku_ui.lua` dans `client/` et l’ajouter à `client_scripts` : il envoie la zone sûre, la position de la mini-carte et l’échelle du joueur (`siku:env`), traduit la manette en touches (`siku:nav`), et fournit `SikuUI.open(data)` / `SikuUI.close()`.
 
-**Migration progressive** : `npx siku check src` liste tout ce qui n’est pas conforme (couleurs en dur, composants recréés, flous, fonctions CSS absentes de CEF). Remplacer écran par écran ; `--warn-only` évite de bloquer la CI pendant la migration.
+**Migration progressive** : `bunx siku check src` liste tout ce qui n’est pas conforme (couleurs en dur, composants recréés, flous, fonctions CSS absentes de CEF). Remplacer écran par écran ; `--warn-only` évite de bloquer la CI pendant la migration.
 
 **Tailwind déjà configuré avec des couleurs maison** : le preset remplace la palette (`theme.colors`) par les tokens. Les anciennes classes (`bg-zinc-900`) cesseront d’exister : c’est voulu, `siku check` et le build les révèlent.
 
 ## 3. Nouvelle ressource, automatiquement
 
 ```bash
-npx --yes --package "github:siku-project/siku-ui#semver:^1.0.0" siku init siku_radio --repo=siku-project/siku-ui
-cd siku_radio/web && npm install
-npx siku ai sync ..        # CLAUDE.md, AGENTS.md, skill, hook
-npm run dev                # navigateur, données simulées
+bunx --package "github:siku-project/siku-ui#semver:^1.0.0" siku init siku_radio --repo=siku-project/siku-ui
+cd siku_radio/web && bun install
+bunx siku ai sync ..        # CLAUDE.md, AGENTS.md, skill, hook
+bun run dev                # navigateur, données simulées
 ```
 
 La ressource créée contient `fxmanifest.lua` (nom = dossier), `client/siku_ui.lua` (pont jeu ↔ interface), `client/main.lua` (commande d’exemple), `web/` (Vite + Svelte 5 + Tailwind v3 + @siku/ui, déjà configuré) et `.github/workflows/ui.yml`.
 
-Variante : garder le dossier `templates/resource/` du dépôt comme **dépôt modèle GitHub** (*Settings → Template repository*). `gh repo create siku-project/siku_radio --private --template siku-project/siku-resource-template` crée une ressource complète : fxmanifest, client Lua, `web/` configuré, CI, et (après `npm install`) `npx siku ai sync ..`.
+Variante : garder le dossier `templates/resource/` du dépôt comme **dépôt modèle GitHub** (*Settings → Template repository*). `gh repo create siku-project/siku_radio --private --template siku-project/siku-resource-template` crée une ressource complète : fxmanifest, client Lua, `web/` configuré, CI, et (après `bun install`) `bunx siku ai sync ..`.
 
 ## 4. Importer composants, styles et tokens
 
@@ -133,17 +150,17 @@ Les polices sont référencées par `styles.css` ; Vite les copie dans `html/ass
 
 | Changement | Dans la ressource |
 |---|---|
-| Correctif ou mineure (1.0.0 → 1.3.2) | `npm update @siku/ui` puis `npx siku ai sync ..`, `npm run check`, `npm run build` |
-| Majeure (1.x → 2.0) | Lire `node_modules/@siku/ui/CHANGELOG.md` (section Migration), `npm i "github:siku-project/siku-ui#semver:^2.0.0"`, `npx siku ai sync ..`, `npm run check` |
-| Vérifier sa version | `npx siku --version` |
+| Correctif ou mineure (1.0.0 → 1.3.2) | `bun add git+https://github.com/siku-project/siku-ui.git#vX.Y.Z` puis `bunx siku ai sync ..`, `bun run check`, `bun run build` |
+| Majeure (1.x → 2.0) | Lire `node_modules/@siku/ui/CHANGELOG.md` (section Migration), `bun add "git+https://github.com/siku-project/siku-ui.git#v2.0.0"`, `bunx siku ai sync ..`, `bun run check` |
+| Vérifier sa version | `bunx siku --version` |
 
-`#semver:^1.0.0` + `package-lock.json` : chaque ressource reste sur la version verrouillée jusqu’à ce que tu fasses `npm update`. Une évolution du design system ne casse jamais une ressource existante sans action de ta part. La CI de la ressource exécute `npx siku ai check ..` : elle échoue si les instructions des assistants ne correspondent plus à la version installée (rappel de lancer `ai sync`).
+`#semver:^1.0.0` + `package-lock.json` : chaque ressource reste sur la version verrouillée jusqu’à ce que tu fasses `npm update`. Une évolution du design system ne casse jamais une ressource existante sans action de ta part. La CI de la ressource exécute `bunx siku ai check ..` : elle échoue si les instructions des assistants ne correspondent plus à la version installée (rappel de lancer `ai sync`).
 
 ## 6. Claude Code : appliquer les règles à chaque session
 
 Trois niveaux, tous préparés :
 
-**a. Dans chaque ressource (automatique via `npx siku ai sync ..`)**
+**a. Dans chaque ressource (automatique via `bunx siku ai sync ..`)**
 - `CLAUDE.md` : un bloc entre `<!-- siku:begin -->` et `<!-- siku:end -->` avec les règles et la ligne `@web/node_modules/@siku/ui/ai/SIKU.md`. La syntaxe `@chemin` importe le fichier dans la mémoire du projet : Claude Code charge les règles exactes de la version installée à chaque session, sans copier-coller.
 - `.claude/skills/siku-ui/SKILL.md` : un skill de projet que Claude Code utilise dès qu’il travaille sur une interface (étapes : lire SIKU.md, chercher dans components.md, composer, vérifier).
 - `.claude/settings.json` : un hook `PostToolUse` sur `Edit|MultiEdit|Write` qui lance `siku-hook.mjs` sur chaque fichier modifié. En cas de violation (couleur en dur, flou, composant recréé, CSS incompatible CEF), il sort avec le code 2 : Claude reçoit le message et corrige immédiatement.
@@ -154,14 +171,14 @@ Committer ces fichiers dans le dépôt de la ressource : ils voyagent avec le co
 Ajouter le contenu de `templates/ai/user-CLAUDE.md` dans `~/.claude/CLAUDE.md`. Claude Code saura dans n’importe quel dossier que les interfaces SIKU passent par @siku/ui, et comment l’installer s’il manque (nouveau dépôt vide compris).
 
 **c. Dans le dépôt siku-ui lui-même**
-`CLAUDE.md` à la racine décrit comment faire évoluer le système (tokens générés, catalogue, `npm run verify`).
+`CLAUDE.md` à la racine décrit comment faire évoluer le système (tokens générés, catalogue, `bun run verify`).
 
 ## 7. Codex : le même fonctionnement
 
-- `AGENTS.md` à la racine de chaque ressource (créé par `npx siku ai sync ..`) avec le même bloc de règles. Codex lit les `AGENTS.md` du dépôt (racine puis dossiers jusqu’au répertoire de travail). Il ne suit pas d’import `@chemin` comme Claude Code : le bloc lui demande donc explicitement de lire `web/node_modules/@siku/ui/ai/SIKU.md`, `components.md` et `tokens.md`, et de terminer par `npm run check`.
+- `AGENTS.md` à la racine de chaque ressource (créé par `bunx siku ai sync ..`) avec le même bloc de règles. Codex lit les `AGENTS.md` du dépôt (racine puis dossiers jusqu’au répertoire de travail). Il ne suit pas d’import `@chemin` comme Claude Code : le bloc lui demande donc explicitement de lire `web/node_modules/@siku/ui/ai/SIKU.md`, `components.md` et `tokens.md`, et de terminer par `bun run check`.
 - Global : copier `templates/ai/codex-AGENTS.md` dans `~/.codex/AGENTS.md`.
 - Taille : le bloc reste court (Codex limite la taille totale des instructions de projet) ; la référence complète reste dans les fichiers du package, lus à la demande.
-- Codex n’a pas l’équivalent du hook : la garantie vient de `npm run check` (dans les instructions) et de la CI de la ressource.
+- Codex n’a pas l’équivalent du hook : la garantie vient de `bun run check` (dans les instructions) et de la CI de la ressource.
 
 ## 8. Fichiers d’instructions à placer
 
@@ -186,23 +203,23 @@ Cinq garde-fous, du plus doux au plus strict :
 2. **Catalogue lisible** : `components.md` est généré depuis le même catalogue que la doc ; il ne peut pas être en retard sur le code (test `catalog.test.ts`).
 3. **`siku check`** : erreur `no-duplicate-component` si un fichier de la ressource porte le nom d’un composant SIKU ; erreurs sur couleurs, polices et tailles en dur ; avertissement `no-sk-override` si une classe `sk-` est redéfinie localement.
 4. **Hook Claude Code** : la vérification tourne à chaque écriture de fichier ; Claude corrige avant de continuer.
-5. **CI de la ressource** : `npm run check` + `siku ai check` bloquent la fusion.
+5. **CI de la ressource** : `bun run check` + `siku ai check` bloquent la fusion.
 
 Une exception reste possible, mais visible : `/* siku-allow : <raison, lien d’issue> */` sur la ligne concernée. `git grep siku-allow` donne la liste des écarts à résorber.
 
 ## 10. Faire évoluer sans perdre la cohérence
 
 - Un besoin nouveau devient une **proposition** dans `siku-ui` (issue), pas une copie dans la ressource. Le détail est dans `CONTRIBUTING.md` : quand c’est un correctif, une mineure, une majeure, comment ajouter un composant (code + export + catalogue + démo + vérification), comment faire évoluer un token (une intention par token, alias pendant une mineure avant suppression).
-- `npm run verify` dans siku-ui contrôle : types, règles de compatibilité, contrastes de tous les couples texte/fond, cohérence catalogue ↔ composants, échelle, CLI, build du package, build de la doc, et une ressource complète générée depuis le gabarit et buildée pour Chromium 103 (audit du JS et du CSS produits).
+- `bun run verify` dans siku-ui contrôle : types, règles de compatibilité, contrastes de tous les couples texte/fond, cohérence catalogue ↔ composants, échelle, CLI, build du package, build de la doc, et une ressource complète générée depuis le gabarit et buildée pour Chromium 103 (audit du JS et du CSS produits).
 - Le versionnage sémantique protège les ressources : elles avancent quand tu décides.
-- La doc interactive (`npm run docs:dev`, et l’artifact « SIKU ») est construite avec les vrais composants : ce qu’on y voit est ce que les ressources reçoivent.
+- La doc interactive (`bun run docs:dev`, et l’artifact « SIKU ») est construite avec les vrais composants : ce qu’on y voit est ce que les ressources reçoivent.
 
 ---
 
 ## Limites de l’automatisation (et comment vérifier)
 
-- **Les assistants peuvent ignorer une instruction.** Les fichiers d’instructions augmentent fortement la probabilité de conformité, ils ne la garantissent pas. Les garanties réelles sont mécaniques : hook (Claude Code), `npm run check`, CI.
-- **`siku check` lit le code, pas le rendu.** Il attrape les couleurs en dur, les flous, les fonctions CSS hors CEF, les composants recréés ; il ne juge pas une composition. Pour l’aspect : `npm run dev` à 1920×1080 et 1280×720, et revue humaine des captures dans la PR.
+- **Les assistants peuvent ignorer une instruction.** Les fichiers d’instructions augmentent fortement la probabilité de conformité, ils ne la garantissent pas. Les garanties réelles sont mécaniques : hook (Claude Code), `bun run check`, CI.
+- **`siku check` lit le code, pas le rendu.** Il attrape les couleurs en dur, les flous, les fonctions CSS hors CEF, les composants recréés ; il ne juge pas une composition. Pour l’aspect : `bun run dev` à 1920×1080 et 1280×720, et revue humaine des captures dans la PR.
 - **CEF réel** : les règles ciblent Chromium 103 (version du CEF FiveM au moment de la rédaction). Si FiveM met à jour son CEF, ajuster `target` et les règles dans `bin/siku.mjs` ; tester une fois en jeu après chaque majeure.
 - **Lisibilité du HUD** : vérifiée sur des décors simulés (doc, page « Lisibilité en jeu ») ; la validation finale se fait en jeu (neige de jour, néons, couchant).
 - **Dépôt privé** : chaque machine/CI qui installe @siku/ui doit pouvoir lire `siku-project/siku-ui` (clé SSH ou jeton). En CI, secret `SIKU_UI_TOKEN` (lecture seule) déjà prévu dans `ui.yml`.

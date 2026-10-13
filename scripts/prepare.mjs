@@ -6,4 +6,4 @@ import { execSync } from 'node:child_process';
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 const stamp = existsSync('dist/.version') ? readFileSync('dist/.version', 'utf8').trim() : '';
 if (stamp === pkg.version && existsSync('dist/index.js')) process.exit(0);
-execSync('npm run build', { stdio: 'inherit' });
+execSync('bun run build', { stdio: 'inherit' });
