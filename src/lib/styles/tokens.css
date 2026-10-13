@@ -113,6 +113,7 @@
   --text-floor-xl: 15px;
   --text-floor-2xl: 17px;
   --text-floor-3xl: 19px;
+  --text-floor-4xl: 28px;
   --control-touch: 3rem;
   --duration-instant: 80ms;
   --duration-fast: 140ms;
@@ -145,6 +146,7 @@
 .t-figure-xl{font-family:var(--font-sans);font-size:5rem;line-height:4rem;font-weight:500;letter-spacing:-0.04em;}
 .t-figure{font-family:var(--font-sans);font-size:3.5rem;line-height:3.5rem;font-weight:600;letter-spacing:-0.03em;}
 .t-figure-sm{font-family:var(--font-sans);font-size:max(var(--text-floor-3xl), 1.75rem);line-height:max(calc(var(--text-floor-3xl) * 1.4), 2rem);font-weight:600;letter-spacing:-0.02em;}
+.t-display{font-family:var(--font-sans);font-size:max(var(--text-floor-4xl), 3.25rem);line-height:max(calc(var(--text-floor-4xl) * 1.4), 3.5rem);font-weight:600;letter-spacing:-0.035em;}
 .t-title-lg{font-family:var(--font-sans);font-size:max(var(--text-floor-3xl), 1.75rem);line-height:max(calc(var(--text-floor-3xl) * 1.4), 2.25rem);font-weight:600;letter-spacing:-0.02em;}
 .t-title{font-family:var(--font-sans);font-size:max(var(--text-floor-2xl), 1.5rem);line-height:max(calc(var(--text-floor-2xl) * 1.4), 1.875rem);font-weight:600;letter-spacing:-0.015em;}
 .t-heading{font-family:var(--font-sans);font-size:max(var(--text-floor-xl), 1.1875rem);line-height:max(calc(var(--text-floor-xl) * 1.4), 1.5rem);font-weight:600;letter-spacing:-0.005em;}
@@ -161,6 +163,8 @@
   --lh-figure: 3.5rem;
   --fs-figure-sm: max(var(--text-floor-3xl), 1.75rem);
   --lh-figure-sm: max(calc(var(--text-floor-3xl) * 1.4), 2rem);
+  --fs-display: max(var(--text-floor-4xl), 3.25rem);
+  --lh-display: max(calc(var(--text-floor-4xl) * 1.4), 3.5rem);
   --fs-title-lg: max(var(--text-floor-3xl), 1.75rem);
   --lh-title-lg: max(calc(var(--text-floor-3xl) * 1.4), 2.25rem);
   --fs-title: max(var(--text-floor-2xl), 1.5rem);

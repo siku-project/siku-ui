@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.0.0
+# Composants @siku/ui 1.1.1
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -21,6 +21,7 @@
 | [`Menu`](#menu) | Navigation | Menu contextuel ou liste d’actions : flèches, Entrée, Échap, raccourcis. |
 | [`Modal`](#modal) | Retours | Confirmation d’une action irréversible ou coûteuse. |
 | [`Tooltip`](#tooltip) | Retours | Aide d’une phrase, blanche, au survol ou au focus. |
+| [`Notice`](#notice) | Retours | Message en ligne qui reste dans le flux : erreur de formulaire, retour d’une action, information. |
 | [`Toast`](#toast) | Retours | Une notification (présentation). Pour la file : toast.push() + <Toaster />. |
 | [`Toaster`](#toaster) | Retours | Pile de notifications en haut à droite, dans la zone sûre GTA. |
 | [`Meter`](#meter) | Retours | Jauge continue : charge, progression. Avertissement automatique au seuil. |
@@ -44,7 +45,7 @@
 | [`Screen`](#screen) | Structure | Famille « écran plein » : voile, cadre 16:9 centré, Échap pour fermer. |
 | [`Surface`](#surface) | Structure | Un niveau de surface pour composer fenêtres, panneaux et colonnes. |
 | [`Divider`](#divider) | Structure | Filet de structure, horizontal, vertical ou titré. |
-| [`Icon`](#icon) | Structure | Pictogramme au trait (56 icônes), couleur héritée. |
+| [`Icon`](#icon) | Structure | Pictogramme au trait (65 icônes), couleur héritée. |
 
 ## Actions
 
@@ -426,6 +427,26 @@ Aide d’une phrase, blanche, au survol ou au focus.
 
 ```svelte
 <Tooltip text="Diviser la pile" key="⇧"><Button iconOnly icon="split" label="Diviser" /></Tooltip>
+```
+
+### Notice
+
+Message en ligne qui reste dans le flux : erreur de formulaire, retour d’une action, information.
+
+**Utiliser** : Au-dessus du formulaire ou sous le champ concerné ; le texte dit comment débloquer. danger annonce (role=alert) ; les autres tons sont des status.
+
+**Éviter** : Une information passagère : Toast. Une confirmation bloquante : Modal.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `tone` | `'neutral' \| 'info' \| 'success' \| 'warning' \| 'danger'` | 'neutral' |  |
+| `title` | `string` | — |  |
+| `icon` | `IconName` | selon le ton |  |
+| `text` | `string` | — | Texte si pas d’enfants. |
+| `children` | `Snippet` | — |  |
+
+```svelte
+<Notice tone="danger" title="Connexion refusée">Email ou mot de passe incorrect. Vérifie les deux, puis réessaie.</Notice>
 ```
 
 ### Toast
@@ -898,7 +919,7 @@ Filet de structure, horizontal, vertical ou titré.
 
 ### Icon
 
-Pictogramme au trait (56 icônes), couleur héritée.
+Pictogramme au trait (65 icônes), couleur héritée.
 
 **Utiliser** : label s’il porte un sens.
 

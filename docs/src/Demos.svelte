@@ -117,6 +117,15 @@
   </S.Modal>
 {:else if name === 'Tooltip'}
   <div class="play" style="padding-top:4rem"><S.Tooltip text="Diviser la pile" key="⇧"><S.Button iconOnly icon="split" label="Diviser" /></S.Tooltip><S.Tooltip text="Glisse sur le coffre pour transférer" placement="bottom"><S.Button variant="ghost">Survole-moi</S.Button></S.Tooltip></div>
+{:else if name === 'Notice'}
+  <div class="play"><S.Notice tone={p.tone} title={p.title || undefined} text="Email ou mot de passe incorrect. Vérifie les deux, puis réessaie." /></div>
+  <div class="col">
+    <S.Notice text="Les données servent uniquement à l’authentification : pseudonyme, email, mot de passe haché." />
+    <S.Notice tone="info" title="Discord non lié">Connecte-toi avec ton mot de passe, puis lie Discord depuis ton tableau de bord.</S.Notice>
+    <S.Notice tone="success" title="Compte créé">Tu peux te connecter dès maintenant.</S.Notice>
+    <S.Notice tone="warning" title="Réserve d’essence">Station la plus proche : 600 m.</S.Notice>
+    <S.Notice tone="danger" title="Connexion refusée">Trop de tentatives. Réessaie dans 60 secondes.</S.Notice>
+  </div>
 {:else if name === 'Toast'}
   <div class="play"><S.Toast tone={p.tone} compact={p.compact} title="Maze Bank" body="Virement reçu de Lina Moreau" value="+1 250 $" time="maintenant" icon="bank" progress={0.64} /></div>
   <div class="grid2">

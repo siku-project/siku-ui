@@ -2,6 +2,13 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.2.0
+
+Premiers besoins d’une application web complète (accueil, accès, tableau de bord).
+- Style de texte `t-display` (3,25 rem, plancher `text-floor-4xl` 28 px) : titre d’accueil d’une page web. Réservé au web, jamais dans une interface de jeu.
+- `Notice` : message en ligne qui reste dans le flux (erreur de formulaire, retour d’une action, information), tons `neutral`, `info`, `success`, `warning`, `danger`, `role="alert"` pour `danger`.
+- Icônes : `discord`, `eye-off`, `logout`, `mail` (65 icônes).
+
 ## 1.1.1
 
 - Documentation : avec Bun, la dépendance se déclare en `git+ssh://git@github.com/siku-project/siku-ui.git#vX.Y.Z` (Bun traite `git+https://github.com/…` comme un raccourci GitHub sans authentification) ; en CI, réécriture `ssh://git@github.com/` → HTTPS avec jeton. Gabarit de ressource et workflow `ui.yml` alignés.

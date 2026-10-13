@@ -90,6 +90,7 @@ Classes `.t-*` (ou `text-*` en Tailwind). Familles : `sans` = "Instrument Sans",
 | `t-figure-xl` | 5rem | 4rem | 500 | — | Une seule grande valeur vivante sur un écran de jeu (vitesse). |
 | `t-figure` | 3.5rem | 3.5rem | 600 | — | Valeur clé d’un écran applicatif (solde, total). |
 | `t-figure-sm` | 1.75rem | 2rem | 600 | `text-floor-3xl` | Chiffre de statistique ou de carte. |
+| `t-display` | 3.25rem | 3.5rem | 600 | `text-floor-4xl` | Titre d’accueil d’une page web (hero, pages d’accès). Jamais dans une interface de jeu. |
 | `t-title-lg` | 1.75rem | 2.25rem | 600 | `text-floor-3xl` | Titre d’écran plein (rare). |
 | `t-title` | 1.5rem | 1.875rem | 600 | `text-floor-2xl` | Titre de l’élément en focus (objet, fenêtre). |
 | `t-heading` | 1.1875rem | 1.5rem | 600 | `text-floor-xl` | En-tête de colonne, de section, de modale. |
@@ -158,6 +159,7 @@ Classes `.t-*` (ou `text-*` en Tailwind). Familles : `sans` = "Instrument Sans",
 | `text-floor-xl` | `15px` | Plancher des en-têtes (t-heading). |
 | `text-floor-2xl` | `17px` | Plancher des titres (t-title). |
 | `text-floor-3xl` | `19px` | Plancher des grands titres et petits chiffres (t-title-lg, t-figure-sm). |
+| `text-floor-4xl` | `28px` | Plancher du titre d’accueil web (t-display). |
 | `control-touch` | `3rem` | Cible tactile d’un appareil (téléphone, tablette). |
 
 ## duration
