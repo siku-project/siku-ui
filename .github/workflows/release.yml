@@ -18,7 +18,10 @@ jobs:
         with: { bun-version: 1.3.13 }
       - run: bun install --frozen-lockfile --ignore-scripts
       - run: node -e "const f='package.json',p=require('./'+f);p.version='${{ inputs.version }}';require('fs').writeFileSync(f,JSON.stringify(p,null,2)+'\n')"
-      - run: grep -q "## ${{ inputs.version }}" CHANGELOG.md || (echo "Ajouter la section ## ${{ inputs.version }} au CHANGELOG" && exit 1)
+      - name: Vérifier la section du CHANGELOG
+        env: { VERSION: '${{ inputs.version }}' }
+        run: |
+          grep -q "^## $VERSION" CHANGELOG.md || { echo "Ajouter la section ## $VERSION au CHANGELOG"; exit 1; }
       - run: bun run verify
       - run: |
           git config user.name "siku-release"; git config user.email "release@siku.local"
