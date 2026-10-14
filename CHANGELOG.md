@@ -2,6 +2,12 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.4.0
+
+Supervision d’un serveur (moniteur, console).
+- `BarChart` : barres par intervalle, groupées ou empilées (répartition d’un histogramme, volumes par période), mêmes conventions que `TimeChart`.
+- `LogView` : journal monospace défilant avec horodatage, niveau par ligne, suivi automatique du bas (`follow` bindable), retour à la ligne, `onreachtop` pour charger l’historique.
+
 ## 1.3.0
 
 Briques d’une interface d’administration (barre latérale, tableau de bord, chargement).
