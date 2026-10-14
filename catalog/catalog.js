@@ -211,7 +211,7 @@ export const components = [
     use: ['Échap, voile et croix ferment ; le focus est piégé puis rendu.', 'side="right" pour un inspecteur.'], avoid: ['Une confirmation : Modal.', 'Sur desktop quand la place existe : une colonne.'],
     props: [p('open', 'boolean', 'false', 'bind:open'), p('title', 'string', '—', ''), p('side', "'left' | 'right'", "'left'", ''), p('children', 'Snippet', '—', ''), p('onclose', '() => void', '—', ''), p('closeLabel', 'string', "'Fermer'", 'Nom accessible de la croix.')],
     example: `<Drawer bind:open={menu} title="Navigation">\n  <NavList value={page} items={items} onchange={() => (menu = false)} />\n</Drawer>` },
-  { name: 'Icon', group: 'layout', summary: 'Pictogramme au trait (65 icônes), couleur héritée.',
+  { name: 'Icon', group: 'layout', summary: 'Pictogramme au trait (68 icônes), couleur héritée.',
     use: ['label s’il porte un sens.'], avoid: ['Icônes pleines, emoji.'],
     props: [p('name', 'IconName', '—', ''), p('size', "'sm' | 'md' | 'lg' | number", "'md'", '16 / 20 / 32 ou px'), p('label', 'string', '—', ''), p('class', 'string', "''", '')],
     example: `<Icon name="medkit" size="lg" />` },

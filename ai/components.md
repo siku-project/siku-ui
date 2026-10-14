@@ -49,7 +49,7 @@
 | [`Surface`](#surface) | Structure | Un niveau de surface pour composer fenêtres, panneaux et colonnes. |
 | [`Divider`](#divider) | Structure | Filet de structure, horizontal, vertical ou titré. |
 | [`Drawer`](#drawer) | Structure | Panneau latéral posé sur la page : navigation mobile, filtres, inspecteur. |
-| [`Icon`](#icon) | Structure | Pictogramme au trait (65 icônes), couleur héritée. |
+| [`Icon`](#icon) | Structure | Pictogramme au trait (68 icônes), couleur héritée. |
 
 ## Actions
 
@@ -1019,7 +1019,7 @@ Panneau latéral posé sur la page : navigation mobile, filtres, inspecteur.
 
 ### Icon
 
-Pictogramme au trait (65 icônes), couleur héritée.
+Pictogramme au trait (68 icônes), couleur héritée.
 
 **Utiliser** : label s’il porte un sens.
 

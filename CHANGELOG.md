@@ -10,6 +10,7 @@ Briques d’une interface d’administration (barre latérale, tableau de bord, 
 - `TimeChart` : courbe ou aire temporelle, grille, axe des valeurs, repères de temps, une à trois séries, légende avec la dernière valeur. Types `ChartSeries` et `ChartTone` exportés.
 - `Drawer` : panneau latéral posé sur la page (navigation mobile, inspecteur), voile, Échap, focus piégé.
 - `Skeleton` : silhouette d’un contenu en cours de chargement, immobile sous `prefers-reduced-motion`.
+- Icônes : `menu`, `power`, `refresh` (68 icônes).
 
 ## 1.2.0
 
