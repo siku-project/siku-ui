@@ -74,8 +74,8 @@ export const components = [
     example: `<Segmented bind:value={period} options={[{ value: '7', label: '7 jours' }, { value: '30', label: '30 jours' }, { value: 'y', label: 'Année' }]} />` },
   // ───────── Navigation
   { name: 'Tabs', group: 'navigation', summary: 'Onglets soulignés (sections) ou pastilles (filtres d’écran), Q/E en option.',
-    use: ['Compteur quand il aide (« Armes 2 »).', 'shortcuts active Q/E (LB/RB via le pont manette).'], avoid: ['Plus de sept onglets.'],
-    props: [p('value', 'string', "''", 'bind:value'), p('tabs', '{ value, label, count?, disabled? }[]', '—', ''), p('variant', "'underline' | 'pill'", "'underline'", ''), p('label', 'string', '—', ''), p('shortcuts', 'boolean', 'false', 'Q/E pour changer d’onglet.'), p('onchange', '(v: string) => void', '—', '')],
+    use: ['Compteur quand il aide (« Armes 2 ») : rendu en pastille.', 'tone sur un onglet ajoute un point coloré (filtres par niveau : succès, avertissement, danger).', 'shortcuts active Q/E (LB/RB via le pont manette).'], avoid: ['Plus de sept onglets.'],
+    props: [p('value', 'string', "''", 'bind:value'), p('tabs', '{ value, label, count?, tone?, disabled? }[]', '—', 'tone : neutral | live | success | warning | danger.'), p('variant', "'underline' | 'pill'", "'underline'", ''), p('label', 'string', '—', ''), p('shortcuts', 'boolean', 'false', 'Q/E pour changer d’onglet.'), p('onchange', '(v: string) => void', '—', '')],
     controls: [{ prop: 'variant', options: ['underline', 'pill'] }],
     example: `<Tabs variant="pill" shortcuts bind:value={filter} tabs={[{ value: 'all', label: 'Tout', count: 13 }, { value: 'weapons', label: 'Armes', count: 2 }]} />` },
   { name: 'NavList', group: 'navigation', summary: 'Navigation latérale d’une fenêtre (comptes, catégories).',
