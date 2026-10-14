@@ -110,6 +110,8 @@
 {:else if name === 'Tabs'}
   <div class="play" style="width:40rem"><S.Tabs variant={p.variant} bind:value={tab} label="Catégories" tabs={[{ value: 'all', label: 'Tout', count: 13 }, { value: 'weapons', label: 'Armes', count: 2 }, { value: 'care', label: 'Soins', count: 3 }, { value: 'food', label: 'Nourriture', count: 3 }, { value: 'keys', label: 'Clés', count: 0, disabled: true }]} /></div>
   <p class="note">Onglet : <code>{tab}</code> — flèches ←/→ quand un onglet a le focus.</p>
+  <h4>Filtres par niveau (pill, tone)</h4>
+  <div class="play" style="width:40rem"><S.Tabs variant="pill" value="all" label="Niveau" tabs={[{ value: 'all', label: 'Tout', count: 35 }, { value: 'info', label: 'Info', count: 21, tone: 'live' }, { value: 'success', label: 'Succès', count: 7, tone: 'success' }, { value: 'warning', label: 'Avertissements', count: 3, tone: 'warning' }, { value: 'error', label: 'Erreurs', count: 0, tone: 'danger' }, { value: 'debug', label: 'Debug', count: 4, tone: 'neutral' }]} /></div>
 {:else if name === 'NavList'}
   <div class="play" style="width:17rem"><S.NavList bind:value={navPage} compact={p.compact} items={navItems} /></div>
   <h4>Liste de valeurs (boutons)</h4>

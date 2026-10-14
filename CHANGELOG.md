@@ -2,6 +2,11 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.6.0
+
+Filtres comptés.
+- `Tabs` : le compteur d’un onglet est rendu en pastille (`sk-tab__count`, chiffres tabulaires, « 999+ » au-delà) ; prop `tone` par onglet qui ajoute un point coloré devant le libellé (filtres par niveau).
+
 ## 1.5.0
 
 Console lisible.

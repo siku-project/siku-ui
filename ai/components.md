@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.3.0
+# Composants @siku/ui 1.5.0
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -324,14 +324,14 @@ Une valeur parmi deux à quatre, visible d’un coup d’œil.
 
 Onglets soulignés (sections) ou pastilles (filtres d’écran), Q/E en option.
 
-**Utiliser** : Compteur quand il aide (« Armes 2 »). shortcuts active Q/E (LB/RB via le pont manette).
+**Utiliser** : Compteur quand il aide (« Armes 2 ») : rendu en pastille. tone sur un onglet ajoute un point coloré (filtres par niveau : succès, avertissement, danger). shortcuts active Q/E (LB/RB via le pont manette).
 
 **Éviter** : Plus de sept onglets.
 
 | Prop | Type | Défaut | Description |
 |---|---|---|---|
 | `value` | `string` | '' | bind:value |
-| `tabs` | `{ value, label, count?, disabled? }[]` | — |  |
+| `tabs` | `{ value, label, count?, tone?, disabled? }[]` | — | tone : neutral | live | success | warning | danger. |
 | `variant` | `'underline' \| 'pill'` | 'underline' |  |
 | `label` | `string` | — |  |
 | `shortcuts` | `boolean` | false | Q/E pour changer d’onglet. |

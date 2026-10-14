@@ -1,6 +1,6 @@
 <!-- Tabs — sections d'un même contenu (underline) ou filtres de barre d'écran (pill). Q/E en option. -->
 <script lang="ts">
-  type Tab = { value: string; label: string; count?: number; disabled?: boolean };
+  type Tab = { value: string; label: string; count?: number; tone?: 'neutral' | 'live' | 'success' | 'warning' | 'danger'; disabled?: boolean };
   type Props = { value?: string; tabs: Tab[]; variant?: 'underline' | 'pill'; label?: string; shortcuts?: boolean; onchange?: (v: string) => void };
   let { value = $bindable(''), tabs, variant = 'underline', label, shortcuts = false, onchange }: Props = $props();
   let list: HTMLDivElement;
@@ -32,6 +32,6 @@
   {#each tabs as t (t.value)}
     <button type="button" role="tab" data-v={t.value} aria-selected={t.value === value} tabindex={t.value === value ? 0 : -1} disabled={t.disabled}
       class={['sk-tab sk-focusable', t.value === value && 'is-selected', t.disabled && 'is-disabled'].filter(Boolean).join(' ')}
-      onclick={() => select(t.value)}>{t.label}{#if t.count !== undefined}<small>{t.count}</small>{/if}</button>
+      onclick={() => select(t.value)}>{#if t.tone}<i class="sk-tab__dot sk-tone--{t.tone}"></i>{/if}{t.label}{#if t.count !== undefined}<span class="sk-tab__count">{t.count > 999 ? '999+' : t.count}</span>{/if}</button>
   {/each}
 </div>
