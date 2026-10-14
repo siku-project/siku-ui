@@ -817,13 +817,13 @@ Barres par intervalle, groupées ou empilées : répartition d’un histogramme,
 
 Journal monospace défilant : horodatage, niveau par ligne, suivi automatique du bas, retour à ligne.
 
-**Utiliser** : Console d’un serveur, sortie d’un processus, journal d’événements bruts. follow (bindable) suit les nouvelles lignes ; remonter dans le journal le coupe, onfollow le signale. level par ligne (info, warning, error, debug, muted) pour la couleur ; onreachtop pour charger l’historique.
+**Utiliser** : Console d’un serveur, sortie d’un processus, journal d’événements bruts. follow (bindable) suit les nouvelles lignes ; remonter dans le journal le coupe, onfollow le signale. level par ligne (info, success, warning, error, debug, muted) ; parts pour colorer des segments (couleur ANSI ou tone sémantique) ; onreachtop pour charger l’historique.
 
 **Éviter** : Un tableau de données structurées : préférer Table. Plus de quelques milliers de lignes à la fois : paginer.
 
 | Prop | Type | Défaut | Description |
 |---|---|---|---|
-| `lines` | `{ id, at?, text, level? }[]` | — |  |
+| `lines` | `{ id, at?, text, parts?, level? }[]` | — | parts : segments { text, color?, background?, bold?, dim?, italic?, underline?, tone? } pour une ligne colorée (sortie ANSI décodée par l’appelant). |
 | `follow` | `boolean` | true | Bindable. |
 | `height` | `number \| string` | 420 | px ou valeur CSS. |
 | `wrap` | `boolean` | true | Retour à la ligne. |
