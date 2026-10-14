@@ -2,6 +2,11 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.5.0
+
+Console lisible.
+- `LogView` : `parts` par ligne (segments avec couleur, fond, gras, atténué, italique, souligné, ou `tone` sémantique) pour rendre une sortie ANSI décodée ; niveau `success` ; texte en `fs-body-sm`, interligne 1,6, horodatage à chiffres tabulaires, ligne survolée mise en évidence.
+
 ## 1.4.0
 
 Supervision d’un serveur (moniteur, console).

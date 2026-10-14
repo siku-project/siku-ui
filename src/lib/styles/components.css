@@ -230,15 +230,20 @@
 .sk-chart__area{fill:currentColor;opacity:0.1}
 .sk-chart__dot{fill:currentColor}
 .sk-chart__bar{fill:currentColor;opacity:0.85}
-.sk-log{overflow:auto;background:var(--bg-sunken);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:var(--space-2) 0;font-family:var(--font-mono);font-size:var(--fs-caption);line-height:1.5;color:var(--fg-secondary);min-width:0}
+.sk-log{overflow:auto;background:var(--bg-sunken);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:var(--space-2) 0;font-family:var(--font-mono);font-size:var(--fs-body-sm);line-height:1.6;color:var(--fg-primary);min-width:0;-webkit-font-smoothing:antialiased}
 .sk-log__empty{margin:0;padding:var(--space-4);color:var(--fg-tertiary);font-family:var(--font-sans);font-size:var(--fs-body-sm)}
-.sk-log__line{display:flex;gap:var(--space-3);padding:0 var(--space-3);white-space:pre;contain:content}
+.sk-log__line{display:flex;gap:var(--space-3);padding:1px var(--space-3);white-space:pre;contain:content}
 .sk-log.is-wrap .sk-log__line{white-space:pre-wrap;word-break:break-word}
-.sk-log__time{flex:none;color:var(--fg-tertiary);user-select:none}
-.sk-log__text{min-width:0}
-.sk-log--warning .sk-log__text{color:var(--warning)}
-.sk-log--error .sk-log__text{color:var(--danger)}
-.sk-log--debug .sk-log__text,.sk-log--muted .sk-log__text{color:var(--fg-tertiary)}
+.sk-log__time{flex:none;color:var(--fg-tertiary);user-select:none;font-variant-numeric:tabular-nums}
+.sk-log__text{min-width:0;flex:1}
+.sk-log__part.is-bold{font-weight:600}.sk-log__part.is-dim{opacity:0.7}.sk-log__part.is-italic{font-style:italic}.sk-log__part.is-underline{text-decoration:underline}
+.sk-log--success .sk-log__text,.sk-log__part.sk-log--success{color:var(--success)}
+.sk-log--warning .sk-log__text,.sk-log__part.sk-log--warning{color:var(--warning)}
+.sk-log--error .sk-log__text,.sk-log__part.sk-log--error{color:var(--danger)}
+.sk-log--debug .sk-log__text,.sk-log__part.sk-log--debug{color:var(--fg-secondary)}
+.sk-log--muted .sk-log__text,.sk-log__part.sk-log--muted{color:var(--fg-tertiary)}
+.sk-log--info .sk-log__text{color:var(--fg-primary)}
+.sk-log__part.sk-log--info{color:var(--accent)}
 .sk-log__line:hover{background:var(--bg-control)}
 .sk-skeleton-group{display:flex;flex-direction:column;gap:var(--space-2);width:100%}
 .sk-skeleton{display:block;max-width:100%;background:var(--bg-control);animation:sk-pulse 1.6s var(--ease-standard) infinite}
