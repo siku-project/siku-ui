@@ -36,6 +36,8 @@ export { default as EmptyState } from './components/EmptyState.svelte';
 export { default as Stat } from './components/Stat.svelte';
 export { default as Sparkline } from './components/Sparkline.svelte';
 export { default as TimeChart } from './components/TimeChart.svelte';
+export { default as BarChart } from './components/BarChart.svelte';
+export { default as LogView } from './components/LogView.svelte';
 export { default as Slot } from './components/Slot.svelte';
 export { default as SlotGrid } from './components/SlotGrid.svelte';
 export { default as Gauge } from './components/Gauge.svelte';

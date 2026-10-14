@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.2.0
+# Composants @siku/ui 1.3.0
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -39,6 +39,8 @@
 | [`Stat`](#stat) | Données | La valeur clé d’un écran avec sa partie secondaire en retrait. |
 | [`Sparkline`](#sparkline) | Données | Mini courbe inline : la tendance d’un indicateur, sans axes. |
 | [`TimeChart`](#timechart) | Données | Courbe ou aire temporelle : grille, axe des valeurs, repères de temps, plusieurs séries. |
+| [`BarChart`](#barchart) | Données | Barres par intervalle, groupées ou empilées : répartition d’un histogramme, volumes par période. |
+| [`LogView`](#logview) | Données | Journal monospace défilant : horodatage, niveau par ligne, suivi automatique du bas, retour à ligne. |
 | [`Slot`](#slot) | Jeu | Emplacement d’inventaire : touche ↖, quantité ↗, nom en bas, usure sur le bord. |
 | [`SlotGrid`](#slotgrid) | Jeu | Grille d’emplacements : flèches/manette, sélection, glisser-déposer entre grilles. |
 | [`Gauge`](#gauge) | Jeu | Statut du HUD ; critique sous le seuil (icône, jauge, valeur). |
@@ -783,6 +785,58 @@ Courbe ou aire temporelle : grille, axe des valeurs, repères de temps, plusieur
 ```svelte
 <TimeChart label="CPU, 6 heures" unit="%" min={0} max={100} labels={['-6 h', '-3 h', 'now']}
   series={[{ id: 'cpu', label: 'CPU', values: cpu }, { id: 'ram', label: 'RAM', values: ram }]} />
+```
+
+### BarChart
+
+Barres par intervalle, groupées ou empilées : répartition d’un histogramme, volumes par période.
+
+**Utiliser** : Distribution par tranche (temps de tick par seuil, événements par heure). stacked pour empiler les séries d’un même total ; sinon les barres sont groupées. labels sous chaque intervalle ; max pour fixer l’échelle.
+
+**Éviter** : Une évolution continue : préférer TimeChart. Plus de cinq séries.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `series` | `{ id, label, values: number[], tone? }[]` | — |  |
+| `labels` | `string[]` | [] | Un libellé par intervalle. |
+| `stacked` | `boolean` | false |  |
+| `max` | `number` | — |  |
+| `unit` | `string` | '' |  |
+| `format` | `(v: number) => string` | arrondi |  |
+| `height` | `number` | 160 | px |
+| `rows` | `number` | 4 | Lignes de grille. |
+| `legend` | `boolean` | true |  |
+| `label` | `string` | — | Nom accessible du graphique. |
+
+```svelte
+<BarChart label="Ticks lents par minute" stacked labels={['-5', '-4', '-3', '-2', '-1']}
+  series={[{ id: 'ok', label: '< 50 ms', values: ok, tone: 'success' }, { id: 'slow', label: '> 50 ms', values: slow, tone: 'warning' }]} />
+```
+
+### LogView
+
+Journal monospace défilant : horodatage, niveau par ligne, suivi automatique du bas, retour à ligne.
+
+**Utiliser** : Console d’un serveur, sortie d’un processus, journal d’événements bruts. follow (bindable) suit les nouvelles lignes ; remonter dans le journal le coupe, onfollow le signale. level par ligne (info, warning, error, debug, muted) pour la couleur ; onreachtop pour charger l’historique.
+
+**Éviter** : Un tableau de données structurées : préférer Table. Plus de quelques milliers de lignes à la fois : paginer.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `lines` | `{ id, at?, text, level? }[]` | — |  |
+| `follow` | `boolean` | true | Bindable. |
+| `height` | `number \| string` | 420 | px ou valeur CSS. |
+| `wrap` | `boolean` | true | Retour à la ligne. |
+| `timestamps` | `boolean` | true |  |
+| `format` | `(at: string) => string` | identité | Affichage de l’horodatage. |
+| `empty` | `string` | '' | Texte quand le journal est vide. |
+| `label` | `string` | — | Nom accessible. |
+| `onfollow` | `(v: boolean) => void` | — |  |
+| `onreachtop` | `() => void` | — |  |
+
+```svelte
+<LogView label="Console FXServer" height={320} empty="Aucune ligne reçue."
+  lines={[{ id: 1, at: '12:00:01', text: 'Started resource siku_core' }, { id: 2, at: '12:00:04', text: 'hitch warning: frame time of 212 milliseconds', level: 'warning' }]} />
 ```
 
 ## Jeu

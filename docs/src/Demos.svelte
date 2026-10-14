@@ -196,6 +196,10 @@
   </div>
 {:else if name === 'TimeChart'}
   <div class="play" style="width:40rem"><div style="width:100%"><S.TimeChart label="CPU et RAM, 6 heures" unit="%" min={0} max={100} area={p.area} legend={p.legend} labels={['-6 h', '-3 h', 'now']} series={[{ id: 'cpu', label: 'CPU', values: cpu }, { id: 'ram', label: 'RAM', values: ram }]} /></div></div>
+{:else if name === 'BarChart'}
+  <div class="play" style="width:40rem"><div style="width:100%"><S.BarChart label="Ticks par seuil, 10 dernières minutes" stacked={p.stacked} legend={p.legend} labels={['-10', '-8', '-6', '-4', '-2', 'now']} series={[{ id: 'ok', label: '< 50 ms', values: [320, 318, 330, 290, 325, 331], tone: 'success' }, { id: 'slow', label: '50–250 ms', values: [2, 4, 1, 28, 6, 0], tone: 'warning' }, { id: 'bad', label: '> 250 ms', values: [0, 0, 0, 3, 0, 0], tone: 'danger' }]} /></div></div>
+{:else if name === 'LogView'}
+  <div class="play" style="width:40rem"><div style="width:100%"><S.LogView label="Console FXServer" height={220} wrap={p.wrap} timestamps={p.timestamps} empty="Aucune ligne reçue." lines={[{ id: 1, at: '12:00:01', text: '[   fake] FXServer-master SERVER v1.0.0.12345 starting' }, { id: 2, at: '12:00:02', text: '[  script:siku_core] Started resource siku_core' }, { id: 3, at: '12:00:04', text: 'hitch warning: frame time of 212 milliseconds', level: 'warning' }, { id: 4, at: '12:00:05', text: 'Fatal error: simulated crash', level: 'error' }, { id: 5, at: '12:00:06', text: '[chat] server: hello', level: 'muted' }]} /></div></div>
 {:else if name === 'Slot'}
   <div class="play"><S.Slot item={pistol} hotkey={1} size={p.size} selected={p.selected} locked={p.locked} dropState={p.dropState} /></div>
   <h4>Contenus</h4>
