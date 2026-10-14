@@ -2,6 +2,15 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.3.0
+
+Briques d’une interface d’administration (barre latérale, tableau de bord, chargement).
+- `NavList` : `href` sur une entrée rend un lien `<a>` (navigation entre pages, `aria-current="page"`) ; prop `compact` (icônes seules, libellé en infobulle native) pour une barre latérale repliée.
+- `Sparkline` : mini courbe inline (tendance d’un indicateur), tons `neutral`, `live`, `success`, `warning`, `danger`, aire en option.
+- `TimeChart` : courbe ou aire temporelle, grille, axe des valeurs, repères de temps, une à trois séries, légende avec la dernière valeur. Types `ChartSeries` et `ChartTone` exportés.
+- `Drawer` : panneau latéral posé sur la page (navigation mobile, inspecteur), voile, Échap, focus piégé.
+- `Skeleton` : silhouette d’un contenu en cours de chargement, immobile sous `prefers-reduced-motion`.
+
 ## 1.2.0
 
 Premiers besoins d’une application web complète (accueil, accès, tableau de bord).

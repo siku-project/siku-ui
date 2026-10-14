@@ -23,6 +23,11 @@
   let nav = $state('main');
   let menuLog = $state('—');
   let modal = $state(false);
+  let drawer = $state(false);
+  let navPage = $state('overview');
+  const cpu = [22, 24, 21, 28, 35, 31, 29, 44, 52, 48, 41, 38, 36, 33, 30, 34, 37, 35, 32, 31];
+  const ram = [41, 41, 42, 42, 43, 43, 44, 46, 47, 47, 48, 48, 48, 49, 49, 50, 50, 51, 51, 52];
+  const navItems = [{ value: 'overview', label: 'Overview', icon: 'home' as const, href: '#overview' }, { value: 'server', label: 'Server', icon: 'server' as const, href: '#server', group: 'Monitor' }, { value: 'resources', label: 'Resources', icon: 'layers' as const, href: '#resources', group: 'Monitor', count: 2 }, { value: 'logs', label: 'Logs & errors', icon: 'doc' as const, href: '#logs', group: 'Monitor' }, { value: 'settings', label: 'Settings', icon: 'settings' as const, href: '#settings', group: 'Manage' }];
   let tableSel = $state(1);
   let holdDone = $state(0);
   let player = $state<(SlotItem | null)[]>([pistol, { name: 'Téléphone', icon: 'phone' }, water, kit, { name: 'Radio', icon: 'radio' }, { name: '9 mm', icon: 'ammo', count: 48 }, pick, cash, null, null]);
@@ -106,6 +111,8 @@
   <div class="play" style="width:40rem"><S.Tabs variant={p.variant} bind:value={tab} label="Catégories" tabs={[{ value: 'all', label: 'Tout', count: 13 }, { value: 'weapons', label: 'Armes', count: 2 }, { value: 'care', label: 'Soins', count: 3 }, { value: 'food', label: 'Nourriture', count: 3 }, { value: 'keys', label: 'Clés', count: 0, disabled: true }]} /></div>
   <p class="note">Onglet : <code>{tab}</code> — flèches ←/→ quand un onglet a le focus.</p>
 {:else if name === 'NavList'}
+  <div class="play" style="width:17rem"><S.NavList bind:value={navPage} compact={p.compact} items={navItems} /></div>
+  <h4>Liste de valeurs (boutons)</h4>
   <div class="play" style="width:17rem"><S.NavList bind:value={nav} items={[{ value: 'main', label: 'Compte courant', detail: '18 920,40 $', icon: 'card', group: 'Comptes' }, { value: 'save', label: 'Épargne', detail: '42 600,00 $', icon: 'bank', group: 'Comptes' }, { value: 'bills', label: 'Factures', icon: 'doc', count: 2, group: 'Services' }, { value: 'loans', label: 'Prêts', icon: 'loan', group: 'Services' }]} /></div>
 {:else if name === 'Menu'}
   <div class="play" style="align-items:flex-start"><div style="width:17rem"><S.Menu label="Actions sur l’objet" items={menuItems} autofocus={false} onselect={(id) => (menuLog = id)} /></div><p class="note">Dernière action : <code>{menuLog}</code> — clique dans le menu puis flèches, Entrée ou la touche affichée.</p></div>
@@ -149,6 +156,8 @@
   <div class="play col" style="width:22rem"><S.Segments value={0.86} label="État" /><S.Segments value={0.55} count={24} hotFrom={20} label="Régime" /></div>
 {:else if name === 'Spinner'}
   <div class="play"><S.Spinner /><S.Button variant="primary" loading>Envoyer</S.Button></div>
+{:else if name === 'Skeleton'}
+  <div class="play" style="width:22rem"><div class="col" style="width:100%"><div class="row" style="margin:0;align-items:center"><S.Skeleton width="2.25rem" height="2.25rem" radius={p.radius} /><S.Skeleton width="9rem" height="0.875rem" /></div><S.Skeleton lines={p.lines ?? 3} radius={p.radius} /></div></div>
 {:else if name === 'HoldAction'}
   <div class="play"><S.HoldAction key="E" label="Crochetage" duration={1800} oncomplete={() => holdDone++} /></div>
   <p class="note">Maintiens <code>E</code> (ou le clic) : réussites <code>{holdDone}</code>. Relâcher vide la jauge.</p>
@@ -176,6 +185,17 @@
   <div class="play" style="width:26rem"><S.EmptyState title="Le coffre est vide">Glisse un objet ici, ou sélectionne-le et appuie sur <S.Key label="Espace" /></S.EmptyState></div>
 {:else if name === 'Stat'}
   <div class="play"><S.Stat size={p.size} value={p.size === 'xl' ? '84' : '18 920'} minor={p.size === 'xl' ? ' km/h' : ',40 $'} label="Compte courant" /></div>
+{:else if name === 'Sparkline'}
+  <div class="play"><S.Sparkline values={cpu} tone={p.tone} area={p.area} label="CPU, 20 relevés" /><S.Stat size="md" value="31" minor=" %" label="CPU" /></div>
+  <h4>Tons</h4>
+  <div class="row">
+    {#snippet sp1()}<S.Sparkline values={ram} />{/snippet}{@render st('neutral', sp1)}
+    {#snippet sp2()}<S.Sparkline values={cpu} tone="live" area />{/snippet}{@render st('live, area', sp2)}
+    {#snippet sp3()}<S.Sparkline values={[8, 7, 7, 6, 5, 5, 4]} tone="success" />{/snippet}{@render st('success', sp3)}
+    {#snippet sp4()}<S.Sparkline values={[2, 2, 3, 5, 9, 14, 21]} tone="danger" />{/snippet}{@render st('danger', sp4)}
+  </div>
+{:else if name === 'TimeChart'}
+  <div class="play" style="width:40rem"><div style="width:100%"><S.TimeChart label="CPU et RAM, 6 heures" unit="%" min={0} max={100} area={p.area} legend={p.legend} labels={['-6 h', '-3 h', 'now']} series={[{ id: 'cpu', label: 'CPU', values: cpu }, { id: 'ram', label: 'RAM', values: ram }]} /></div></div>
 {:else if name === 'Slot'}
   <div class="play"><S.Slot item={pistol} hotkey={1} size={p.size} selected={p.selected} locked={p.locked} dropState={p.dropState} /></div>
   <h4>Contenus</h4>
@@ -218,6 +238,9 @@
   <div class="row"><S.Surface level="sunken" padding="sm">sunken</S.Surface><S.Surface padding="sm">base</S.Surface><S.Surface level="raised" padding="sm">raised</S.Surface><S.Surface padding="sm" elevated>elevated</S.Surface></div>
 {:else if name === 'Divider'}
   <div class="play col" style="width:24rem"><S.Divider label="Accès rapide" /><S.Divider /><S.Divider strong /></div>
+{:else if name === 'Drawer'}
+  <div class="play"><S.Button icon="layers" onclick={() => (drawer = true)}>Ouvrir la navigation</S.Button></div>
+  <S.Drawer bind:open={drawer} title="Navigation"><S.NavList bind:value={navPage} items={navItems} onchange={() => (drawer = false)} /></S.Drawer>
 {:else if name === 'Icon'}
   <div class="icons">{#each S.iconNames as n (n)}<div class="ic"><S.Icon name={n} /><span>{n}</span></div>{/each}</div>
 {/if}

@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.1.1
+# Composants @siku/ui 1.2.0
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -27,6 +27,7 @@
 | [`Meter`](#meter) | Retours | Jauge continue : charge, progression. Avertissement automatique au seuil. |
 | [`Segments`](#segments) | Retours | Valeur discrète (état, régime) ; zone critique en option. |
 | [`Spinner`](#spinner) | Retours | Attente indéterminée. |
+| [`Skeleton`](#skeleton) | Retours | Silhouette d’un contenu en cours de chargement. |
 | [`DataRow`](#datarow) | Données | Ligne de liste : opérations, journaux, contacts. |
 | [`Table`](#table) | Données | Tableau dense : effectifs, classements, journaux. |
 | [`Badge`](#badge) | Données | Un mot d’état ; la couleur suit le sens. |
@@ -36,6 +37,8 @@
 | [`Avatar`](#avatar) | Données | Initiales d’une personne ou d’une entreprise. |
 | [`EmptyState`](#emptystate) | Données | Un état vide propose l’action suivante. |
 | [`Stat`](#stat) | Données | La valeur clé d’un écran avec sa partie secondaire en retrait. |
+| [`Sparkline`](#sparkline) | Données | Mini courbe inline : la tendance d’un indicateur, sans axes. |
+| [`TimeChart`](#timechart) | Données | Courbe ou aire temporelle : grille, axe des valeurs, repères de temps, plusieurs séries. |
 | [`Slot`](#slot) | Jeu | Emplacement d’inventaire : touche ↖, quantité ↗, nom en bas, usure sur le bord. |
 | [`SlotGrid`](#slotgrid) | Jeu | Grille d’emplacements : flèches/manette, sélection, glisser-déposer entre grilles. |
 | [`Gauge`](#gauge) | Jeu | Statut du HUD ; critique sous le seuil (icône, jauge, valeur). |
@@ -45,6 +48,7 @@
 | [`Screen`](#screen) | Structure | Famille « écran plein » : voile, cadre 16:9 centré, Échap pour fermer. |
 | [`Surface`](#surface) | Structure | Un niveau de surface pour composer fenêtres, panneaux et colonnes. |
 | [`Divider`](#divider) | Structure | Filet de structure, horizontal, vertical ou titré. |
+| [`Drawer`](#drawer) | Structure | Panneau latéral posé sur la page : navigation mobile, filtres, inspecteur. |
 | [`Icon`](#icon) | Structure | Pictogramme au trait (65 icônes), couleur héritée. |
 
 ## Actions
@@ -339,19 +343,21 @@ Onglets soulignés (sections) ou pastilles (filtres d’écran), Q/E en option.
 
 Navigation latérale d’une fenêtre (comptes, catégories).
 
-**Utiliser** : Deuxième ligne pour la valeur utile (solde). group pour titrer des sections.
+**Utiliser** : Deuxième ligne pour la valeur utile (solde). group pour titrer des sections. href pour une navigation entre pages (SvelteKit) ; value reste la page courante.
 
 **Éviter** : Plus de deux niveaux.
 
 | Prop | Type | Défaut | Description |
 |---|---|---|---|
 | `value` | `string` | '' | bind:value |
-| `items` | `{ value, label, detail?, icon?, count?, group?, disabled? }[]` | — |  |
+| `items` | `{ value, label, detail?, icon?, count?, group?, disabled?, href? }[]` | — | href rend un lien <a> (navigation entre pages) ; sinon un bouton. |
 | `label` | `string` | 'Navigation' |  |
+| `compact` | `boolean` | false | Icônes seules, libellé en infobulle native : barre latérale repliée. |
 | `onchange` | `(v: string) => void` | — |  |
 
 ```svelte
 <NavList bind:value={account} items={[{ value: 'main', label: 'Compte courant', detail: '18 920,40 $', icon: 'card', group: 'Comptes' }]} />
+<NavList value={page} compact={collapsed} items={[{ value: 'overview', label: 'Overview', icon: 'home', href: '/dashboard' }]} />
 ```
 
 ### Menu
@@ -548,6 +554,27 @@ Attente indéterminée.
 <Spinner />
 ```
 
+### Skeleton
+
+Silhouette d’un contenu en cours de chargement.
+
+**Utiliser** : Même taille que le contenu attendu, pour éviter le saut de mise en page. lines pour un paragraphe ; radius="full" pour un avatar.
+
+**Éviter** : Plus d’une seconde sans message : passer par un texte d’attente ou Spinner.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `width` | `string` | '100%' |  |
+| `height` | `string` | '1rem' |  |
+| `radius` | `'sm' \| 'md' \| 'full'` | 'sm' |  |
+| `lines` | `number` | 1 | Lignes empilées, la dernière plus courte. |
+| `label` | `string` | 'Chargement' | Nom accessible. |
+
+```svelte
+<Skeleton lines={3} />
+<Skeleton width="2.25rem" height="2.25rem" radius="full" />
+```
+
 ## Données
 
 ### DataRow
@@ -706,6 +733,56 @@ La valeur clé d’un écran avec sa partie secondaire en retrait.
 
 ```svelte
 <Stat value="18 920" minor=",40 $" label="Compte courant" />
+```
+
+### Sparkline
+
+Mini courbe inline : la tendance d’un indicateur, sans axes.
+
+**Utiliser** : À côté d’un Stat ou dans une cellule de Table. tone selon le sens : live pour ce qui est en cours, danger pour une dégradation.
+
+**Éviter** : Lire une valeur précise dessus : afficher aussi le chiffre.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `values` | `number[]` | — |  |
+| `tone` | `'neutral' \| 'live' \| 'success' \| 'warning' \| 'danger'` | 'neutral' |  |
+| `width` | `number` | 96 | px |
+| `height` | `number` | 24 | px |
+| `area` | `boolean` | false | Aire sous la courbe. |
+| `min` | `number` | — | Borne basse (sinon le minimum des valeurs). |
+| `max` | `number` | — | Borne haute. |
+| `label` | `string` | — | Nom accessible ; sans label, décoratif. |
+
+```svelte
+<Sparkline values={[12, 14, 11, 18, 22, 21, 27]} tone="live" area label="Joueurs connectés, 24 h" />
+```
+
+### TimeChart
+
+Courbe ou aire temporelle : grille, axe des valeurs, repères de temps, plusieurs séries.
+
+**Utiliser** : Une à trois séries ; la première en glacier, les suivantes en neutre. format pour l’unité et la précision ; min/max pour fixer l’échelle (0–100 pour un pourcentage). labels pour les repères de temps (début, milieu, fin).
+
+**Éviter** : Plus de trois séries ou des échelles différentes sur un même graphique.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `series` | `{ id, label, values: number[], tone? }[]` | — |  |
+| `labels` | `string[]` | [] | Repères de temps répartis sur la largeur. |
+| `min` | `number` | — |  |
+| `max` | `number` | — |  |
+| `unit` | `string` | '' | Suffixe des valeurs (%, ms). |
+| `format` | `(v: number) => string` | arrondi |  |
+| `height` | `number` | 160 | px |
+| `area` | `boolean` | true |  |
+| `rows` | `number` | 4 | Lignes de grille. |
+| `legend` | `boolean` | true | Légende avec la dernière valeur. |
+| `label` | `string` | — | Nom accessible. |
+
+```svelte
+<TimeChart label="CPU, 6 heures" unit="%" min={0} max={100} labels={['-6 h', '-3 h', 'now']}
+  series={[{ id: 'cpu', label: 'CPU', values: cpu }, { id: 'ram', label: 'RAM', values: ram }]} />
 ```
 
 ## Jeu
@@ -915,6 +992,29 @@ Filet de structure, horizontal, vertical ou titré.
 
 ```svelte
 <Divider label="Accès rapide" />
+```
+
+### Drawer
+
+Panneau latéral posé sur la page : navigation mobile, filtres, inspecteur.
+
+**Utiliser** : Échap, voile et croix ferment ; le focus est piégé puis rendu. side="right" pour un inspecteur.
+
+**Éviter** : Une confirmation : Modal. Sur desktop quand la place existe : une colonne.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `open` | `boolean` | false | bind:open |
+| `title` | `string` | — |  |
+| `side` | `'left' \| 'right'` | 'left' |  |
+| `children` | `Snippet` | — |  |
+| `onclose` | `() => void` | — |  |
+| `closeLabel` | `string` | 'Fermer' | Nom accessible de la croix. |
+
+```svelte
+<Drawer bind:open={menu} title="Navigation">
+  <NavList value={page} items={items} onchange={() => (menu = false)} />
+</Drawer>
 ```
 
 ### Icon

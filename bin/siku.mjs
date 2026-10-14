@@ -16,7 +16,7 @@ const flags = new Set(rest.filter((a) => a.startsWith('--')));
 const args = rest.filter((a) => !a.startsWith('--'));
 const C = { red: (s) => `\x1b[31m${s}\x1b[0m`, yellow: (s) => `\x1b[33m${s}\x1b[0m`, green: (s) => `\x1b[32m${s}\x1b[0m`, dim: (s) => `\x1b[2m${s}\x1b[0m` };
 
-const LIB_COMPONENTS = ['Button', 'ButtonGroup', 'Key', 'Hint', 'TextField', 'Checkbox', 'RadioGroup', 'Switch', 'Select', 'Stepper', 'Slider', 'Segmented', 'Tabs', 'NavList', 'Menu', 'Modal', 'Tooltip', 'Toast', 'Toaster', 'Meter', 'Segments', 'Spinner', 'HoldAction', 'DataRow', 'Table', 'Badge', 'Plate', 'Code', 'Count', 'Avatar', 'EmptyState', 'Stat', 'Slot', 'SlotGrid', 'Gauge', 'Prompt', 'HudAnchor', 'Screen', 'Surface', 'Divider', 'Icon'];
+const LIB_COMPONENTS = ['Button', 'ButtonGroup', 'Key', 'Hint', 'TextField', 'Checkbox', 'RadioGroup', 'Switch', 'Select', 'Stepper', 'Slider', 'Segmented', 'Tabs', 'NavList', 'Menu', 'Modal', 'Tooltip', 'Toast', 'Toaster', 'Meter', 'Segments', 'Spinner', 'Skeleton', 'HoldAction', 'DataRow', 'Table', 'Badge', 'Plate', 'Code', 'Count', 'Avatar', 'EmptyState', 'Stat', 'Sparkline', 'TimeChart', 'Slot', 'SlotGrid', 'Gauge', 'Prompt', 'HudAnchor', 'Screen', 'Surface', 'Divider', 'Drawer', 'Icon'];
 
 // ───────────────────────── règles
 // level: error = bloque la CI ; warn = à justifier. self: s'applique aussi au dépôt du design system.

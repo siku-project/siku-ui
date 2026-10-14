@@ -133,6 +133,10 @@
 .sk-nav__item.is-selected{background:var(--bg-control);color:var(--fg-primary)}
 .sk-nav__item.is-selected small{color:var(--fg-secondary)}
 .sk-nav__group{font-size:var(--fs-caption);color:var(--fg-tertiary);padding:var(--space-4) var(--space-3) var(--space-2)}
+.sk-nav__item.is-disabled{color:var(--fg-disabled);pointer-events:none}
+.sk-nav--compact .sk-nav__item{position:relative;justify-content:center;padding:var(--space-2)}
+.sk-nav--compact .sk-nav__text,.sk-nav--compact .sk-nav__group{display:none}
+.sk-nav--compact .sk-nav__item .sk-count{position:absolute;top:var(--space-1);right:var(--space-1);margin:0;min-width:1rem;height:1rem;font-size:var(--fs-key)}
 
 /* ───────── Menus ───────── */
 .sk-menu{min-width:15rem;padding:var(--space-1);border-radius:var(--radius-lg);background:var(--bg-raised);box-shadow:inset 0 0 0 var(--border-hairline) var(--border-subtle),var(--shadow-overlay)}
@@ -209,6 +213,26 @@
 .sk-empty b{color:var(--fg-primary);font-weight:600;font-size:var(--fs-body)}
 
 /* ───────── Jauges ───────── */
+.sk-tone--neutral{color:var(--gauge-fill)}.sk-tone--live{color:var(--accent)}.sk-tone--success{color:var(--success)}.sk-tone--warning{color:var(--warning)}.sk-tone--danger{color:var(--danger)}
+.sk-spark{display:inline-block;vertical-align:middle;overflow:visible;flex:none}
+.sk-spark__line{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.sk-spark__area{fill:currentColor;opacity:0.14}
+.sk-chart{margin:0;display:flex;flex-direction:column;gap:var(--space-3);min-width:0}
+.sk-chart__legend{display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-5);font-size:var(--fs-caption);color:var(--fg-secondary)}
+.sk-chart__key{display:inline-flex;align-items:center;gap:var(--space-2)}
+.sk-chart__key i{width:0.625rem;height:0.125rem;border-radius:var(--radius-full);background:currentColor}
+.sk-chart__key b{color:var(--fg-primary);font-weight:600}
+.sk-chart__plot{position:relative;width:100%}
+.sk-chart__plot svg{display:block;overflow:visible}
+.sk-chart__grid{stroke:var(--border-subtle);stroke-width:1}
+.sk-chart__tick{font-family:var(--font-sans);font-size:var(--fs-caption);fill:var(--fg-tertiary)}
+.sk-chart__line{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.sk-chart__area{fill:currentColor;opacity:0.1}
+.sk-chart__dot{fill:currentColor}
+.sk-skeleton-group{display:flex;flex-direction:column;gap:var(--space-2);width:100%}
+.sk-skeleton{display:block;max-width:100%;background:var(--bg-control);animation:sk-pulse 1.6s var(--ease-standard) infinite}
+.sk-skeleton--sm{border-radius:var(--radius-sm)}.sk-skeleton--md{border-radius:var(--radius-md)}.sk-skeleton--full{border-radius:var(--radius-full)}
+@keyframes sk-pulse{50%{opacity:0.45}}
 .sk-meter{height:0.1875rem;border-radius:var(--radius-full);background:var(--gauge-track);overflow:hidden}
 .sk-meter>i{display:block;height:100%;border-radius:inherit;background:var(--gauge-fill);transition:width var(--duration-base) var(--ease-standard)} /* siku-allow : remplissage de jauge, coût négligeable */
 .sk-meter--lg{height:0.375rem}
@@ -272,7 +296,7 @@
 /* HUD : texte sans plaque */
 .sk-hud-text{text-shadow:var(--shadow-text),0 0 1.125rem rgba(0,0,0,0.35)}
 
-@media (prefers-reduced-motion: reduce){.sk *,.sk *::before,.sk *::after{animation-duration:1ms!important;transition-duration:1ms!important}}
+@media (prefers-reduced-motion: reduce){.sk *,.sk *::before,.sk *::after{animation-duration:1ms!important;transition-duration:1ms!important}.sk .sk-skeleton{animation:none;opacity:0.7}}
 .sk-slot--sm .sk-slot__qty{top:auto;bottom:0.375rem;right:0.4375rem;font-size:var(--fs-caption)}
 button.sk-slot{border:0;padding:0;font:inherit;cursor:pointer;text-align:left;appearance:none}
 
