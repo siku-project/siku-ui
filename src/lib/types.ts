@@ -5,3 +5,5 @@ export type SlotItem = { id?: string | number; name: string; icon: IconName; cou
 export type MenuItem = { id: string; label: string; icon?: IconName; key?: string; meta?: string; disabled?: boolean; danger?: boolean; separatorBefore?: boolean; group?: string };
 /** Événement de déplacement entre grilles d'emplacements. */
 export type MoveEvent = { from: { container: string; index: number }; to: { container: string; index: number }; item: SlotItem };
+export type ChartTone = 'neutral' | 'live' | 'success' | 'warning' | 'danger';
+export type ChartSeries = { id: string; label: string; values: number[]; tone?: ChartTone };
