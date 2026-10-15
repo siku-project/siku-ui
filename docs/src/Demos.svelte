@@ -264,6 +264,19 @@
   </div>
 {:else if name === 'StatusTimeline'}
   <div class="play" style="width:40rem"><div style="width:100%"><S.StatusTimeline label="Disponibilité, 24 h" uptime={0.983} start="-24 h" end="now" legend={p.legend} state={p.state} message="Aucune mesure de disponibilité" {buckets} /></div></div>
+{:else if name === 'Ring'}
+  <div class="play"><S.Ring label="Ticks dans le budget" caption="svMain, 1 h" value={p.value === undefined ? 0.994 : Number(p.value)} tone={p.tone} size={p.size} state={p.state} message="Pas de mesure" /></div>
+  <h4>Variantes</h4>
+  <div class="row">
+    <S.Ring label="Mémoire hôte" caption="12,3 / 32 Go" value={0.38} size="sm" />
+    <S.Ring label="CPU FXServer" caption="d’un cœur" value={0.82} tone="warning" valueLabel="82 %" />
+    <S.Ring label="Disponibilité" caption="24 h" value={0.9992} tone="success" size="lg" valueLabel="99,92 %" />
+    <S.Ring label="Disque" value={null} state="unavailable" message="Non collecté" />
+  </div>
+{:else if name === 'ShareBar'}
+  <div class="play" style="width:36rem"><div style="width:100%"><S.ShareBar label="Ticks par classe" legend={p.legend} state={p.state} message="Aucun tick mesuré" segments={[{ id: 'ok', label: 'Dans le budget', value: 59120, tone: 'success', hint: '≤ 50 ms' }, { id: 'late', label: 'En retard', value: 420, tone: 'warning', hint: '50 à 150 ms' }, { id: 'hitch', label: 'Hitchs', value: 3, tone: 'danger', hint: '> 150 ms' }]} /></div></div>
+  <h4>Palette catégorielle</h4>
+  <div class="play" style="width:36rem"><div style="width:100%"><S.ShareBar label="Mémoire par usage" height={14} segments={[{ id: 'a', label: 'FXServer', value: 2.1 }, { id: 'b', label: 'Base de données', value: 1.4 }, { id: 'c', label: 'Système', value: 3.2 }, { id: 'd', label: 'Libre', value: 25.3 }]} format={(v) => `${v.toFixed(1)} Go`} /></div></div>
 {:else if name === 'PeriodPicker'}
   <div class="play"><S.PeriodPicker bind:value={period} updatedAt={Date.now() - 42_000} refreshing={p.refreshing} onrefresh={() => {}} /></div>
   <p class="cap">Période : {period}</p>

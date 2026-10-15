@@ -2,6 +2,13 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.8.0
+
+Lecture des performances.
+- `Ring` : anneau de progression (part 0–1, valeur au centre, libellé, légende, tons, tailles sm / md / lg, états de données, centre composable).
+- `ShareBar` : répartition en parts (barre empilée horizontale, légende avec part de chaque segment, infobulle native avec `hint`, tons sémantiques ou palette catégorielle).
+- `StatTile` : `help` affiche une icône info avec l’explication de la mesure en Tooltip (`helpLabel` pour le nom accessible).
+
 ## 1.7.0
 
 Observabilité : graphiques interactifs, tuiles d’indicateurs, disponibilité, période, tableaux de données.

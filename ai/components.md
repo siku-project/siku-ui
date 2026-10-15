@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.6.0
+# Composants @siku/ui 1.8.0
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -53,6 +53,8 @@
 | [`Drawer`](#drawer) | Structure | Panneau latéral posé sur la page : navigation mobile, filtres, inspecteur. |
 | [`StatTile`](#stattile) | Données | Indicateur clé en tuile : valeur et unité, variation signée, tendance, état de données. |
 | [`StatusTimeline`](#statustimeline) | Données | Disponibilité dans le temps : une barre de tranches ok, dégradé, arrêt, inconnu, avec le taux de disponibilité. |
+| [`Ring`](#ring) | Données | Anneau de progression : une part (0–1) avec sa valeur au centre, un libellé et un état de données. |
+| [`ShareBar`](#sharebar) | Données | Répartition en parts : une barre empilée horizontale avec la part de chaque segment et sa légende. |
 | [`PeriodPicker`](#periodpicker) | Saisie | Période d’analyse d’un graphique, bouton de rafraîchissement et fraîcheur des données. |
 | [`DataTable`](#datatable) | Données | Tableau de données triable : colonnes sortable, lignes sélectionnables au clavier, états de chargement et d’absence, en-tête collant. |
 | [`DescriptionList`](#descriptionlist) | Données | Paires clé / valeur d’un détail : attributs d’un événement, propriétés d’un objet, identifiants à copier. |
@@ -907,6 +909,8 @@ Indicateur clé en tuile : valeur et unité, variation signée, tendance, état 
 | `icon` | `IconName` | — |  |
 | `href` | `string` | — | Rend la tuile cliquable. |
 | `size` | `'md' \| 'lg'` | 'md' |  |
+| `help` | `string` | — | Explication courte de la mesure : icône info avec Tooltip. |
+| `helpLabel` | `string` | 'Explication' | Nom accessible du bouton d’aide. |
 | `children` | `Snippet` | — | Tendance (Sparkline). |
 
 ```svelte
@@ -939,6 +943,53 @@ Disponibilité dans le temps : une barre de tranches ok, dégradé, arrêt, inco
 ```svelte
 <StatusTimeline label="Disponibilité, 24 h" uptime={0.983} start="-24 h" end="now"
   buckets={buckets.map((b) => ({ t: b.t, state: b.state, ratio: b.up_ratio }))} />
+```
+
+### Ring
+
+Anneau de progression : une part (0–1) avec sa valeur au centre, un libellé et un état de données.
+
+**Utiliser** : Une proportion à lire d’un coup d’œil : ticks dans le budget, mémoire utilisée, disponibilité. tone pour le sens (success, warning, danger) ; valueLabel pour afficher autre chose que le pourcentage ; children pour composer le centre. state loading / empty / unavailable avec message plutôt qu’un anneau vide.
+
+**Éviter** : Plus de deux anneaux côte à côte pour une même mesure. Un anneau pour une valeur qui n’est pas une part d’un tout : StatTile.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `value` | `number \| null` | — | 0–1 ; null quand la part est inconnue. |
+| `label` | `string` | — |  |
+| `valueLabel` | `string` | — | Texte du centre (par défaut le pourcentage). |
+| `caption` | `string` | — | Sous le libellé. |
+| `tone` | `ChartTone` | 'neutral' |  |
+| `size` | `'sm' \| 'md' \| 'lg'` | 'md' | 64 / 96 / 128 px |
+| `thickness` | `number` | 6 / 8 / 10 | Épaisseur du trait en px. |
+| `state` | `'ready' \| 'loading' \| 'empty' \| 'unavailable'` | 'ready' |  |
+| `message` | `string` | '' |  |
+| `children` | `Snippet` | — | Contenu du centre. |
+
+```svelte
+<Ring label="Ticks dans le budget" caption="svMain, 1 h" value={0.994} tone="success" />
+```
+
+### ShareBar
+
+Répartition en parts : une barre empilée horizontale avec la part de chaque segment et sa légende.
+
+**Utiliser** : Répartition d’un total en classes : ticks rapides / en retard / hitchs, mémoire par usage, joueurs par état. tone par segment quand les classes ont un sens (success, warning, danger) ; sinon la palette chart-1 à chart-6. hint par segment pour expliquer le seuil dans l’infobulle native.
+
+**Éviter** : Plus de six segments. Une évolution dans le temps : BarChart empilé.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `segments` | `{ id, label, value, tone?, hint? }[]` | — | Valeurs absolues ; les parts sont calculées. |
+| `label` | `string` | — | Nom accessible. |
+| `legend` | `boolean` | true |  |
+| `height` | `number` | 10 | px |
+| `format` | `(value, share) => string` | pourcentage arrondi | Texte de chaque part. |
+| `state` | `'ready' \| 'loading' \| 'empty' \| 'unavailable'` | 'ready' |  |
+| `message` | `string` | '' |  |
+
+```svelte
+<ShareBar label="Ticks par classe" segments={[{ id: 'ok', label: 'Dans le budget', value: 59_120, tone: 'success' }, { id: 'late', label: 'En retard', value: 420, tone: 'warning' }, { id: 'hitch', label: 'Hitchs', value: 3, tone: 'danger' }]} />
 ```
 
 ### DataTable
