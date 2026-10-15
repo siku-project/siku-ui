@@ -1,0 +1,21 @@
+import type { Snippet } from 'svelte';
+import type { ChartTone, DataState } from '../types';
+import type { IconName } from '../icons/icons';
+type Props = {
+    label: string;
+    value?: string;
+    unit?: string;
+    delta?: number;
+    deltaLabel?: string;
+    good?: 'up' | 'down' | 'none';
+    tone?: ChartTone;
+    state?: DataState;
+    message?: string;
+    icon?: IconName;
+    href?: string;
+    size?: 'md' | 'lg';
+    children?: Snippet;
+};
+declare const StatTile: import("svelte").Component<Props, {}, "">;
+type StatTile = ReturnType<typeof StatTile>;
+export default StatTile;
