@@ -52,6 +52,8 @@ export { default as StatusTimeline } from './components/StatusTimeline.svelte';
 export { default as PeriodPicker } from './components/PeriodPicker.svelte';
 export { default as DataTable } from './components/DataTable.svelte';
 export { default as DescriptionList } from './components/DescriptionList.svelte';
+export { default as Ring } from './components/Ring.svelte';
+export { default as ShareBar } from './components/ShareBar.svelte';
 
 export * from './types';
 export { icons, iconNames, type IconName } from './icons/icons';
