@@ -2,6 +2,23 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.7.0
+
+Observabilité : graphiques interactifs, tuiles d’indicateurs, disponibilité, période, tableaux de données.
+- `TimeChart` : séries en `points` (`{ t, v }`, axe temporel réel, trous avec `v: null`, `from`/`to`), repères de temps calculés (`formatTime`), survol et flèches ← → avec curseur et infobulle de toutes les séries (`onhover` pour synchroniser), légende cliquable qui masque une série, `thresholds` (lignes pointillées) et `bands` (plages ombrées), `state` loading / empty / unavailable avec `message`, `unit`/`format` par série. Les séries en `values` + `labels` restent prises en charge.
+- `BarChart` : survol et clavier avec infobulle de l’intervalle (`onselect`), `state` et `message`.
+- `Sparkline` : `width="auto"` suit la largeur du conteneur.
+- `StatTile` : indicateur en tuile avec valeur et unité, variation signée (`delta`, `good`), tendance en enfant, `href`, états de données.
+- `StatusTimeline` : barre de disponibilité par tranche (ok, dégradé, arrêt, inconnu), taux et bornes.
+- `PeriodPicker` : préréglages de période, bouton de rafraîchissement, fraîcheur « il y a 12 s » mise à jour seule.
+- `DataTable` : colonnes triables (`sort` bindable ou `onsort`), lignes sélectionnables au clavier (`rowKey`, `selected`), `cell`, états, `dense`, en-tête collant avec `maxHeight`.
+- `DescriptionList` : paires clé / valeur d’un détail, valeurs monospace, bouton de copie.
+- `Drawer` : `size` sm / md / lg (18 / 28 / 40 rem) et `footer`.
+- `LogView` : lignes sélectionnables (`onselect`, `selected` bindable) et `highlight` d’un terme recherché.
+- `Badge` : ton `info`. `Segmented` : `size="sm"` effectif.
+- Tokens : palette catégorielle `chart-1` à `chart-6` et tons `ChartTone` correspondants ; types `ChartPoint`, `ChartThreshold`, `ChartBand`, `DataState`, `TimelineBucket`, `DataColumn`, `SortState`.
+- Icônes : `cpu`, `memory`, `chart`, `filter`, `calendar`, `users`, `terminal`, `timer`, `arrow-up`, `arrow-down`, `copy`, `download` (80 icônes).
+
 ## 1.6.0
 
 Filtres comptés.

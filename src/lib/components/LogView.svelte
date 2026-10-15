@@ -3,8 +3,24 @@
   type Level = 'info' | 'success' | 'warning' | 'error' | 'debug' | 'muted';
   type Part = { text: string; color?: string; background?: string; bold?: boolean; dim?: boolean; italic?: boolean; underline?: boolean; tone?: Level };
   type Line = { id: string | number; at?: string; text: string; parts?: Part[]; level?: Level };
-  type Props = { lines: Line[]; follow?: boolean; height?: number | string; wrap?: boolean; timestamps?: boolean; format?: (at: string) => string; empty?: string; label?: string; onfollow?: (v: boolean) => void; onreachtop?: () => void };
-  let { lines, follow = $bindable(true), height = 420, wrap = true, timestamps = true, format = (at) => at, empty = '', label, onfollow, onreachtop }: Props = $props();
+  type Props = { lines: Line[]; follow?: boolean; height?: number | string; wrap?: boolean; timestamps?: boolean; format?: (at: string) => string; empty?: string; label?: string; selected?: string | number | null; highlight?: string; onfollow?: (v: boolean) => void; onreachtop?: () => void; onselect?: (line: Line) => void };
+  let { lines, follow = $bindable(true), height = 420, wrap = true, timestamps = true, format = (at) => at, empty = '', label, selected = $bindable(null), highlight = '', onfollow, onreachtop, onselect }: Props = $props();
+  const needle = $derived(highlight.trim().toLowerCase());
+  function pieces(text: string): { text: string; hit: boolean }[] {
+    if (!needle) return [{ text, hit: false }];
+    const out: { text: string; hit: boolean }[] = [];
+    const lower = text.toLowerCase();
+    let i = 0;
+    while (i < text.length) {
+      const k = lower.indexOf(needle, i);
+      if (k < 0) { out.push({ text: text.slice(i), hit: false }); break; }
+      if (k > i) out.push({ text: text.slice(i, k), hit: false });
+      out.push({ text: text.slice(k, k + needle.length), hit: true });
+      i = k + needle.length;
+    }
+    return out;
+  }
+  function pick(l: Line) { if (!onselect) return; selected = l.id; onselect(l); }
   let box = $state<HTMLDivElement | null>(null);
   let count = $derived(lines.length);
   const h = $derived(typeof height === 'number' ? `${height}px` : height);
@@ -28,7 +44,9 @@
     <p class="sk-log__empty">{empty}</p>
   {:else}
     {#each lines as l (l.id)}
-      <div class="sk-log__line sk-log--{l.level ?? 'info'}">{#if timestamps && l.at}<time class="sk-log__time" datetime={l.at}>{format(l.at)}</time>{/if}<span class="sk-log__text">{#if l.parts}{#each l.parts as p, i (i)}<span class={partClass(p)} style={partStyle(p)}>{p.text}</span>{/each}{:else}{l.text}{/if}</span></div>
+      <!-- Ligne sélectionnable seulement quand onselect est fourni. -->
+      <!-- svelte-ignore a11y_no_static_element_interactions, a11y_no_noninteractive_tabindex -->
+      <div class={['sk-log__line', `sk-log--${l.level ?? 'info'}`, onselect && 'is-selectable', selected !== null && selected === l.id && 'is-selected'].filter(Boolean).join(' ')} role={onselect ? 'button' : undefined} tabindex={onselect ? 0 : undefined} onclick={() => pick(l)} onkeydown={(e) => { if (onselect && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pick(l); } }}>{#if timestamps && l.at}<time class="sk-log__time" datetime={l.at}>{format(l.at)}</time>{/if}<span class="sk-log__text">{#if l.parts}{#each l.parts as p, i (i)}<span class={partClass(p)} style={partStyle(p)}>{p.text}</span>{/each}{:else}{#each pieces(l.text) as piece, i (i)}{#if piece.hit}<mark class="sk-log__hit">{piece.text}</mark>{:else}{piece.text}{/if}{/each}{/if}</span></div>
     {/each}
   {/if}
 </div>

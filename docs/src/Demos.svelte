@@ -26,7 +26,15 @@
   let drawer = $state(false);
   let navPage = $state('overview');
   const cpu = [22, 24, 21, 28, 35, 31, 29, 44, 52, 48, 41, 38, 36, 33, 30, 34, 37, 35, 32, 31];
+  const t0 = Date.UTC(2026, 9, 15, 10, 0, 0);
+  const cpuPts = cpu.map((v, i) => ({ t: t0 + i * 3 * 60_000, v: i === 9 ? null : v }));
+  const buckets = Array.from({ length: 48 }, (_, i) => ({ t: t0 + i * 30 * 60_000, state: (i === 20 || i === 21 ? 'down' : i === 22 ? 'degraded' : i > 44 ? 'unknown' : 'up') as S.TimelineState, ratio: i === 22 ? 0.6 : undefined, label: `${i * 30} min` }));
+  const events = [{ id: 1, at: '10:02:14', severity: 'INFO', source: 'agent', message: 'FXServer started by the agent (pid 1832)' }, { id: 2, at: '10:17:40', severity: 'WARN', source: 'fxserver', message: 'hitch warning: frame time of 212 milliseconds' }, { id: 3, at: '10:41:03', severity: 'ERROR', source: 'fxserver', message: 'FXServer exited unexpectedly (exit status 1)' }];
+  let period = $state('1h');
+  let sort = $state<S.SortState | null>({ key: 'at', dir: 'desc' });
+  let logSel = $state<string | number | null>(null);
   const ram = [41, 41, 42, 42, 43, 43, 44, 46, 47, 47, 48, 48, 48, 49, 49, 50, 50, 51, 51, 52];
+  const hostPts = ram.map((v, i) => ({ t: t0 + i * 3 * 60_000, v }));
   const navItems = [{ value: 'overview', label: 'Overview', icon: 'home' as const, href: '#overview' }, { value: 'server', label: 'Server', icon: 'server' as const, href: '#server', group: 'Monitor' }, { value: 'resources', label: 'Resources', icon: 'layers' as const, href: '#resources', group: 'Monitor', count: 2 }, { value: 'logs', label: 'Logs & errors', icon: 'doc' as const, href: '#logs', group: 'Monitor' }, { value: 'settings', label: 'Settings', icon: 'settings' as const, href: '#settings', group: 'Manage' }];
   let tableSel = $state(1);
   let holdDone = $state(0);
@@ -197,11 +205,13 @@
     {#snippet sp4()}<S.Sparkline values={[2, 2, 3, 5, 9, 14, 21]} tone="danger" />{/snippet}{@render st('danger', sp4)}
   </div>
 {:else if name === 'TimeChart'}
-  <div class="play" style="width:40rem"><div style="width:100%"><S.TimeChart label="CPU et RAM, 6 heures" unit="%" min={0} max={100} area={p.area} legend={p.legend} labels={['-6 h', '-3 h', 'now']} series={[{ id: 'cpu', label: 'CPU', values: cpu }, { id: 'ram', label: 'RAM', values: ram }]} /></div></div>
+  <div class="play" style="width:40rem"><div style="width:100%"><S.TimeChart label="CPU du processus et de l’hôte, 1 heure" unit="%" min={0} max={100} area={p.area} legend={p.legend} state={p.state} message="Telemetry injoignable" thresholds={[{ value: 80, label: 'Seuil', tone: 'danger' }]} bands={[{ from: t0 + 27 * 60_000, to: t0 + 30 * 60_000, tone: 'danger', label: 'Interruption' }]} series={[{ id: 'cpu', label: 'Processus', points: cpuPts }, { id: 'host', label: 'Hôte', points: hostPts, tone: 'chart-2' }]} /></div></div>
+  <h4>Suite régulière avec repères</h4>
+  <div class="row"><div style="width:30rem"><S.TimeChart label="CPU, 6 heures" unit="%" min={0} max={100} height={120} labels={['-6 h', '-3 h', 'now']} series={[{ id: 'cpu', label: 'CPU', values: cpu }]} /></div></div>
 {:else if name === 'BarChart'}
-  <div class="play" style="width:40rem"><div style="width:100%"><S.BarChart label="Ticks par seuil, 10 dernières minutes" stacked={p.stacked} legend={p.legend} labels={['-10', '-8', '-6', '-4', '-2', 'now']} series={[{ id: 'ok', label: '< 50 ms', values: [320, 318, 330, 290, 325, 331], tone: 'success' }, { id: 'slow', label: '50–250 ms', values: [2, 4, 1, 28, 6, 0], tone: 'warning' }, { id: 'bad', label: '> 250 ms', values: [0, 0, 0, 3, 0, 0], tone: 'danger' }]} /></div></div>
+  <div class="play" style="width:40rem"><div style="width:100%"><S.BarChart label="Ticks par seuil, 10 dernières minutes" stacked={p.stacked} legend={p.legend} state={p.state} message="Aucun tick mesuré" labels={['-10', '-8', '-6', '-4', '-2', 'now']} series={[{ id: 'ok', label: '< 50 ms', values: [320, 318, 330, 290, 325, 331], tone: 'success' }, { id: 'slow', label: '50–250 ms', values: [2, 4, 1, 28, 6, 0], tone: 'warning' }, { id: 'bad', label: '> 250 ms', values: [0, 0, 0, 3, 0, 0], tone: 'danger' }]} /></div></div>
 {:else if name === 'LogView'}
-  <div class="play" style="width:40rem"><div style="width:100%"><S.LogView label="Console FXServer" height={220} wrap={p.wrap} timestamps={p.timestamps} empty="Aucune ligne reçue." lines={[{ id: 1, at: '12:00:01', text: '[   fake] FXServer-master SERVER v1.0.0.12345 starting' }, { id: 2, at: '12:00:02', text: '[  script:siku_core] Started resource siku_core' }, { id: 3, at: '12:00:04', text: 'hitch warning: frame time of 212 milliseconds', level: 'warning' }, { id: 4, at: '12:00:05', text: 'Fatal error: simulated crash', level: 'error' }, { id: 5, at: '12:00:06', text: '[chat] server: hello', level: 'muted' }]} /></div></div>
+  <div class="play" style="width:40rem"><div style="width:100%"><S.LogView label="Console FXServer" bind:selected={logSel} highlight="hitch" onselect={() => {}} height={220} wrap={p.wrap} timestamps={p.timestamps} empty="Aucune ligne reçue." lines={[{ id: 1, at: '12:00:01', text: '[   fake] FXServer-master SERVER v1.0.0.12345 starting' }, { id: 2, at: '12:00:02', text: '[  script:siku_core] Started resource siku_core' }, { id: 3, at: '12:00:04', text: 'hitch warning: frame time of 212 milliseconds', level: 'warning' }, { id: 4, at: '12:00:05', text: 'Fatal error: simulated crash', level: 'error' }, { id: 5, at: '12:00:06', text: '[chat] server: hello', level: 'muted' }]} /></div></div>
 {:else if name === 'Slot'}
   <div class="play"><S.Slot item={pistol} hotkey={1} size={p.size} selected={p.selected} locked={p.locked} dropState={p.dropState} /></div>
   <h4>Contenus</h4>
@@ -244,6 +254,25 @@
   <div class="row"><S.Surface level="sunken" padding="sm">sunken</S.Surface><S.Surface padding="sm">base</S.Surface><S.Surface level="raised" padding="sm">raised</S.Surface><S.Surface padding="sm" elevated>elevated</S.Surface></div>
 {:else if name === 'Divider'}
   <div class="play col" style="width:24rem"><S.Divider label="Accès rapide" /><S.Divider /><S.Divider strong /></div>
+{:else if name === 'StatTile'}
+  <div class="play" style="width:16rem"><div style="width:100%"><S.StatTile label="Joueurs (pic)" value="42" unit="/ 64" delta={12.4} good={p.good} state={p.state} size={p.size} deltaLabel="vs 24 h précédentes" icon="users" message="Pas encore de mesure"><S.Sparkline values={cpu} tone="live" width="auto" area /></S.StatTile></div></div>
+  <h4>Variations</h4>
+  <div class="row">
+    <div style="width:14rem"><S.StatTile label="Erreurs (1 h)" value="3" delta={-40} good="down" icon="alert" /></div>
+    <div style="width:14rem"><S.StatTile label="Tick moyen" value="4.8" unit="ms" delta={9} good="down" icon="timer" /></div>
+    <div style="width:14rem"><S.StatTile label="Disque" state="unavailable" message="Non collecté par l’agent" icon="database" /></div>
+  </div>
+{:else if name === 'StatusTimeline'}
+  <div class="play" style="width:40rem"><div style="width:100%"><S.StatusTimeline label="Disponibilité, 24 h" uptime={0.983} start="-24 h" end="now" legend={p.legend} state={p.state} message="Aucune mesure de disponibilité" {buckets} /></div></div>
+{:else if name === 'PeriodPicker'}
+  <div class="play"><S.PeriodPicker bind:value={period} updatedAt={Date.now() - 42_000} refreshing={p.refreshing} onrefresh={() => {}} /></div>
+  <p class="cap">Période : {period}</p>
+{:else if name === 'DataTable'}
+  <div class="play" style="width:40rem"><div style="width:100%"><S.DataTable bind:sort rows={events} rowKey={(r) => r.id} dense={p.dense} state={p.state} message="Telemetry injoignable" caption="Événements" onselect={() => {}} columns={[{ key: 'at', label: 'Heure', sortable: true, width: '6rem', mono: true }, { key: 'severity', label: 'Niveau', sortable: true, width: '6rem' }, { key: 'source', label: 'Source', width: '6rem' }, { key: 'message', label: 'Message' }]}>
+    {#snippet cell(row, col)}{#if col.key === 'severity'}<S.Badge tone={row.severity === 'ERROR' ? 'danger' : row.severity === 'WARN' ? 'warning' : 'info'} label={String(row.severity)} />{:else}{String((row as Record<string, unknown>)[col.key])}{/if}{/snippet}
+  </S.DataTable></div></div>
+{:else if name === 'DescriptionList'}
+  <div class="play" style="width:32rem"><div style="width:100%"><S.DescriptionList columns={p.columns === '1' ? 1 : p.columns === '3' ? 3 : 2} label="Détail de l’événement" items={[{ label: 'Service', value: 'fxserver.8f1c' }, { label: 'Serveur', value: 'SIKU RP' }, { label: 'Trace', value: '0af3c2d19e4b7f6a0af3c2d19e4b7f6a', mono: true, copy: true }, { label: 'Sévérité', value: 'ERROR' }]} /></div></div>
 {:else if name === 'Drawer'}
   <div class="play"><S.Button icon="layers" onclick={() => (drawer = true)}>Ouvrir la navigation</S.Button></div>
   <S.Drawer bind:open={drawer} title="Navigation"><S.NavList bind:value={navPage} items={navItems} onchange={() => (drawer = false)} /></S.Drawer>

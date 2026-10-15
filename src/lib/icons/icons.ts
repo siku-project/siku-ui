@@ -67,7 +67,19 @@ export const icons = {
   "mail": "<rect x=\"3\" y=\"5.5\" width=\"18\" height=\"13\" rx=\"2\"/><path d=\"m3.5 7.5 8.5 6 8.5-6\"/>",
   "menu": "<path d=\"M4 7h16M4 12h16M4 17h16\"/>",
   "power": "<path d=\"M12 3.5v8\"/><path d=\"M7.2 7.2a7 7 0 1 0 9.6 0\"/>",
-  "refresh": "<path d=\"M19.5 12a7.5 7.5 0 0 1-13.2 4.9\"/><path d=\"M4.5 12a7.5 7.5 0 0 1 13.2-4.9\"/><path d=\"M17.5 3.5v4h-4M6.5 20.5v-4h4\"/>"
+  "refresh": "<path d=\"M19.5 12a7.5 7.5 0 0 1-13.2 4.9\"/><path d=\"M4.5 12a7.5 7.5 0 0 1 13.2-4.9\"/><path d=\"M17.5 3.5v4h-4M6.5 20.5v-4h4\"/>",
+  "cpu": "<rect x=\"6\" y=\"6\" width=\"12\" height=\"12\" rx=\"2\"/><rect x=\"9.5\" y=\"9.5\" width=\"5\" height=\"5\" rx=\"1\"/><path d=\"M9 2.5V6M15 2.5V6M9 18v3.5M15 18v3.5M2.5 9H6M2.5 15H6M18 9h3.5M18 15h3.5\"/>",
+  "memory": "<rect x=\"2.5\" y=\"7\" width=\"19\" height=\"10\" rx=\"1.5\"/><path d=\"M6.5 10v4M10.2 10v4M13.8 10v4M17.5 10v4M4 17v3M8 17v3M12 17v3M16 17v3M20 17v3\"/>",
+  "chart": "<path d=\"M3.5 20.5h17\"/><path d=\"M6 16.5v-5M11 16.5V7M16 16.5v-8M20 16.5v-3\"/>",
+  "filter": "<path d=\"M3.5 5.5h17l-6.5 7.5v5.5l-4 2v-7.5z\"/>",
+  "calendar": "<rect x=\"3.5\" y=\"5\" width=\"17\" height=\"15.5\" rx=\"2\"/><path d=\"M3.5 10h17M8 3v4M16 3v4\"/>",
+  "users": "<circle cx=\"9\" cy=\"8.5\" r=\"3.3\"/><path d=\"M2.8 20c1-3.3 3.3-5 6.2-5s5.2 1.7 6.2 5\"/><path d=\"M15.5 5.6a3.3 3.3 0 0 1 0 5.8\"/><path d=\"M17.2 15.3c2.1.5 3.5 2 4.1 4.7\"/>",
+  "terminal": "<rect x=\"2.5\" y=\"4.5\" width=\"19\" height=\"15\" rx=\"2\"/><path d=\"m6.5 9 3.5 3-3.5 3M12 15h5\"/>",
+  "timer": "<circle cx=\"12\" cy=\"13.5\" r=\"7.5\"/><path d=\"M12 9.5v4l2.5 1.5M9.5 2.5h5M12 2.5v3.5M18.5 6.5l1.5-1.5\"/>",
+  "arrow-up": "<path d=\"M12 19.5v-15M5.5 11 12 4.5l6.5 6.5\"/>",
+  "arrow-down": "<path d=\"M12 4.5v15M5.5 13l6.5 6.5 6.5-6.5\"/>",
+  "copy": "<rect x=\"8.5\" y=\"8.5\" width=\"12\" height=\"12\" rx=\"2\"/><path d=\"M15.5 8.5v-3a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3\"/>",
+  "download": "<path d=\"M12 3.5v11M7.5 10 12 14.5l4.5-4.5\"/><path d=\"M4.5 17v2a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-2\"/>"
 } as const;
 
 export type IconName = keyof typeof icons;

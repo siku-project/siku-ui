@@ -74,6 +74,12 @@ Utiliser en CSS : `var(--nom)`. En Tailwind : `bg-bg-base`, `text-fg-secondary`,
 | `slot-bg` | `{bg-control}` | Composant. Emplacement d’inventaire occupé. |
 | `slot-bg-empty` | `{bg-sunken}` | Composant. Emplacement vide. |
 | `slot-ring-selected` | `{selection}` | Composant. Anneau 1,5 px de l’emplacement sélectionné. |
+| `chart-1` | `{accent}` | Sémantique. Palette catégorielle des graphiques, série 1 (glacier). Jamais pour un sens (succès, danger). |
+| `chart-2` | `#b9a3f0` | Sémantique. Palette catégorielle des graphiques, série 2 (lavande). |
+| `chart-3` | `#f0c27a` | Sémantique. Palette catégorielle des graphiques, série 3 (ambre). |
+| `chart-4` | `#7ad7c4` | Sémantique. Palette catégorielle des graphiques, série 4 (turquoise). |
+| `chart-5` | `#f0a0b8` | Sémantique. Palette catégorielle des graphiques, série 5 (rose). |
+| `chart-6` | `#cfc0a0` | Sémantique. Palette catégorielle des graphiques, série 6 (sable). |
 | `gauge-fill` | `{n-25}` | Composant. Remplissage des jauges neutres (charge sur soi, état, progression). |
 | `gauge-track` | `{track}` | Composant. Piste des jauges. |
 | `hold-progress` | `{accent}` | Composant. Progression d’une action maintenue. |
