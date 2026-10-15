@@ -47,6 +47,11 @@ export { default as Screen } from './components/Screen.svelte';
 export { default as Surface } from './components/Surface.svelte';
 export { default as Divider } from './components/Divider.svelte';
 export { default as Drawer } from './components/Drawer.svelte';
+export { default as StatTile } from './components/StatTile.svelte';
+export { default as StatusTimeline } from './components/StatusTimeline.svelte';
+export { default as PeriodPicker } from './components/PeriodPicker.svelte';
+export { default as DataTable } from './components/DataTable.svelte';
+export { default as DescriptionList } from './components/DescriptionList.svelte';
 
 export * from './types';
 export { icons, iconNames, type IconName } from './icons/icons';

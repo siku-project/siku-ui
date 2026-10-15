@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.5.0
+# Composants @siku/ui 1.6.0
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -38,7 +38,7 @@
 | [`EmptyState`](#emptystate) | Données | Un état vide propose l’action suivante. |
 | [`Stat`](#stat) | Données | La valeur clé d’un écran avec sa partie secondaire en retrait. |
 | [`Sparkline`](#sparkline) | Données | Mini courbe inline : la tendance d’un indicateur, sans axes. |
-| [`TimeChart`](#timechart) | Données | Courbe ou aire temporelle : grille, axe des valeurs, repères de temps, plusieurs séries. |
+| [`TimeChart`](#timechart) | Données | Courbe ou aire dans le temps : axe temporel réel, survol avec valeurs, seuils, bandes, états de données, séries masquables. |
 | [`BarChart`](#barchart) | Données | Barres par intervalle, groupées ou empilées : répartition d’un histogramme, volumes par période. |
 | [`LogView`](#logview) | Données | Journal monospace défilant : horodatage, niveau par ligne, suivi automatique du bas, retour à ligne. |
 | [`Slot`](#slot) | Jeu | Emplacement d’inventaire : touche ↖, quantité ↗, nom en bas, usure sur le bord. |
@@ -51,7 +51,12 @@
 | [`Surface`](#surface) | Structure | Un niveau de surface pour composer fenêtres, panneaux et colonnes. |
 | [`Divider`](#divider) | Structure | Filet de structure, horizontal, vertical ou titré. |
 | [`Drawer`](#drawer) | Structure | Panneau latéral posé sur la page : navigation mobile, filtres, inspecteur. |
-| [`Icon`](#icon) | Structure | Pictogramme au trait (68 icônes), couleur héritée. |
+| [`StatTile`](#stattile) | Données | Indicateur clé en tuile : valeur et unité, variation signée, tendance, état de données. |
+| [`StatusTimeline`](#statustimeline) | Données | Disponibilité dans le temps : une barre de tranches ok, dégradé, arrêt, inconnu, avec le taux de disponibilité. |
+| [`PeriodPicker`](#periodpicker) | Saisie | Période d’analyse d’un graphique, bouton de rafraîchissement et fraîcheur des données. |
+| [`DataTable`](#datatable) | Données | Tableau de données triable : colonnes sortable, lignes sélectionnables au clavier, états de chargement et d’absence, en-tête collant. |
+| [`DescriptionList`](#descriptionlist) | Données | Paires clé / valeur d’un détail : attributs d’un événement, propriétés d’un objet, identifiants à copier. |
+| [`Icon`](#icon) | Structure | Pictogramme au trait (80 icônes), couleur héritée. |
 
 ## Actions
 
@@ -316,6 +321,31 @@ Une valeur parmi deux à quatre, visible d’un coup d’œil.
 
 ```svelte
 <Segmented bind:value={period} options={[{ value: '7', label: '7 jours' }, { value: '30', label: '30 jours' }, { value: 'y', label: 'Année' }]} />
+```
+
+### PeriodPicker
+
+Période d’analyse d’un graphique, bouton de rafraîchissement et fraîcheur des données.
+
+**Utiliser** : Préréglages 15 min à 7 jours par défaut ; options pour une autre liste. updatedAt affiche « il y a 12 s » et se met à jour seul ; onrefresh ajoute le bouton.
+
+**Éviter** : Des dates absolues saisies à la main : une autre saisie.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `value` | `string` | '1h' | bind:value |
+| `options` | `{ value, label, disabled? }[]` | 15m, 1h, 6h, 24h, 7d |  |
+| `updatedAt` | `number \| string \| Date \| null` | null | Dernière mise à jour. |
+| `refreshing` | `boolean` | false | Bouton en chargement. |
+| `label` | `string` | 'Période' |  |
+| `refreshLabel` | `string` | 'Rafraîchir' |  |
+| `size` | `'sm' \| 'md'` | 'sm' |  |
+| `ago` | `(seconds: number) => string` | français | Texte de fraîcheur. |
+| `onchange` | `(v: string) => void` | — |  |
+| `onrefresh` | `() => void` | — |  |
+
+```svelte
+<PeriodPicker bind:value={period} updatedAt={updatedAt} onrefresh={reload} />
 ```
 
 ## Navigation
@@ -633,7 +663,7 @@ Un mot d’état ; la couleur suit le sens.
 
 | Prop | Type | Défaut | Description |
 |---|---|---|---|
-| `tone` | `'neutral' \| 'live' \| 'success' \| 'warning' \| 'danger' \| 'solid'` | 'neutral' |  |
+| `tone` | `'neutral' \| 'live' \| 'info' \| 'success' \| 'warning' \| 'danger' \| 'solid'` | 'neutral' | info pour une sévérité informative. |
 | `icon` | `IconName` | — |  |
 | `label` | `string` | — |  |
 
@@ -749,7 +779,7 @@ Mini courbe inline : la tendance d’un indicateur, sans axes.
 |---|---|---|---|
 | `values` | `number[]` | — |  |
 | `tone` | `'neutral' \| 'live' \| 'success' \| 'warning' \| 'danger'` | 'neutral' |  |
-| `width` | `number` | 96 | px |
+| `width` | `number \| 'auto'` | 96 | px, ou auto pour suivre la largeur du conteneur. |
 | `height` | `number` | 24 | px |
 | `area` | `boolean` | false | Aire sous la courbe. |
 | `min` | `number` | — | Borne basse (sinon le minimum des valeurs). |
@@ -762,29 +792,38 @@ Mini courbe inline : la tendance d’un indicateur, sans axes.
 
 ### TimeChart
 
-Courbe ou aire temporelle : grille, axe des valeurs, repères de temps, plusieurs séries.
+Courbe ou aire dans le temps : axe temporel réel, survol avec valeurs, seuils, bandes, états de données, séries masquables.
 
-**Utiliser** : Une à trois séries ; la première en glacier, les suivantes en neutre. format pour l’unité et la précision ; min/max pour fixer l’échelle (0–100 pour un pourcentage). labels pour les repères de temps (début, milieu, fin).
+**Utiliser** : points ({ t: ms, v }) pour un vrai axe temporel avec trous (v: null) ; values pour une suite régulière avec labels. Survol ou flèches ← → : curseur et infobulle avec toutes les séries ; cliquer une entrée de légende masque la série. thresholds pour une limite (seuil d’alerte), bands pour une plage (interruption) ; state loading / empty / unavailable avec message. format et unit pour la précision ; min/max pour fixer l’échelle (0–100 pour un pourcentage).
 
-**Éviter** : Plus de trois séries ou des échelles différentes sur un même graphique.
+**Éviter** : Plus de six séries ou des échelles différentes sur un même graphique. Un ton sémantique (success, danger) pour distinguer des séries sans signification : utiliser la palette chart-1 à chart-6.
 
 | Prop | Type | Défaut | Description |
 |---|---|---|---|
-| `series` | `{ id, label, values: number[], tone? }[]` | — |  |
-| `labels` | `string[]` | [] | Repères de temps répartis sur la largeur. |
+| `series` | `{ id, label, values?: number[], points?: { t, v }[], tone?, unit?, format? }[]` | — | points en millisecondes epoch ; v null pour un trou. |
+| `labels` | `string[]` | [] | Repères quand les séries sont en values. |
+| `from` | `number` | min des points | Début de l’axe (ms). |
+| `to` | `number` | max des points | Fin de l’axe (ms). |
 | `min` | `number` | — |  |
 | `max` | `number` | — |  |
 | `unit` | `string` | '' | Suffixe des valeurs (%, ms). |
 | `format` | `(v: number) => string` | arrondi |  |
+| `formatTime` | `(t: number) => string` | HH:MM ou JJ/MM HH:MM | Repères et infobulle. |
 | `height` | `number` | 160 | px |
 | `area` | `boolean` | true |  |
 | `rows` | `number` | 4 | Lignes de grille. |
-| `legend` | `boolean` | true | Légende avec la dernière valeur. |
+| `legend` | `boolean` | true | Légende cliquable avec la dernière valeur. |
 | `label` | `string` | — | Nom accessible. |
+| `thresholds` | `{ value, label?, tone? }[]` | [] | Lignes horizontales pointillées. |
+| `bands` | `{ from, to, tone?, label? }[]` | [] | Plages de temps ombrées. |
+| `state` | `'ready' \| 'loading' \| 'empty' \| 'unavailable'` | 'ready' |  |
+| `message` | `string` | '' | Texte des états empty et unavailable. |
+| `interactive` | `boolean` | true | Survol et clavier. |
+| `onhover` | `(t: number \| null) => void` | — | Instant survolé, pour synchroniser d’autres graphiques. |
 
 ```svelte
-<TimeChart label="CPU, 6 heures" unit="%" min={0} max={100} labels={['-6 h', '-3 h', 'now']}
-  series={[{ id: 'cpu', label: 'CPU', values: cpu }, { id: 'ram', label: 'RAM', values: ram }]} />
+<TimeChart label="CPU du processus, 1 h" unit="%" min={0} max={100} thresholds={[{ value: 80, label: 'Seuil', tone: 'danger' }]}
+  series={[{ id: 'cpu', label: 'CPU', points: cpu }, { id: 'host', label: 'Hôte', points: host, tone: 'chart-2' }]} />
 ```
 
 ### BarChart
@@ -807,6 +846,10 @@ Barres par intervalle, groupées ou empilées : répartition d’un histogramme,
 | `rows` | `number` | 4 | Lignes de grille. |
 | `legend` | `boolean` | true |  |
 | `label` | `string` | — | Nom accessible du graphique. |
+| `state` | `'ready' \| 'loading' \| 'empty' \| 'unavailable'` | 'ready' |  |
+| `message` | `string` | '' |  |
+| `interactive` | `boolean` | true | Survol et clavier : infobulle de l’intervalle. |
+| `onselect` | `(index: number \| null) => void` | — | Intervalle survolé. |
 
 ```svelte
 <BarChart label="Ticks lents par minute" stacked labels={['-5', '-4', '-3', '-2', '-1']}
@@ -831,12 +874,122 @@ Journal monospace défilant : horodatage, niveau par ligne, suivi automatique du
 | `format` | `(at: string) => string` | identité | Affichage de l’horodatage. |
 | `empty` | `string` | '' | Texte quand le journal est vide. |
 | `label` | `string` | — | Nom accessible. |
+| `selected` | `string \| number \| null` | null | bind:selected, id de la ligne sélectionnée. |
+| `highlight` | `string` | '' | Terme surligné dans les lignes sans parts. |
 | `onfollow` | `(v: boolean) => void` | — |  |
 | `onreachtop` | `() => void` | — |  |
+| `onselect` | `(line) => void` | — | Rend les lignes sélectionnables (clic, Entrée). |
 
 ```svelte
 <LogView label="Console FXServer" height={320} empty="Aucune ligne reçue."
   lines={[{ id: 1, at: '12:00:01', text: 'Started resource siku_core' }, { id: 2, at: '12:00:04', text: 'hitch warning: frame time of 212 milliseconds', level: 'warning' }]} />
+```
+
+### StatTile
+
+Indicateur clé en tuile : valeur et unité, variation signée, tendance, état de données.
+
+**Utiliser** : Repères d’un tableau de bord (CPU moyen, pic de joueurs, erreurs sur une heure). delta en pourcentage avec good pour dire si une hausse est bonne (joueurs) ou mauvaise (erreurs). children pour une Sparkline ; state loading / empty / unavailable avec message plutôt qu’une valeur inventée.
+
+**Éviter** : Plus d’une valeur par tuile : deux tuiles. Une tuile sans libellé.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `label` | `string` | — |  |
+| `value` | `string` | '' | Valeur formatée. |
+| `unit` | `string` | '' |  |
+| `delta` | `number` | — | Variation en % (signée). |
+| `deltaLabel` | `string` | — | Légende sous la valeur (vs 24 h). |
+| `good` | `'up' \| 'down' \| 'none'` | 'none' | Sens favorable de la variation. |
+| `tone` | `ChartTone` | 'neutral' |  |
+| `state` | `'ready' \| 'loading' \| 'empty' \| 'unavailable'` | 'ready' |  |
+| `message` | `string` | '' |  |
+| `icon` | `IconName` | — |  |
+| `href` | `string` | — | Rend la tuile cliquable. |
+| `size` | `'md' \| 'lg'` | 'md' |  |
+| `children` | `Snippet` | — | Tendance (Sparkline). |
+
+```svelte
+<StatTile label="Joueurs (pic)" value="42" unit="/ 64" delta={12} good="up" deltaLabel="vs 24 h précédentes" icon="users">
+  <Sparkline values={players} tone="live" width="auto" />
+</StatTile>
+```
+
+### StatusTimeline
+
+Disponibilité dans le temps : une barre de tranches ok, dégradé, arrêt, inconnu, avec le taux de disponibilité.
+
+**Utiliser** : Une tranche par pas de temps (5 min sur 24 h, 1 h sur 7 j) ; title de chaque tranche via format. uptime (0–1) affiché en pourcentage ; start et end pour borner la période.
+
+**Éviter** : Inventer un état : unknown quand rien n’a été mesuré.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `buckets` | `{ t, state: up\|down\|degraded\|unknown, ratio?, label? }[]` | — |  |
+| `uptime` | `number \| null` | null | 0–1. |
+| `label` | `string` | — | Nom accessible. |
+| `start` | `string` | — | Libellé gauche. |
+| `end` | `string` | — | Libellé droit. |
+| `height` | `number` | 24 | px |
+| `state` | `'ready' \| 'loading' \| 'empty' \| 'unavailable'` | 'ready' |  |
+| `message` | `string` | '' |  |
+| `format` | `(bucket) => string` | libellé · état | Infobulle native de chaque tranche. |
+| `legend` | `boolean` | true |  |
+
+```svelte
+<StatusTimeline label="Disponibilité, 24 h" uptime={0.983} start="-24 h" end="now"
+  buckets={buckets.map((b) => ({ t: b.t, state: b.state, ratio: b.up_ratio }))} />
+```
+
+### DataTable
+
+Tableau de données triable : colonnes sortable, lignes sélectionnables au clavier, états de chargement et d’absence, en-tête collant.
+
+**Utiliser** : Listes d’événements, de ressources, de joueurs : sort bindable, onsort pour trier côté serveur. rowKey stable pour la sélection ; cell pour un rendu riche (Badge, Code). state loading / empty / unavailable avec message.
+
+**Éviter** : Un journal brut : LogView. Un tableau de trois lignes : Table.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `columns` | `{ key, label, align?, width?, sortable?, mono?, format? }[]` | — |  |
+| `rows` | `Row[]` | — |  |
+| `sort` | `{ key, dir } \| null` | null | bind:sort ; tri local sans onsort. |
+| `rowKey` | `(row, index) => string \| number` | index |  |
+| `selected` | `string \| number \| null` | null | bind:selected (clé de ligne). |
+| `caption` | `string` | — |  |
+| `empty` | `string` | 'Aucune ligne' |  |
+| `state` | `'ready' \| 'loading' \| 'empty' \| 'unavailable'` | 'ready' |  |
+| `message` | `string` | '' |  |
+| `dense` | `boolean` | false |  |
+| `sticky` | `boolean` | false | En-tête collant (avec maxHeight). |
+| `maxHeight` | `string` | — | Hauteur maximale défilante. |
+| `cell` | `Snippet<[row, column]>` | — |  |
+| `onselect` | `(row, index) => void` | — | Rend les lignes sélectionnables. |
+| `onsort` | `(sort) => void` | — | Tri délégué. |
+
+```svelte
+<DataTable bind:sort rowKey={(r) => r.id} onselect={open}
+  columns={[{ key: 'at', label: 'Heure', sortable: true }, { key: 'severity', label: 'Niveau' }, { key: 'message', label: 'Message' }]} rows={events} />
+```
+
+### DescriptionList
+
+Paires clé / valeur d’un détail : attributs d’un événement, propriétés d’un objet, identifiants à copier.
+
+**Utiliser** : Inspecteur d’un événement ou d’une trace ; mono pour les identifiants, copy pour un bouton de copie. columns 2 ou 3 sur un panneau large.
+
+**Éviter** : Des valeurs longues en trois colonnes.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `items` | `{ label, value, mono?, href?, copy? }[]` | — |  |
+| `columns` | `1 \| 2 \| 3` | 1 |  |
+| `label` | `string` | — | Nom accessible. |
+| `copyLabel` | `string` | 'Copier' |  |
+| `oncopy` | `(item) => void` | — |  |
+
+```svelte
+<DescriptionList columns={2} items={[{ label: 'Service', value: 'fxserver.main' }, { label: 'Trace', value: '0af3…', mono: true, copy: true }]} />
 ```
 
 ## Jeu
@@ -1061,7 +1214,9 @@ Panneau latéral posé sur la page : navigation mobile, filtres, inspecteur.
 | `open` | `boolean` | false | bind:open |
 | `title` | `string` | — |  |
 | `side` | `'left' \| 'right'` | 'left' |  |
+| `size` | `'sm' \| 'md' \| 'lg'` | 'sm' | 18 / 28 / 40 rem : md ou lg pour un inspecteur de détail. |
 | `children` | `Snippet` | — |  |
+| `footer` | `Snippet` | — | Actions en pied de panneau. |
 | `onclose` | `() => void` | — |  |
 | `closeLabel` | `string` | 'Fermer' | Nom accessible de la croix. |
 
@@ -1073,7 +1228,7 @@ Panneau latéral posé sur la page : navigation mobile, filtres, inspecteur.
 
 ### Icon
 
-Pictogramme au trait (68 icônes), couleur héritée.
+Pictogramme au trait (80 icônes), couleur héritée.
 
 **Utiliser** : label s’il porte un sens.
 
