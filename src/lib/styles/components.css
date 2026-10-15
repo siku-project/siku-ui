@@ -425,10 +425,10 @@ button.sk-slot{border:0;padding:0;font:inherit;cursor:pointer;text-align:left;ap
 .sk-ring__track{fill:none;stroke:var(--bg-sunken)}
 .sk-ring__fill{fill:none;stroke:currentColor;stroke-linecap:round;transition:stroke-dashoffset var(--duration-slow) var(--ease-out)}
 .sk-ring.sk-tone--neutral .sk-ring__fill{stroke:var(--fg-primary)}
-.sk-ring__center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:14%}
-.sk-ring__value{font-size:var(--fs-title);font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;color:var(--fg-primary)}
-.sk-ring--sm .sk-ring__value{font-size:var(--fs-body-sm)}
-.sk-ring--lg .sk-ring__value{font-size:var(--fs-display)}
+.sk-ring__center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:16%;overflow:hidden}
+.sk-ring__value{font-size:var(--fs-heading);font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;color:var(--fg-primary);white-space:nowrap}
+.sk-ring--sm .sk-ring__value{font-size:var(--fs-caption)}
+.sk-ring--lg .sk-ring__value{font-size:var(--fs-title)}
 .sk-ring__state{font-size:var(--fs-caption);color:var(--fg-tertiary)}
 .sk-ring__text{display:flex;flex-direction:column;align-items:center;gap:var(--space-1);text-align:center}
 .sk-ring__label{font-size:var(--fs-body-sm);color:var(--fg-secondary)}
