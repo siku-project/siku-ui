@@ -1,6 +1,6 @@
 {
   "name": "@siku/ui",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "description": "Design system SIKU : tokens, composants Svelte 5, styles, polices, runtime NUI et outils, pour les interfaces FiveM et les applications web.",
   "license": "UNLICENSED",
   "private": true,

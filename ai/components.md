@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.8.0
+# Composants @siku/ui 1.9.0
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -54,6 +54,7 @@
 | [`StatTile`](#stattile) | Données | Indicateur clé en tuile : valeur et unité, variation signée, tendance, état de données. |
 | [`StatusTimeline`](#statustimeline) | Données | Disponibilité dans le temps : une barre de tranches ok, dégradé, arrêt, inconnu, avec le taux de disponibilité. |
 | [`Ring`](#ring) | Données | Anneau de progression : une part (0–1) avec sa valeur au centre, un libellé et un état de données. |
+| [`Tree`](#tree) | Données | Arborescence dépliable : fichiers d’une ressource, hiérarchie d’objets, avec sélection au clavier. |
 | [`ShareBar`](#sharebar) | Données | Répartition en parts : une barre empilée horizontale avec la part de chaque segment et sa légende. |
 | [`PeriodPicker`](#periodpicker) | Saisie | Période d’analyse d’un graphique, bouton de rafraîchissement et fraîcheur des données. |
 | [`DataTable`](#datatable) | Données | Tableau de données triable : colonnes sortable, lignes sélectionnables au clavier, états de chargement et d’absence, en-tête collant. |
@@ -968,6 +969,29 @@ Anneau de progression : une part (0–1) avec sa valeur au centre, un libellé e
 
 ```svelte
 <Ring label="Ticks dans le budget" caption="svMain, 1 h" value={0.994} tone="success" />
+```
+
+### Tree
+
+Arborescence dépliable : fichiers d’une ressource, hiérarchie d’objets, avec sélection au clavier.
+
+**Utiliser** : Un nœud par fichier ou dossier ; icon pour le type, meta pour la taille ou le rôle, count pour un nombre de diagnostics. tone sur un nœud ajoute un point coloré (warning, danger) sans changer sa couleur. expanded bindable pour piloter les dossiers ouverts ; onselect quand un nœud est choisi.
+
+**Éviter** : Plus de six niveaux. Une liste plate : NavList ou DataTable.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `nodes` | `TreeNode[]` | — | { id, label, icon?, meta?, count?, tone?, disabled?, children? } |
+| `selected` | `string \| null` | null | bind:selected (id du nœud). |
+| `expanded` | `string[]` | [] | bind:expanded (ids des nœuds ouverts). |
+| `label` | `string` | 'Arborescence' | Nom accessible. |
+| `dense` | `boolean` | false |  |
+| `onselect` | `(node: TreeNode) => void` | — |  |
+| `ontoggle` | `(id: string, open: boolean) => void` | — |  |
+
+```svelte
+<Tree bind:selected={file} bind:expanded={open} onselect={show}
+  nodes={[{ id: 'server', label: 'server', icon: 'folder', children: [{ id: 'server/main.lua', label: 'main.lua', icon: 'doc', meta: '4,2 Ko', count: 2, tone: 'warning' }] }]} />
 ```
 
 ### ShareBar

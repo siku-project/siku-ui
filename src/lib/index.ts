@@ -53,6 +53,8 @@ export { default as PeriodPicker } from './components/PeriodPicker.svelte';
 export { default as DataTable } from './components/DataTable.svelte';
 export { default as DescriptionList } from './components/DescriptionList.svelte';
 export { default as Ring } from './components/Ring.svelte';
+export { default as Tree } from './components/Tree.svelte';
+export type { TreeNode } from './components/Tree.svelte';
 export { default as ShareBar } from './components/ShareBar.svelte';
 
 export * from './types';
