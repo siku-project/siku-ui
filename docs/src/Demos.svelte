@@ -25,6 +25,14 @@
   let modal = $state(false);
   let drawer = $state(false);
   let navPage = $state('overview');
+  let treeSel = $state<string | null>('server/main.lua');
+  let treeOpen = $state(['server']);
+  const treeNodes = [
+    { id: 'fxmanifest.lua', label: 'fxmanifest.lua', icon: 'doc' as const, meta: 'manifest' },
+    { id: 'client', label: 'client', icon: 'folder' as const, children: [{ id: 'client/main.lua', label: 'main.lua', icon: 'doc' as const, meta: '12,4 Ko' }, { id: 'client/nui.lua', label: 'nui.lua', icon: 'doc' as const, meta: '3,1 Ko', count: 1, tone: 'warning' as const }] },
+    { id: 'server', label: 'server', icon: 'folder' as const, children: [{ id: 'server/main.lua', label: 'main.lua', icon: 'doc' as const, meta: '8,0 Ko', count: 3, tone: 'danger' as const }, { id: 'server/db.lua', label: 'db.lua', icon: 'doc' as const, meta: '2,2 Ko' }] },
+    { id: 'html', label: 'html', icon: 'folder' as const, children: [{ id: 'html/index.html', label: 'index.html', icon: 'globe' as const, meta: 'ui_page' }] }
+  ];
   const cpu = [22, 24, 21, 28, 35, 31, 29, 44, 52, 48, 41, 38, 36, 33, 30, 34, 37, 35, 32, 31];
   const t0 = Date.UTC(2026, 9, 15, 10, 0, 0);
   const cpuPts = cpu.map((v, i) => ({ t: t0 + i * 3 * 60_000, v: i === 9 ? null : v }));
@@ -264,6 +272,8 @@
   </div>
 {:else if name === 'StatusTimeline'}
   <div class="play" style="width:40rem"><div style="width:100%"><S.StatusTimeline label="Disponibilité, 24 h" uptime={0.983} start="-24 h" end="now" legend={p.legend} state={p.state} message="Aucune mesure de disponibilité" {buckets} /></div></div>
+{:else if name === 'Tree'}
+  <div class="play" style="width:22rem"><S.Tree bind:selected={treeSel} bind:expanded={treeOpen} dense={p.dense} nodes={treeNodes} /></div>
 {:else if name === 'Ring'}
   <div class="play"><S.Ring label="Ticks dans le budget" caption="svMain, 1 h" value={p.value === undefined ? 0.994 : Number(p.value)} tone={p.tone} size={p.size} state={p.state} message="Pas de mesure" /></div>
   <h4>Variantes</h4>

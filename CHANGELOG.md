@@ -2,6 +2,11 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.9.0
+
+- `Tree` : arborescence dépliable (fichiers d’une ressource, hiérarchie), sélection et dossiers ouverts bindables, navigation au clavier (flèches, Début, Fin, Entrée), point de ton et compteur par nœud, variante dense.
+- Icônes `folder` et `code`.
+
 ## 1.8.1
 
 - `Ring` : la valeur du centre ne déborde plus (tailles de police revues pour les trois tailles, pas de retour à la ligne).
