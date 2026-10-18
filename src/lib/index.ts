@@ -60,6 +60,7 @@ export { default as Popover } from './components/Popover.svelte';
 export { default as Combobox } from './components/Combobox.svelte';
 export { default as FilterChip } from './components/FilterChip.svelte';
 export { default as Disclosure } from './components/Disclosure.svelte';
+export { default as FacetList } from './components/FacetList.svelte';
 export { default as TimeHistogram } from './components/TimeHistogram.svelte';
 export { default as JsonTree } from './components/JsonTree.svelte';
 export { default as TraceWaterfall } from './components/TraceWaterfall.svelte';
