@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.9.0
+# Composants @siku/ui 1.10.0
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -59,7 +59,16 @@
 | [`PeriodPicker`](#periodpicker) | Saisie | Période d’analyse d’un graphique, bouton de rafraîchissement et fraîcheur des données. |
 | [`DataTable`](#datatable) | Données | Tableau de données triable : colonnes sortable, lignes sélectionnables au clavier, états de chargement et d’absence, en-tête collant. |
 | [`DescriptionList`](#descriptionlist) | Données | Paires clé / valeur d’un détail : attributs d’un événement, propriétés d’un objet, identifiants à copier. |
-| [`Icon`](#icon) | Structure | Pictogramme au trait (80 icônes), couleur héritée. |
+| [`Popover`](#popover) | Structure | Panneau flottant ancré à son déclencheur : filtres, options d’une colonne, formulaire court. Clic extérieur et Échap ferment, le focus revient au déclencheur. |
+| [`Combobox`](#combobox) | Saisie | Liste de choix avec recherche, simple ou multiple, comptes par option : facettes d’un explorateur, sélection d’un service. |
+| [`FilterChip`](#filterchip) | Saisie | Jeton de filtre « clé : valeur », retirable, inclusif ou exclusif, dans une barre de requête. |
+| [`Disclosure`](#disclosure) | Structure | Section repliable avec titre, compteur et actions : groupe de facettes, détail d’un événement. |
+| [`TimeHistogram`](#timehistogram) | Données | Barres empilées sur un axe temporel réel avec sélection de plage : volume de logs par sévérité, événements par minute. |
+| [`JsonTree`](#jsontree) | Données | Valeur structurée dépliable : attributs d’un événement, corps d’une requête, avec copie et filtre par feuille. |
+| [`TraceWaterfall`](#tracewaterfall) | Données | Cascade des spans d’une trace : noms indentés, barres placées dans le temps, couleur par service, erreurs marquées. |
+| [`CodeBlock`](#codeblock) | Données | Bloc monospace multi-lignes : message brut, pile d’appels, requête, avec numéros de ligne et copie. |
+| [`SeverityDot`](#severitydot) | Données | Point de sévérité (trace, debug, info, warn, error, fatal) avec libellé optionnel ; vocabulaire partagé severityTone / severityLabel. |
+| [`Icon`](#icon) | Structure | Pictogramme au trait (90 icônes), couleur héritée. |
 
 ## Actions
 
@@ -349,6 +358,59 @@ Période d’analyse d’un graphique, bouton de rafraîchissement et fraîcheur
 
 ```svelte
 <PeriodPicker bind:value={period} updatedAt={updatedAt} onrefresh={reload} />
+```
+
+### Combobox
+
+Liste de choix avec recherche, simple ou multiple, comptes par option : facettes d’un explorateur, sélection d’un service.
+
+**Utiliser** : multiple montre des cases à cocher et garde la liste ouverte ; count aligne un nombre en mono à droite. inline rend seulement la recherche et la liste, pour un panneau de facettes. onsearch pour charger les options côté serveur (le filtrage local est alors désactivé) avec loading. Flèches, Entrée, Début/Fin dans le champ de recherche ; Échap ferme.
+
+**Éviter** : Moins de six options sans compte : Select. Une recherche libre sans options : TextField.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `options` | `{ value, label, detail?, count?, disabled? }[]` | — |  |
+| `value` | `string \| string[]` | — | bind:value ; tableau en multiple. |
+| `multiple` | `boolean` | false |  |
+| `search` | `string` | '' | bind:search |
+| `onsearch` | `(q: string) => void` | — | Chargement asynchrone des options. |
+| `loading` | `boolean` | false |  |
+| `placeholder` | `string` | 'Choisir…' |  |
+| `label` | `string` | — |  |
+| `empty` | `string` | 'Aucun résultat' |  |
+| `inline` | `boolean` | false | Sans déclencheur. |
+| `max` | `number` | 200 | Options rendues au maximum, « +n » au-delà. |
+| `disabled` | `boolean` | false |  |
+| `searchLabel` | `string` | 'Rechercher' |  |
+| `onchange` | `(value) => void` | — |  |
+
+```svelte
+<Combobox label="Services" multiple bind:value={services} options={facets.map((f) => ({ value: f.name, label: f.name, count: f.count }))} />
+```
+
+### FilterChip
+
+Jeton de filtre « clé : valeur », retirable, inclusif ou exclusif, dans une barre de requête.
+
+**Utiliser** : exclude pour un filtre « différent de » (ton danger). ontoggle rend le jeton cliquable pour basculer inclure / exclure. Retour arrière ou Suppr sur le jeton le retire.
+
+**Éviter** : Un filtre non retirable sans ontoggle : un Badge suffit.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `label` | `string` | — | Clé. |
+| `value` | `string` | — |  |
+| `exclude` | `boolean` | false |  |
+| `icon` | `IconName` | — |  |
+| `removable` | `boolean` | true |  |
+| `title` | `string` | — | Infobulle native. |
+| `removeLabel` | `string` | 'Retirer' |  |
+| `onremove` | `() => void` | — |  |
+| `ontoggle` | `(exclude: boolean) => void` | — | Bascule inclure / exclure. |
+
+```svelte
+{#each filters as f (f.key + f.value)}<FilterChip label={f.key} value={f.value} exclude={f.exclude} onremove={() => remove(f)} ontoggle={(ex) => (f.exclude = ex)} />{/each}
 ```
 
 ## Navigation
@@ -863,7 +925,7 @@ Barres par intervalle, groupées ou empilées : répartition d’un histogramme,
 
 Journal monospace défilant : horodatage, niveau par ligne, suivi automatique du bas, retour à ligne.
 
-**Utiliser** : Console d’un serveur, sortie d’un processus, journal d’événements bruts. follow (bindable) suit les nouvelles lignes ; remonter dans le journal le coupe, onfollow le signale. level par ligne (info, success, warning, error, debug, muted) ; parts pour colorer des segments (couleur ANSI ou tone sémantique) ; onreachtop pour charger l’historique.
+**Utiliser** : Console d’un serveur, sortie d’un processus, journal d’événements bruts. follow (bindable) suit les nouvelles lignes ; remonter dans le journal le coupe, onfollow le signale. level par ligne (info, success, warning, error, debug, muted, et trace, warn, fatal du vocabulaire Severity) ; parts pour colorer des segments (couleur ANSI ou tone sémantique) ; onreachtop pour charger l’historique.
 
 **Éviter** : Un tableau de données structurées : préférer Table. Plus de quelques milliers de lignes à la fois : paginer.
 
@@ -1020,7 +1082,7 @@ Répartition en parts : une barre empilée horizontale avec la part de chaque se
 
 Tableau de données triable : colonnes sortable, lignes sélectionnables au clavier, états de chargement et d’absence, en-tête collant.
 
-**Utiliser** : Listes d’événements, de ressources, de joueurs : sort bindable, onsort pour trier côté serveur. rowKey stable pour la sélection ; cell pour un rendu riche (Badge, Code). state loading / empty / unavailable avec message.
+**Utiliser** : Listes d’événements, de ressources, de joueurs : sort bindable, onsort pour trier côté serveur. rowKey stable pour la sélection ; cell pour un rendu riche (Badge, Code). state loading / empty / unavailable avec message. virtual avec maxHeight ne rend que les lignes visibles (rowHeight fixe) : des milliers de lignes sans paginer ; flèches ↑ ↓ entre les lignes.
 
 **Éviter** : Un journal brut : LogView. Un tableau de trois lignes : Table.
 
@@ -1038,6 +1100,8 @@ Tableau de données triable : colonnes sortable, lignes sélectionnables au clav
 | `dense` | `boolean` | false |  |
 | `sticky` | `boolean` | false | En-tête collant (avec maxHeight). |
 | `maxHeight` | `string` | — | Hauteur maximale défilante. |
+| `virtual` | `boolean` | false | Fenêtre virtuelle (avec maxHeight). |
+| `rowHeight` | `number` | 44 (34 dense) | Hauteur fixe des lignes en virtuel. |
 | `cell` | `Snippet<[row, column]>` | — |  |
 | `onselect` | `(row, index) => void` | — | Rend les lignes sélectionnables. |
 | `onsort` | `(sort) => void` | — | Tri délégué. |
@@ -1065,6 +1129,128 @@ Paires clé / valeur d’un détail : attributs d’un événement, propriétés
 
 ```svelte
 <DescriptionList columns={2} items={[{ label: 'Service', value: 'fxserver.main' }, { label: 'Trace', value: '0af3…', mono: true, copy: true }]} />
+```
+
+### TimeHistogram
+
+Barres empilées sur un axe temporel réel avec sélection de plage : volume de logs par sévérité, événements par minute.
+
+**Utiliser** : Une série par classe (sévérité) empilée dans l’ordre ; step est la largeur d’un intervalle en ms. Glisser sélectionne une plage (brush bindable, onbrush) ; cliquer un intervalle appelle onpick ; Maj + flèches étendent la sélection, Échap l’efface. Légende cliquable pour masquer une série ; infobulle avec le total.
+
+**Éviter** : Une évolution continue : TimeChart. Des intervalles irréguliers.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `series` | `{ label, tone?, points: { t, v }[] }[]` | — | Empilées dans l’ordre. |
+| `from` | `number` | premier point | Début de l’axe (ms). |
+| `to` | `number` | dernier point + step |  |
+| `step` | `number` | — | Largeur d’un intervalle en ms. |
+| `height` | `number` | 140 | px |
+| `format` | `(v: number) => string` | arrondi |  |
+| `formatTime` | `(t: number) => string` | HH:MM ou JJ/MM HH:MM |  |
+| `unit` | `string` | '' |  |
+| `label` | `string` | — | Nom accessible. |
+| `state` | `'ready' \| 'loading' \| 'empty' \| 'unavailable'` | 'ready' |  |
+| `message` | `string` | '' |  |
+| `legend` | `boolean` | true |  |
+| `brush` | `{ from, to } \| null` | null | bind:brush |
+| `onpick` | `(t: number) => void` | — | Clic sur un intervalle. |
+| `onbrush` | `(range \| null) => void` | — |  |
+
+```svelte
+<TimeHistogram label="Logs par minute" step={60_000} bind:brush onbrush={zoom}
+  series={[{ label: 'Info', tone: 'neutral', points: info }, { label: 'Warn', tone: 'warning', points: warn }, { label: 'Error', tone: 'danger', points: error }]} />
+```
+
+### JsonTree
+
+Valeur structurée dépliable : attributs d’un événement, corps d’une requête, avec copie et filtre par feuille.
+
+**Utiliser** : depth fixe la profondeur ouverte au départ ; la barre « Tout déplier / Tout replier » est intégrée (toolbar). oncopy ajoute un bouton de copie par nœud, onfilter un bouton de filtre par feuille (touches C et F sur la ligne). Les chaînes longues sont tronquées ; cliquer les déplie.
+
+**Éviter** : Un objet plat à lire : DescriptionList. Du code source : CodeBlock.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `value` | `unknown` | — |  |
+| `depth` | `number` | 2 | Profondeur ouverte au départ. |
+| `dense` | `boolean` | false |  |
+| `label` | `string` | 'Structure' | Nom accessible. |
+| `toolbar` | `boolean` | true | Boutons tout déplier / replier. |
+| `expanded` | `string[]` | selon depth | bind:expanded (chemins ouverts : a.b[0]). |
+| `maxString` | `number` | 80 | Longueur avant troncature. |
+| `oncopy` | `(path, value) => void` | — |  |
+| `onfilter` | `(path, value) => void` | — |  |
+
+```svelte
+<JsonTree value={event.attributes} depth={2} oncopy={(path, v) => navigator.clipboard.writeText(String(v))} onfilter={(path, v) => addFilter(path, v)} />
+```
+
+### TraceWaterfall
+
+Cascade des spans d’une trace : noms indentés, barres placées dans le temps, couleur par service, erreurs marquées.
+
+**Utiliser** : spans avec parentId ; les parents absents deviennent des racines. totalMs fixe l’axe (sinon la fin du dernier span). Flèches pour parcourir, ← → replient / déplient, Entrée sélectionne (selected bindable, onselect). maxRows borne le rendu avec une note.
+
+**Éviter** : Plus de six services : la palette se répète.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `spans` | `TraceSpan[]` | — | { id, parentId, name, service?, startMs, durationMs, status, attributes? } |
+| `totalMs` | `number` | fin du dernier span |  |
+| `selected` | `string \| null` | null | bind:selected |
+| `collapsed` | `string[]` | [] | bind:collapsed (ids repliés). |
+| `rowHeight` | `number` | 28 | px |
+| `maxRows` | `number` | 500 |  |
+| `label` | `string` | 'Trace' | Nom accessible. |
+| `formatDuration` | `(ms: number) => string` | ms / s |  |
+| `onselect` | `(span) => void` | — |  |
+
+```svelte
+<TraceWaterfall spans={trace.spans} totalMs={trace.durationMs} bind:selected={spanId} onselect={(s) => (detail = s)} />
+```
+
+### CodeBlock
+
+Bloc monospace multi-lignes : message brut, pile d’appels, requête, avec numéros de ligne et copie.
+
+**Utiliser** : wrap pour une ligne longue ; sinon défilement horizontal. copy ajoute le bouton de copie (presse-papiers + oncopy) ; maxHeight borne la hauteur.
+
+**Éviter** : Un identifiant court : Code. Un journal vivant : LogView.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `code` | `string` | — |  |
+| `wrap` | `boolean` | false |  |
+| `lineNumbers` | `boolean` | false |  |
+| `maxHeight` | `number \| string` | — | px ou valeur CSS. |
+| `copy` | `boolean` | false | Bouton de copie. |
+| `label` | `string` | — | Titre du bloc. |
+| `copyLabel` | `string` | 'Copier' |  |
+| `copiedLabel` | `string` | 'Copié' |  |
+| `oncopy` | `(code: string) => void` | — |  |
+
+```svelte
+<CodeBlock label="Pile d’appels" code={error.stack} lineNumbers copy maxHeight={240} />
+```
+
+### SeverityDot
+
+Point de sévérité (trace, debug, info, warn, error, fatal) avec libellé optionnel ; vocabulaire partagé severityTone / severityLabel.
+
+**Utiliser** : Dans une ligne de tableau ou de liste, à gauche du message. severityTone(s) pour un Badge ou un Tabs cohérent ; severityLabel(s) pour le texte.
+
+**Éviter** : Un ton inventé par écran : le vocabulaire est commun.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `severity` | `'trace' \| 'debug' \| 'info' \| 'warn' \| 'error' \| 'fatal'` | — |  |
+| `label` | `string` | — | Texte à côté du point ; sans label, le point porte le nom accessible. |
+| `size` | `'sm' \| 'md' \| 'lg'` | 'md' | 6 / 8 / 10 px |
+| `title` | `string` | — |  |
+
+```svelte
+<SeverityDot severity={row.severity} label={severityLabel(row.severity)} />
 ```
 
 ## Jeu
@@ -1280,9 +1466,9 @@ Filet de structure, horizontal, vertical ou titré.
 
 Panneau latéral posé sur la page : navigation mobile, filtres, inspecteur.
 
-**Utiliser** : Échap, voile et croix ferment ; le focus est piégé puis rendu. side="right" pour un inspecteur.
+**Utiliser** : Échap, voile et croix ferment ; le focus est piégé puis rendu. side="right" pour un inspecteur. docked : panneau dans le flux (colonne d’une grille), sans voile ni piège de focus ; Échap ferme quand le focus est dedans.
 
-**Éviter** : Une confirmation : Modal. Sur desktop quand la place existe : une colonne.
+**Éviter** : Une confirmation : Modal. Sur desktop quand la place existe sans docked : une colonne.
 
 | Prop | Type | Défaut | Description |
 |---|---|---|---|
@@ -1290,6 +1476,8 @@ Panneau latéral posé sur la page : navigation mobile, filtres, inspecteur.
 | `title` | `string` | — |  |
 | `side` | `'left' \| 'right'` | 'left' |  |
 | `size` | `'sm' \| 'md' \| 'lg'` | 'sm' | 18 / 28 / 40 rem : md ou lg pour un inspecteur de détail. |
+| `docked` | `boolean` | false | Dans le flux, sans voile ni aria-modal. |
+| `width` | `number` | — | Largeur en px (prime sur size). |
 | `children` | `Snippet` | — |  |
 | `footer` | `Snippet` | — | Actions en pied de panneau. |
 | `onclose` | `() => void` | — |  |
@@ -1301,9 +1489,61 @@ Panneau latéral posé sur la page : navigation mobile, filtres, inspecteur.
 </Drawer>
 ```
 
+### Popover
+
+Panneau flottant ancré à son déclencheur : filtres, options d’une colonne, formulaire court. Clic extérieur et Échap ferment, le focus revient au déclencheur.
+
+**Utiliser** : trigger reçoit { toggle, open } : y placer un Button (aria-expanded suit open). matchWidth ou width="trigger" pour un panneau aussi large que le déclencheur ; width en px sinon. Le panneau se retourne vers le haut s’il déborde du bas de la fenêtre.
+
+**Éviter** : Une liste d’actions : Menu. Une confirmation : Modal. Une aide d’une phrase : Tooltip.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `open` | `boolean` | false | bind:open |
+| `placement` | `'bottom-start' \| 'bottom-end' \| 'top-start' \| 'top-end'` | 'bottom-start' |  |
+| `trigger` | `Snippet<[{ toggle, open }]>` | — | Déclencheur. |
+| `children` | `Snippet` | — | Contenu du panneau. |
+| `width` | `number \| 'trigger'` | — | Largeur en px, ou celle du déclencheur. |
+| `matchWidth` | `boolean` | false | Même largeur que le déclencheur. |
+| `block` | `boolean` | false | Déclencheur pleine largeur. |
+| `label` | `string` | — | Nom accessible du panneau. |
+| `autofocus` | `boolean` | true | Focus sur le premier élément du panneau (ou data-autofocus). |
+| `onclose` | `() => void` | — |  |
+
+```svelte
+<Popover bind:open={columns} label="Colonnes" width={240}>
+  {#snippet trigger({ toggle, open })}<Button variant="ghost" icon="columns" aria-expanded={open} onclick={toggle}>Colonnes</Button>{/snippet}
+  <Checkbox label="Service" bind:checked={show.service} />
+</Popover>
+```
+
+### Disclosure
+
+Section repliable avec titre, compteur et actions : groupe de facettes, détail d’un événement.
+
+**Utiliser** : open bindable ; count pour le nombre d’éléments ; actions pour un bouton à droite du titre. dense dans une colonne de filtres.
+
+**Éviter** : Naviguer entre sections : Tabs. Une arborescence : Tree.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `title` | `string` | — |  |
+| `open` | `boolean` | false | bind:open |
+| `count` | `number` | — |  |
+| `dense` | `boolean` | false |  |
+| `children` | `Snippet` | — |  |
+| `actions` | `Snippet` | — |  |
+| `ontoggle` | `(open: boolean) => void` | — |  |
+
+```svelte
+<Disclosure title="Service" count={4} bind:open={facets.service}>
+  <Combobox inline multiple bind:value={services} options={serviceOptions} />
+</Disclosure>
+```
+
 ### Icon
 
-Pictogramme au trait (80 icônes), couleur héritée.
+Pictogramme au trait (90 icônes), couleur héritée.
 
 **Utiliser** : label s’il porte un sens.
 

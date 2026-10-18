@@ -64,6 +64,39 @@
     { id: 'drop', label: 'Jeter', icon: 'trash', key: 'X', danger: true, separatorBefore: true },
   ];
   const accounts = [{ value: 'main', label: 'Compte courant', detail: '18 920,40 $ disponibles' }, { value: 'save', label: 'Épargne', detail: '42 600,00 $' }, { value: 'pro', label: 'Ezra Motors', detail: '7 315,90 $' }, { value: 'old', label: 'Compte clos', detail: 'Fermé le 2 oct.', disabled: true }];
+  let popOpen = $state(false);
+  let popCols = $state({ service: true, trace: false, host: true });
+  const serviceOptions: S.ComboOption[] = [{ value: 'fxserver', label: 'fxserver', detail: 'Processus principal', count: 12840 }, { value: 'siku_core', label: 'siku_core', count: 3210 }, { value: 'siku_banking', label: 'siku_banking', count: 842 }, { value: 'siku_inventory', label: 'siku_inventory', count: 511 }, { value: 'siku_agent', label: 'siku-agent', detail: 'Service hôte', count: 96 }, { value: 'txadmin', label: 'txAdmin', count: 0, disabled: true }];
+  let comboMulti = $state<string | string[]>(['fxserver', 'siku_core']);
+  let comboOne = $state<string | string[]>('');
+  let comboInline = $state<string | string[]>([]);
+  let chips = $state([{ key: 'service', value: 'fxserver', exclude: false }, { key: 'severity', value: 'error', exclude: false }, { key: 'resource', value: 'monitor', exclude: true }]);
+  let discOpen = $state(true);
+  const minute = 60_000;
+  const histInfo = Array.from({ length: 30 }, (_, i) => ({ t: t0 + i * minute, v: 40 + Math.round(25 * Math.abs(Math.sin(i / 3))) }));
+  const histWarn = Array.from({ length: 30 }, (_, i) => ({ t: t0 + i * minute, v: i % 4 === 0 ? 6 : 2 }));
+  const histError = Array.from({ length: 30 }, (_, i) => ({ t: t0 + i * minute, v: i >= 17 && i <= 19 ? 14 - Math.abs(18 - i) * 5 : i % 7 === 0 ? 1 : 0 }));
+  let brush = $state<S.TimeRange | null>(null);
+  let picked = $state<number | null>(null);
+  const attributes = { event: { name: 'player.connect', id: 'ev_0af3c2d19e4b', received_at: '2026-10-15T10:17:40.221Z' }, player: { id: 42, name: 'Lina Moreau', identifiers: ['license:3f9a2c…', 'discord:2210…'], ping_ms: 48, vip: false, ban: null }, resource: 'siku_core', tags: ['join', 'queue'], user_agent: 'CitizenFX/1.0 (FiveM b12345; Windows NT 10.0; Win64; x64) fx/13 Chromium/103 (KHTML, like Gecko) Safari/537.36 long user agent string for the truncation demo' };
+  let jsonLog = $state('—');
+  const spans: S.TraceSpan[] = [
+    { id: 'a', parentId: null, name: 'POST /api/bank/transfer', service: 'control-center', startMs: 0, durationMs: 184, status: 'ok' },
+    { id: 'b', parentId: 'a', name: 'auth.verify', service: 'control-center', startMs: 2, durationMs: 9, status: 'ok' },
+    { id: 'c', parentId: 'a', name: 'bank.transfer', service: 'siku_banking', startMs: 14, durationMs: 150, status: 'ok' },
+    { id: 'd', parentId: 'c', name: 'SELECT accounts', service: 'mysql', startMs: 16, durationMs: 22, status: 'ok' },
+    { id: 'e', parentId: 'c', name: 'UPDATE accounts', service: 'mysql', startMs: 42, durationMs: 31, status: 'ok' },
+    { id: 'f', parentId: 'c', name: 'notify.push', service: 'siku_core', startMs: 78, durationMs: 64, status: 'error' },
+    { id: 'g', parentId: 'f', name: 'nui.send', service: 'siku_core', startMs: 80, durationMs: 4, status: 'ok' },
+    { id: 'h', parentId: 'f', name: 'discord.webhook', service: 'discord', startMs: 86, durationMs: 55, status: 'error' },
+    { id: 'i', parentId: 'a', name: 'telemetry.export', service: 'siku-agent', startMs: 168, durationMs: 12, status: 'unset' },
+    { id: 'z', parentId: 'missing', name: 'orphan.span', service: 'siku-agent', startMs: 120, durationMs: 20, status: 'ok' },
+  ];
+  let spanSel = $state<string | null>('f');
+  let spanCollapsed = $state<string[]>([]);
+  const stack = `TypeError: Cannot read properties of undefined (reading 'balance')\n    at transfer (siku_banking/server/accounts.lua:142)\n    at handler (siku_banking/server/main.lua:88)\n    at RegisterNetEvent callback (citizen:/scripting/lua/scheduler.lua:217)\n    at <anonymous>`;
+  const manyRows = Array.from({ length: 2000 }, (_, i) => ({ id: i + 1, at: `10:${String(Math.floor(i / 60) % 60).padStart(2, '0')}:${String(i % 60).padStart(2, '0')}`, severity: i % 97 === 0 ? 'ERROR' : i % 13 === 0 ? 'WARN' : 'INFO', source: i % 3 ? 'fxserver' : 'siku_core', message: i % 97 === 0 ? 'FXServer exited unexpectedly (exit status 1)' : i % 13 === 0 ? 'hitch warning: frame time of 212 milliseconds' : `Started resource siku_${['core', 'banking', 'inventory'][i % 3]}` }));
+  let dockOpen = $state(true);
 </script>
 
 {#snippet st(label: string, body: import('svelte').Snippet)}<div class="st">{@render body()}<span class="cap">{label}</span></div>{/snippet}
@@ -219,7 +252,7 @@
 {:else if name === 'BarChart'}
   <div class="play" style="width:40rem"><div style="width:100%"><S.BarChart label="Ticks par seuil, 10 dernières minutes" stacked={p.stacked} legend={p.legend} state={p.state} message="Aucun tick mesuré" labels={['-10', '-8', '-6', '-4', '-2', 'now']} series={[{ id: 'ok', label: '< 50 ms', values: [320, 318, 330, 290, 325, 331], tone: 'success' }, { id: 'slow', label: '50–250 ms', values: [2, 4, 1, 28, 6, 0], tone: 'warning' }, { id: 'bad', label: '> 250 ms', values: [0, 0, 0, 3, 0, 0], tone: 'danger' }]} /></div></div>
 {:else if name === 'LogView'}
-  <div class="play" style="width:40rem"><div style="width:100%"><S.LogView label="Console FXServer" bind:selected={logSel} highlight="hitch" onselect={() => {}} height={220} wrap={p.wrap} timestamps={p.timestamps} empty="Aucune ligne reçue." lines={[{ id: 1, at: '12:00:01', text: '[   fake] FXServer-master SERVER v1.0.0.12345 starting' }, { id: 2, at: '12:00:02', text: '[  script:siku_core] Started resource siku_core' }, { id: 3, at: '12:00:04', text: 'hitch warning: frame time of 212 milliseconds', level: 'warning' }, { id: 4, at: '12:00:05', text: 'Fatal error: simulated crash', level: 'error' }, { id: 5, at: '12:00:06', text: '[chat] server: hello', level: 'muted' }]} /></div></div>
+  <div class="play" style="width:40rem"><div style="width:100%"><S.LogView label="Console FXServer" bind:selected={logSel} highlight="hitch" onselect={() => {}} height={220} wrap={p.wrap} timestamps={p.timestamps} empty="Aucune ligne reçue." lines={[{ id: 1, at: '12:00:01', text: '[   fake] FXServer-master SERVER v1.0.0.12345 starting' }, { id: 2, at: '12:00:02', text: '[  script:siku_core] Started resource siku_core' }, { id: 3, at: '12:00:04', text: 'hitch warning: frame time of 212 milliseconds', level: 'warning' }, { id: 4, at: '12:00:05', text: 'Fatal error: simulated crash', level: 'error' }, { id: 5, at: '12:00:06', text: '[chat] server: hello', level: 'muted' }, { id: 6, at: '12:00:07', text: 'trace: nui message siku:env', level: 'trace' }, { id: 7, at: '12:00:08', text: 'warn: resource monitor is slow to start', level: 'warn' }, { id: 8, at: '12:00:09', text: 'fatal: out of memory', level: 'fatal' }]} /></div></div>
 {:else if name === 'Slot'}
   <div class="play"><S.Slot item={pistol} hotkey={1} size={p.size} selected={p.selected} locked={p.locked} dropState={p.dropState} /></div>
   <h4>Contenus</h4>
@@ -294,11 +327,71 @@
   <div class="play" style="width:40rem"><div style="width:100%"><S.DataTable bind:sort rows={events} rowKey={(r) => r.id} dense={p.dense} state={p.state} message="Telemetry injoignable" caption="Événements" onselect={() => {}} columns={[{ key: 'at', label: 'Heure', sortable: true, width: '6rem', mono: true }, { key: 'severity', label: 'Niveau', sortable: true, width: '6rem' }, { key: 'source', label: 'Source', width: '6rem' }, { key: 'message', label: 'Message' }]}>
     {#snippet cell(row, col)}{#if col.key === 'severity'}<S.Badge tone={row.severity === 'ERROR' ? 'danger' : row.severity === 'WARN' ? 'warning' : 'info'} label={String(row.severity)} />{:else}{String((row as Record<string, unknown>)[col.key])}{/if}{/snippet}
   </S.DataTable></div></div>
+  <h4>Fenêtre virtuelle (2 000 lignes)</h4>
+  <div class="play" style="width:40rem"><div style="width:100%"><S.DataTable virtual dense sticky maxHeight="16rem" rows={manyRows} rowKey={(r) => r.id} caption="Événements" onselect={() => {}} columns={[{ key: 'id', label: '#', width: '4rem', align: 'right', mono: true }, { key: 'at', label: 'Heure', width: '6rem', mono: true }, { key: 'severity', label: 'Niveau', width: '6rem' }, { key: 'message', label: 'Message' }]} /></div></div>
 {:else if name === 'DescriptionList'}
   <div class="play" style="width:32rem"><div style="width:100%"><S.DescriptionList columns={p.columns === '1' ? 1 : p.columns === '3' ? 3 : 2} label="Détail de l’événement" items={[{ label: 'Service', value: 'fxserver.8f1c' }, { label: 'Serveur', value: 'SIKU RP' }, { label: 'Trace', value: '0af3c2d19e4b7f6a0af3c2d19e4b7f6a', mono: true, copy: true }, { label: 'Sévérité', value: 'ERROR' }]} /></div></div>
 {:else if name === 'Drawer'}
   <div class="play"><S.Button icon="layers" onclick={() => (drawer = true)}>Ouvrir la navigation</S.Button></div>
   <S.Drawer bind:open={drawer} title="Navigation"><S.NavList bind:value={navPage} items={navItems} onchange={() => (drawer = false)} /></S.Drawer>
+  <h4>Ancré (docked) dans une grille</h4>
+  <div class="play" style="width:44rem;align-items:stretch;padding:0;overflow:hidden"><div style="display:grid;grid-template-columns:minmax(0,1fr) auto;width:100%;min-height:14rem"><div style="padding:1.5rem"><p class="note">Contenu de la page. {#if !dockOpen}<S.Button size="sm" onclick={() => (dockOpen = true)}>Ouvrir l’inspecteur</S.Button>{/if}</p></div>
+    <S.Drawer bind:open={dockOpen} docked side="right" width={300} title="Événement"><S.DescriptionList items={[{ label: 'Service', value: 'fxserver' }, { label: 'Trace', value: '0af3c2d1', mono: true, copy: true }]} /></S.Drawer></div></div>
+{:else if name === 'Popover'}
+  <div class="play" style="min-height:16rem;align-items:flex-start">
+    <S.Popover bind:open={popOpen} placement={p.placement} label="Colonnes" width={240}>
+      {#snippet trigger({ toggle, open })}<S.Button variant="ghost" icon="columns" aria-expanded={open} onclick={toggle}>Colonnes</S.Button>{/snippet}
+      <div class="col" style="padding:.75rem;gap:.5rem"><S.Checkbox bind:checked={popCols.service} label="Service" /><S.Checkbox bind:checked={popCols.trace} label="Trace" /><S.Checkbox bind:checked={popCols.host} label="Hôte" /></div>
+    </S.Popover>
+    <S.Popover label="Partager" placement="bottom-end">
+      {#snippet trigger({ toggle, open })}<S.Button iconOnly icon="more" label="Plus d’actions" aria-expanded={open} onclick={toggle} />{/snippet}
+      <S.Menu label="Actions" autofocus={false} onselect={() => (popOpen = false)} items={[{ id: 'link', label: 'Copier le lien', icon: 'link' }, { id: 'star', label: 'Enregistrer la requête', icon: 'star' }, { id: 'dl', label: 'Exporter en CSV', icon: 'download' }]} />
+    </S.Popover>
+  </div>
+  <p class="note">Clic extérieur ou <code>Échap</code> ferme et rend le focus au déclencheur ; le panneau se retourne s’il déborde du bas de la fenêtre.</p>
+{:else if name === 'Combobox'}
+  <div class="play" style="width:40rem;min-height:20rem;align-items:flex-start">
+    <div style="width:18rem"><S.Combobox label="Services" multiple={p.multiple} inline={p.inline} loading={p.loading} bind:value={comboMulti} options={serviceOptions} /></div>
+    <div style="width:18rem"><S.Combobox label="Ressource" placeholder="Toutes les ressources" bind:value={comboOne} options={serviceOptions} max={4} /></div>
+  </div>
+  <h4>Facette (inline, multiple)</h4>
+  <div class="play" style="width:18rem;align-items:flex-start"><div style="width:100%"><S.Combobox inline multiple bind:value={comboInline} options={serviceOptions} searchLabel="Filtrer les services" /></div></div>
+  <p class="note">Valeur : <code>{JSON.stringify(comboMulti)}</code> — flèches, Entrée, Début/Fin dans la recherche.</p>
+{:else if name === 'FilterChip'}
+  <div class="play"><S.FilterChip label="service" value="fxserver" icon="server" exclude={p.exclude} removable={p.removable} ontoggle={() => {}} onremove={() => {}} /></div>
+  <div class="row">
+    {#each chips as c (c.key + c.value)}<S.FilterChip label={c.key} value={c.value} exclude={c.exclude} title="Entrée bascule, Retour arrière retire" ontoggle={(ex) => (c.exclude = ex)} onremove={() => (chips = chips.filter((x) => x !== c))} />{/each}
+    <S.FilterChip label="trace" value="0af3c2d1" icon="link" removable={false} />
+    {#if chips.length < 3}<S.Button size="sm" variant="quiet" onclick={() => (chips = [{ key: 'service', value: 'fxserver', exclude: false }, { key: 'severity', value: 'error', exclude: false }, { key: 'resource', value: 'monitor', exclude: true }])}>Remettre les filtres</S.Button>{/if}
+  </div>
+{:else if name === 'Disclosure'}
+  <div class="play" style="width:20rem;align-items:flex-start"><div style="width:100%"><S.Disclosure title="Service" count={5} open={p.open} dense={p.dense}>
+    {#snippet actions()}<S.Button variant="quiet" size="sm" onclick={() => (comboInline = [])}>Effacer</S.Button>{/snippet}
+    <S.Combobox inline multiple bind:value={comboInline} options={serviceOptions} searchLabel="Filtrer les services" />
+  </S.Disclosure></div></div>
+  <div class="col" style="width:20rem">
+    <S.Disclosure title="Sévérité" count={6} bind:open={discOpen} dense><div class="col" style="gap:.5rem;padding-top:.25rem">{#each ['trace', 'debug', 'info', 'warn', 'error', 'fatal'] as sev (sev)}<S.Checkbox checked={sev !== 'trace'} label={S.severityLabel(sev as S.Severity)} />{/each}</div></S.Disclosure>
+    <S.Disclosure title="Hôte" count={2} dense><S.Checkbox checked label="cc-prod" /></S.Disclosure>
+  </div>
+{:else if name === 'TimeHistogram'}
+  <div class="play" style="width:44rem"><div style="width:100%"><S.TimeHistogram label="Logs par minute, 30 dernières minutes" step={minute} legend={p.legend} state={p.state} message="Aucun log sur la période" bind:brush onbrush={(r) => (brush = r)} onpick={(t) => (picked = t)}
+    series={[{ label: 'Info', tone: 'neutral', points: histInfo }, { label: 'Warn', tone: 'warning', points: histWarn }, { label: 'Error', tone: 'danger', points: histError }]} /></div></div>
+  <p class="note">Glisse sur le graphique pour sélectionner une plage, clique un intervalle pour le choisir. Plage : <code>{brush ? `${new Date(brush.from).toISOString().slice(11, 16)} → ${new Date(brush.to).toISOString().slice(11, 16)}` : '—'}</code> · intervalle : <code>{picked ? new Date(picked).toISOString().slice(11, 16) : '—'}</code>. Maj + flèches étendent la sélection, Échap l’efface.</p>
+{:else if name === 'JsonTree'}
+  <div class="play" style="width:40rem;align-items:flex-start"><div style="width:100%"><S.JsonTree value={attributes} depth={p.depth ?? 2} dense={p.dense} oncopy={(path, v) => (jsonLog = `copie ${path || '/'} = ${JSON.stringify(v)}`.slice(0, 80))} onfilter={(path, v) => (jsonLog = `filtre ${path} = ${JSON.stringify(v)}`)} /></div></div>
+  <p class="note">Dernière action : <code>{jsonLog}</code> — flèches, Entrée déplie, <code>C</code> copie, <code>F</code> filtre.</p>
+{:else if name === 'TraceWaterfall'}
+  <div class="play" style="width:46rem;align-items:flex-start"><div style="width:100%"><S.TraceWaterfall spans={spans} totalMs={200} rowHeight={p.rowHeight ?? 28} bind:selected={spanSel} bind:collapsed={spanCollapsed} /></div></div>
+  <p class="note">Span sélectionné : <code>{spanSel ?? '—'}</code> — flèches pour parcourir, ← → replient, Entrée sélectionne. Le span orphelin devient une racine.</p>
+{:else if name === 'CodeBlock'}
+  <div class="play" style="width:40rem;align-items:flex-start"><div style="width:100%"><S.CodeBlock label="Pile d’appels" code={stack} wrap={p.wrap} lineNumbers={p.lineNumbers} copy={p.copy} maxHeight={200} /></div></div>
+  <h4>Corps brut</h4>
+  <div class="play" style="width:40rem;align-items:flex-start"><div style="width:100%"><S.CodeBlock code={JSON.stringify(attributes.player, null, 2)} copy lineNumbers /></div></div>
+{:else if name === 'SeverityDot'}
+  <div class="play"><S.SeverityDot severity={p.severity} size={p.size} label={S.severityLabel(p.severity)} /></div>
+  <div class="row">{#each ['trace', 'debug', 'info', 'warn', 'error', 'fatal'] as sev (sev)}<S.SeverityDot severity={sev as S.Severity} label={S.severityLabel(sev as S.Severity)} />{/each}</div>
+  <div class="row">{#each ['trace', 'debug', 'info', 'warn', 'error', 'fatal'] as sev (sev)}<S.SeverityDot severity={sev as S.Severity} size="sm" />{/each}</div>
+  <div class="row">{#each ['trace', 'info', 'warn', 'error', 'fatal'] as sev (sev)}<S.Badge tone={S.severityTone(sev as S.Severity) === 'info' ? 'info' : S.severityTone(sev as S.Severity)} label={S.severityLabel(sev as S.Severity)} />{/each}</div>
 {:else if name === 'Icon'}
   <div class="icons">{#each S.iconNames as n (n)}<div class="ic"><S.Icon name={n} /><span>{n}</span></div>{/each}</div>
 {/if}
