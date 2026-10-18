@@ -477,7 +477,8 @@ button.sk-chip__main:hover,button.sk-chip__main.is-hover{background:var(--bg-con
 .sk-facet.is-active .sk-facet__mark{color:var(--selection)}
 .sk-facet.is-active .sk-facet__count{color:var(--fg-secondary)}
 .sk-facet.is-unavailable,.sk-facet.is-unavailable .sk-facet__count{color:var(--fg-disabled)}
-.sk-facet.is-unavailable:hover{color:var(--fg-tertiary)}
+.sk-facet:disabled{cursor:default}
+.sk-facet:disabled:hover{background:none;color:var(--fg-disabled)}
 .sk-facet__mark{display:inline-flex;flex:none;width:1rem;justify-content:center;color:var(--fg-tertiary)}
 .sk-facet__label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sk-facets.is-mono .sk-facet__label{font-family:var(--font-mono);font-size:var(--fs-caption)}

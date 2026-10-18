@@ -92,7 +92,7 @@
     <Popover bind:open block matchWidth label={label ?? placeholder} onclose={() => { if (!onsearch) search = ''; }}>
       {#snippet trigger({ toggle, open: isOpen })}
         <button type="button" class="sk-select sk-focusable" class:is-open={isOpen} class:is-disabled={disabled} {disabled} aria-haspopup="dialog" aria-expanded={isOpen} aria-labelledby={label ? `${id}-l` : undefined} onclick={toggle}>
-          <span>{#if summary}{summary}{:else}<span class="sk-input__ph">{placeholder}</span>{/if}</span>
+          <span class="sk-select__text" title={summary || undefined}>{#if summary}{summary}{:else}<span class="sk-input__ph">{placeholder}</span>{/if}</span>
           {#if multiple && selectedSet.size}<span class="sk-count">{selectedSet.size}</span>{/if}
           <Icon name="chevd" />
         </button>

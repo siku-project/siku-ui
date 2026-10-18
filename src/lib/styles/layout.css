@@ -35,6 +35,7 @@
 .sk-select-wrap{position:relative}
 .sk-select{width:100%;border:0;text-align:left;cursor:pointer;color:var(--fg-primary)}
 .sk-select>span{display:flex;flex-direction:column;min-width:0}
+.sk-select__text{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sk-select__list{position:absolute;left:0;right:0;top:calc(100% + var(--space-1));z-index:var(--z-overlay);max-height:18rem;overflow:auto}
 .sk-select.is-disabled{opacity:var(--opacity-disabled)}
 .sk-radio-group{display:flex;gap:var(--space-6)}.sk-radio-group--vertical{flex-direction:column;gap:var(--space-3)}
@@ -90,13 +91,14 @@
 .sk-popover__panel--top-end{bottom:calc(100% + var(--space-1));right:0}
 .sk-tooltip-anchor{position:relative;display:inline-flex}
 .sk-tooltip-anchor>.sk-tooltip{position:absolute;left:50%;z-index:var(--z-tooltip);white-space:nowrap;pointer-events:none;animation:sk-fade var(--duration-fast) var(--ease-standard)}
-.sk-tooltip--top{bottom:calc(100% + var(--space-2));transform:translateX(-50%)}
-.sk-tooltip--bottom{top:calc(100% + var(--space-2));transform:translateX(-50%)}
+.sk-tooltip--top{bottom:calc(100% + var(--space-2));transform:translateX(calc(-50% + var(--sk-tt-shift,0px)))}
+.sk-tooltip--bottom{top:calc(100% + var(--space-2));transform:translateX(calc(-50% + var(--sk-tt-shift,0px)))}
+.sk-tooltip-anchor>.sk-tooltip::after{left:calc(50% - var(--sk-tt-shift,0px))}
 .sk-tooltip--bottom::after{bottom:auto;top:-4px}
-.sk-tooltip-anchor>.sk-tooltip--start{left:0;transform:none}
-.sk-tooltip-anchor>.sk-tooltip--end{left:auto;right:0;transform:none}
-.sk-tooltip--start::after{left:0.875rem;margin-left:0}
-.sk-tooltip--end::after{left:auto;right:0.625rem;margin-left:0}
+.sk-tooltip-anchor>.sk-tooltip--start{left:0;transform:translateX(var(--sk-tt-shift,0px))}
+.sk-tooltip-anchor>.sk-tooltip--end{left:auto;right:0;transform:translateX(var(--sk-tt-shift,0px))}
+.sk-tooltip-anchor>.sk-tooltip--start::after{left:calc(0.875rem - var(--sk-tt-shift,0px));margin-left:0}
+.sk-tooltip-anchor>.sk-tooltip--end::after{left:auto;right:calc(0.625rem + var(--sk-tt-shift,0px));margin-left:0}
 @keyframes sk-fade{from{opacity:0}to{opacity:1}}
 .sk-toaster{position:fixed;top:calc(var(--safe-y) + var(--space-12));right:calc(var(--safe-x) + var(--space-12));z-index:var(--z-toast);display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-2)}
 .sk-toaster__item{animation:sk-in var(--duration-base) var(--ease-standard)}

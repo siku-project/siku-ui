@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.11.0
+# Composants @siku/ui 1.12.0
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -418,7 +418,7 @@ Jeton de filtre « clé : valeur », retirable, inclusif ou exclusif, dans une b
 
 Valeurs d’une dimension avec leur compte : cliquer ajoute ou retire le filtre, une valeur indisponible reste visible.
 
-**Utiliser** : Une liste par dimension (niveau, catégorie, ressource…) dans une Disclosure ; active marque les valeurs filtrées, unavailable grise celles qui ne donneraient rien avec les autres filtres sans les cacher. count affiché en mono à droite ; mono pour des noms techniques (événements, ressources). Flèches ↑ ↓, Début et Fin entre les valeurs ; more + onmore pour charger le reste.
+**Utiliser** : Une liste par dimension (niveau, catégorie, ressource…) dans une Disclosure ; active marque les valeurs filtrées, unavailable désactive celles qui ne donneraient rien avec les autres filtres sans les cacher ; une valeur active reste toujours cliquable pour être retirée. count affiché en mono à droite ; mono pour des noms techniques (événements, ressources). Flèches ↑ ↓, Début et Fin entre les valeurs ; more + onmore pour charger le reste.
 
 **Éviter** : Choisir une valeur dans une liste longue avec recherche : Combobox. Afficher un filtre actif dans la barre de requête : FilterChip.
 
@@ -552,7 +552,7 @@ Aide d’une phrase, blanche, au survol ou au focus.
 | `text` | `string` | — |  |
 | `key` | `string` | — |  |
 | `placement` | `'top' \| 'bottom'` | 'top' |  |
-| `align` | `'center' \| 'start' \| 'end'` | 'center' | Alignement horizontal sur le déclencheur : end pour un bouton collé au bord droit. |
+| `align` | `'center' \| 'start' \| 'end'` | 'center' | Alignement horizontal sur le déclencheur. Dans tous les cas la bulle reste dans la fenêtre : décalée latéralement, retournée en bas si elle dépasse en haut. |
 | `delay` | `number` | 300 | ms |
 | `children` | `Snippet` | — | Déclencheur. |
 
