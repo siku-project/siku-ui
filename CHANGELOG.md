@@ -2,6 +2,12 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.12.0
+
+- `Tooltip` : la bulle reste dans la fenêtre quel que soit le déclencheur : décalée latéralement quand elle déborde à gauche ou à droite (flèche recalée), retournée vers le bas quand elle dépasse en haut (et inversement).
+- `FacetList` : une valeur `unavailable` est réellement désactivée (`disabled`, curseur et survol neutres) sauf quand elle est `active`, pour qu'un filtre posé puisse toujours être retiré.
+- `Combobox` : le résumé du déclencheur est tronqué avec des points de suspension (et porté en `title`) au lieu de passer à la ligne.
+
 ## 1.11.0
 
 Explorateur : facettes et inspecteur superposé.

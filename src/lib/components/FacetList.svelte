@@ -1,4 +1,4 @@
-<!-- FacetList — valeurs d’une dimension avec leur compte : cliquer ajoute ou retire le filtre, une valeur indisponible reste visible et cliquable. -->
+<!-- FacetList — valeurs d’une dimension avec leur compte : cliquer ajoute ou retire le filtre ; une valeur indisponible reste visible mais désactivée, une valeur active se retire toujours. -->
 <script lang="ts">
   import Icon from './Icon.svelte';
   import type { FacetItem } from '../types';
@@ -20,7 +20,7 @@
   {#each items as item, i (item.value)}
     <li>
       <button type="button" class={['sk-facet sk-focusable', item.active && 'is-active', item.unavailable && 'is-unavailable'].filter(Boolean).join(' ')}
-        aria-pressed={item.active ?? false} title={item.title} onclick={() => onpick?.(item)} onkeydown={(e) => onkey(e, i)}>
+        aria-pressed={item.active ?? false} disabled={Boolean(item.unavailable) && !item.active} title={item.title} onclick={() => onpick?.(item)} onkeydown={(e) => onkey(e, i)}>
         <span class="sk-facet__mark" aria-hidden="true">{#if item.active}<Icon name="check" size="sm" />{/if}</span>
         <span class="sk-facet__label">{item.label ?? item.value}</span>
         {#if item.count !== undefined}<span class="sk-facet__count">{format(item.count)}</span>{/if}
