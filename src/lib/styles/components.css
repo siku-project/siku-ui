@@ -469,6 +469,22 @@ button.sk-chip__main:hover,button.sk-chip__main.is-hover{background:var(--bg-con
 .sk-chip.is-exclude .sk-chip__op,.sk-chip.is-exclude .sk-chip__val{color:var(--danger)}
 .sk-chip.is-exclude .sk-chip__x{box-shadow:inset 1px 0 0 var(--danger-subtle)}
 .sk-chip .sk-focusable:focus-visible{position:relative;z-index:1;border-radius:var(--radius-sm)}
+.sk-facets{display:flex;flex-direction:column;gap:1px;margin:0;padding:0;list-style:none;min-width:0}
+.sk-facet{display:flex;align-items:center;gap:var(--space-2);width:100%;min-height:var(--control-sm);padding:0 var(--space-2);border:0;border-radius:var(--radius-sm);background:none;font:inherit;font-size:var(--fs-body-sm);color:var(--fg-secondary);text-align:left;cursor:pointer;transition:background var(--duration-fast) var(--ease-standard),color var(--duration-fast) var(--ease-standard)}
+.sk-facets.is-dense .sk-facet{min-height:1.75rem}
+.sk-facet:hover,.sk-facet.is-hover{background:var(--bg-control-hover);color:var(--fg-primary)}
+.sk-facet.is-active{background:var(--bg-control);color:var(--fg-primary)}
+.sk-facet.is-active .sk-facet__mark{color:var(--selection)}
+.sk-facet.is-active .sk-facet__count{color:var(--fg-secondary)}
+.sk-facet.is-unavailable,.sk-facet.is-unavailable .sk-facet__count{color:var(--fg-disabled)}
+.sk-facet.is-unavailable:hover{color:var(--fg-tertiary)}
+.sk-facet__mark{display:inline-flex;flex:none;width:1rem;justify-content:center;color:var(--fg-tertiary)}
+.sk-facet__label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sk-facets.is-mono .sk-facet__label{font-family:var(--font-mono);font-size:var(--fs-caption)}
+.sk-facet__count{margin-left:auto;flex:none;font-family:var(--font-mono);font-size:var(--fs-caption);color:var(--fg-tertiary);font-variant-numeric:tabular-nums}
+.sk-facets__empty{padding:var(--space-1) var(--space-2);font-size:var(--fs-caption);color:var(--fg-tertiary)}
+.sk-facets__more{width:100%;padding:var(--space-1) var(--space-2) var(--space-1) calc(var(--space-2) + 1rem + var(--space-2));border:0;border-radius:var(--radius-sm);background:none;font:inherit;font-size:var(--fs-caption);color:var(--fg-tertiary);text-align:left;cursor:pointer}
+.sk-facets__more:hover,.sk-facets__more.is-hover{color:var(--fg-primary);background:var(--bg-control-hover)}
 .sk-disclosure{display:flex;flex-direction:column;min-width:0}
 .sk-disclosure__head{display:flex;align-items:center;gap:var(--space-2);min-height:var(--control-md)}
 .sk-disclosure.is-dense .sk-disclosure__head{min-height:var(--control-sm)}

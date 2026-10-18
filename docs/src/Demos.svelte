@@ -24,6 +24,7 @@
   let menuLog = $state('—');
   let modal = $state(false);
   let drawer = $state(false);
+  let facetActive = $state<string | null>('siku_inventory');
   let navPage = $state('overview');
   let treeSel = $state<string | null>('server/main.lua');
   let treeOpen = $state(['server']);
@@ -357,6 +358,10 @@
   <h4>Facette (inline, multiple)</h4>
   <div class="play" style="width:18rem;align-items:flex-start"><div style="width:100%"><S.Combobox inline multiple bind:value={comboInline} options={serviceOptions} searchLabel="Filtrer les services" /></div></div>
   <p class="note">Valeur : <code>{JSON.stringify(comboMulti)}</code> — flèches, Entrée, Début/Fin dans la recherche.</p>
+{:else if name === 'FacetList'}
+  <div class="play" style="width:16rem;align-items:flex-start"><div style="width:100%"><S.FacetList dense={p.dense} mono={p.mono} label="Ressource" more="Voir plus" onmore={() => {}}
+    items={[{ value: 'siku_inventory', count: 538, active: facetActive === 'siku_inventory' }, { value: 'siku_core', count: 223, active: facetActive === 'siku_core' }, { value: 'siku_banking', count: 214, active: facetActive === 'siku_banking' }, { value: 'siku_hud', count: 0, unavailable: true, title: 'Aucun log avec les filtres actuels' }]}
+    onpick={(item) => (facetActive = facetActive === item.value ? null : item.value)} /></div></div>
 {:else if name === 'FilterChip'}
   <div class="play"><S.FilterChip label="service" value="fxserver" icon="server" exclude={p.exclude} removable={p.removable} ontoggle={() => {}} onremove={() => {}} /></div>
   <div class="row">

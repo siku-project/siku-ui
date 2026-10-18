@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.10.0
+# Composants @siku/ui 1.11.0
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -62,6 +62,7 @@
 | [`Popover`](#popover) | Structure | Panneau flottant ancré à son déclencheur : filtres, options d’une colonne, formulaire court. Clic extérieur et Échap ferment, le focus revient au déclencheur. |
 | [`Combobox`](#combobox) | Saisie | Liste de choix avec recherche, simple ou multiple, comptes par option : facettes d’un explorateur, sélection d’un service. |
 | [`FilterChip`](#filterchip) | Saisie | Jeton de filtre « clé : valeur », retirable, inclusif ou exclusif, dans une barre de requête. |
+| [`FacetList`](#facetlist) | Saisie | Valeurs d’une dimension avec leur compte : cliquer ajoute ou retire le filtre, une valeur indisponible reste visible. |
 | [`Disclosure`](#disclosure) | Structure | Section repliable avec titre, compteur et actions : groupe de facettes, détail d’un événement. |
 | [`TimeHistogram`](#timehistogram) | Données | Barres empilées sur un axe temporel réel avec sélection de plage : volume de logs par sévérité, événements par minute. |
 | [`JsonTree`](#jsontree) | Données | Valeur structurée dépliable : attributs d’un événement, corps d’une requête, avec copie et filtre par feuille. |
@@ -413,6 +414,32 @@ Jeton de filtre « clé : valeur », retirable, inclusif ou exclusif, dans une b
 {#each filters as f (f.key + f.value)}<FilterChip label={f.key} value={f.value} exclude={f.exclude} onremove={() => remove(f)} ontoggle={(ex) => (f.exclude = ex)} />{/each}
 ```
 
+### FacetList
+
+Valeurs d’une dimension avec leur compte : cliquer ajoute ou retire le filtre, une valeur indisponible reste visible.
+
+**Utiliser** : Une liste par dimension (niveau, catégorie, ressource…) dans une Disclosure ; active marque les valeurs filtrées, unavailable grise celles qui ne donneraient rien avec les autres filtres sans les cacher. count affiché en mono à droite ; mono pour des noms techniques (événements, ressources). Flèches ↑ ↓, Début et Fin entre les valeurs ; more + onmore pour charger le reste.
+
+**Éviter** : Choisir une valeur dans une liste longue avec recherche : Combobox. Afficher un filtre actif dans la barre de requête : FilterChip.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `items` | `FacetItem[]` | — | { value, label?, count?, active?, unavailable?, title? } |
+| `label` | `string` | — | Nom accessible. |
+| `dense` | `boolean` | false |  |
+| `mono` | `boolean` | false | Libellés en mono. |
+| `format` | `(count: number) => string` | String | Format du compte. |
+| `empty` | `string` | 'Aucune valeur' |  |
+| `more` | `string` | — | Libellé du bouton « voir plus ». |
+| `onpick` | `(item) => void` | — |  |
+| `onmore` | `() => void` | — |  |
+
+```svelte
+<Disclosure title="Ressource" count={3} open>
+  <FacetList mono items={resources.map((r) => ({ value: r.name, count: r.count, active: filters.includes(r.name), unavailable: r.count === 0 }))} onpick={(item) => toggle('resource', item.value)} />
+</Disclosure>
+```
+
 ## Navigation
 
 ### Tabs
@@ -525,6 +552,7 @@ Aide d’une phrase, blanche, au survol ou au focus.
 | `text` | `string` | — |  |
 | `key` | `string` | — |  |
 | `placement` | `'top' \| 'bottom'` | 'top' |  |
+| `align` | `'center' \| 'start' \| 'end'` | 'center' | Alignement horizontal sur le déclencheur : end pour un bouton collé au bord droit. |
 | `delay` | `number` | 300 | ms |
 | `children` | `Snippet` | — | Déclencheur. |
 
@@ -1177,6 +1205,8 @@ Valeur structurée dépliable : attributs d’un événement, corps d’une requ
 | `dense` | `boolean` | false |  |
 | `label` | `string` | 'Structure' | Nom accessible. |
 | `toolbar` | `boolean` | true | Boutons tout déplier / replier. |
+| `expandLabel` | `string` | 'Tout déplier' |  |
+| `collapseLabel` | `string` | 'Tout replier' |  |
 | `expanded` | `string[]` | selon depth | bind:expanded (chemins ouverts : a.b[0]). |
 | `maxString` | `number` | 80 | Longueur avant troncature. |
 | `oncopy` | `(path, value) => void` | — |  |
@@ -1466,16 +1496,16 @@ Filet de structure, horizontal, vertical ou titré.
 
 Panneau latéral posé sur la page : navigation mobile, filtres, inspecteur.
 
-**Utiliser** : Échap, voile et croix ferment ; le focus est piégé puis rendu. side="right" pour un inspecteur. docked : panneau dans le flux (colonne d’une grille), sans voile ni piège de focus ; Échap ferme quand le focus est dedans.
+**Utiliser** : Échap, voile et croix ferment ; le focus est piégé puis rendu ; le panneau glisse à l’ouverture et à la fermeture, la page derrière ne défile plus. side="right" avec size lg ou xl pour un inspecteur de détail posé sur la page sans la compresser. docked : panneau dans le flux (colonne d’une grille), sans voile ni piège de focus ; Échap ferme quand le focus est dedans.
 
-**Éviter** : Une confirmation : Modal. Sur desktop quand la place existe sans docked : une colonne.
+**Éviter** : Une confirmation : Modal. Un flou derrière le panneau : le voile suffit.
 
 | Prop | Type | Défaut | Description |
 |---|---|---|---|
 | `open` | `boolean` | false | bind:open |
 | `title` | `string` | — |  |
 | `side` | `'left' \| 'right'` | 'left' |  |
-| `size` | `'sm' \| 'md' \| 'lg'` | 'sm' | 18 / 28 / 40 rem : md ou lg pour un inspecteur de détail. |
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl'` | 'sm' | 18 / 28 / 40 / 52 rem : lg ou xl pour un inspecteur de détail. |
 | `docked` | `boolean` | false | Dans le flux, sans voile ni aria-modal. |
 | `width` | `number` | — | Largeur en px (prime sur size). |
 | `children` | `Snippet` | — |  |

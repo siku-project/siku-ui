@@ -2,6 +2,14 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.11.0
+
+Explorateur : facettes et inspecteur superposé.
+- `FacetList` : valeurs d’une dimension avec leur compte (`items` : `{ value, label?, count?, active?, unavailable?, title? }`), valeur active marquée d’une coche, valeur indisponible grisée mais toujours cliquable, `mono` pour des noms techniques, `dense`, `format` du compte, `empty`, `more` + `onmore`, flèches ↑ ↓, Début et Fin entre les valeurs, `aria-pressed`. Type `FacetItem` exporté.
+- `Tooltip` : `align` (`center`, `start`, `end`) pour qu’une infobulle d’un bouton collé au bord ne déborde pas de la fenêtre.
+- `JsonTree` : `expandLabel` et `collapseLabel` pour traduire la barre « Tout déplier / Tout replier ».
+- `Drawer` : le panneau posé sur la page glisse à l’ouverture et à la fermeture (transitions Svelte, plus d’animation CSS à sens unique), le voile apparaît et disparaît en fondu, la page derrière ne défile plus tant qu’il est ouvert, `width` borné à 94 vw ; taille `xl` (52 rem) pour un inspecteur de détail ; la croix porte une infobulle « Fermer · Échap ».
+
 ## 1.10.0
 
 Explorateur : filtres, histogramme, structure, traces.

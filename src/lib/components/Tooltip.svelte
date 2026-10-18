@@ -1,8 +1,8 @@
 <!-- Tooltip — aide d'une phrase, au survol ou au focus. Jamais d'information indispensable. -->
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  type Props = { text: string; key?: string; placement?: 'top' | 'bottom'; children: Snippet; delay?: number };
-  let { text, key, placement = 'top', children, delay = 300 }: Props = $props();
+  type Props = { text: string; key?: string; placement?: 'top' | 'bottom'; align?: 'center' | 'start' | 'end'; children: Snippet; delay?: number };
+  let { text, key, placement = 'top', align = 'center', children, delay = 300 }: Props = $props();
   const id = `sk-tt-${Math.random().toString(36).slice(2, 8)}`;
   let shown = $state(false);
   let t: ReturnType<typeof setTimeout>;
@@ -13,5 +13,5 @@
 <span class="sk-tooltip-anchor" aria-describedby={shown ? id : undefined}
   onpointerenter={show} onpointerleave={hide} onfocusin={show} onfocusout={hide}>
   {@render children()}
-  {#if shown}<span class="sk-tooltip sk-tooltip--{placement}" role="tooltip" {id}>{text}{#if key}<kbd class="sk-key">{key}</kbd>{/if}</span>{/if}
+  {#if shown}<span class={['sk-tooltip', `sk-tooltip--${placement}`, align !== 'center' && `sk-tooltip--${align}`].filter(Boolean).join(' ')} role="tooltip" {id}>{text}{#if key}<kbd class="sk-key">{key}</kbd>{/if}</span>{/if}
 </span>
