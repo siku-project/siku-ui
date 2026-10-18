@@ -1,8 +1,8 @@
 <script lang="ts">
   import Icon from './Icon.svelte';
   import Button from './Button.svelte';
-  type Props = { value: unknown; depth?: number; dense?: boolean; label?: string; toolbar?: boolean; expanded?: string[]; maxString?: number; oncopy?: (path: string, value: unknown) => void; onfilter?: (path: string, value: unknown) => void };
-  let { value, depth = 2, dense = false, label = 'Structure', toolbar = true, expanded = $bindable(), maxString = 80, oncopy, onfilter }: Props = $props();
+  type Props = { value: unknown; depth?: number; dense?: boolean; label?: string; toolbar?: boolean; expandLabel?: string; collapseLabel?: string; expanded?: string[]; maxString?: number; oncopy?: (path: string, value: unknown) => void; onfilter?: (path: string, value: unknown) => void };
+  let { value, depth = 2, dense = false, label = 'Structure', toolbar = true, expandLabel = 'Tout déplier', collapseLabel = 'Tout replier', expanded = $bindable(), maxString = 80, oncopy, onfilter }: Props = $props();
   let root: HTMLElement;
   let longOpen = $state<string[]>([]);
   const isObj = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -87,8 +87,8 @@
 <div class={['sk-json', dense && 'is-dense'].filter(Boolean).join(' ')}>
   {#if toolbar}
     <div class="sk-json__bar">
-      <Button variant="quiet" size="sm" icon="expand" onclick={expandAll}>Tout déplier</Button>
-      <Button variant="quiet" size="sm" icon="collapse" onclick={collapseAll}>Tout replier</Button>
+      <Button variant="quiet" size="sm" icon="expand" onclick={expandAll}>{expandLabel}</Button>
+      <Button variant="quiet" size="sm" icon="collapse" onclick={collapseAll}>{collapseLabel}</Button>
     </div>
   {/if}
   <div class="sk-json__tree" role="tree" aria-label={label} bind:this={root}>

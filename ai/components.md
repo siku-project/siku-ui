@@ -552,6 +552,7 @@ Aide d’une phrase, blanche, au survol ou au focus.
 | `text` | `string` | — |  |
 | `key` | `string` | — |  |
 | `placement` | `'top' \| 'bottom'` | 'top' |  |
+| `align` | `'center' \| 'start' \| 'end'` | 'center' | Alignement horizontal sur le déclencheur : end pour un bouton collé au bord droit. |
 | `delay` | `number` | 300 | ms |
 | `children` | `Snippet` | — | Déclencheur. |
 
@@ -1204,6 +1205,8 @@ Valeur structurée dépliable : attributs d’un événement, corps d’une requ
 | `dense` | `boolean` | false |  |
 | `label` | `string` | 'Structure' | Nom accessible. |
 | `toolbar` | `boolean` | true | Boutons tout déplier / replier. |
+| `expandLabel` | `string` | 'Tout déplier' |  |
+| `collapseLabel` | `string` | 'Tout replier' |  |
 | `expanded` | `string[]` | selon depth | bind:expanded (chemins ouverts : a.b[0]). |
 | `maxString` | `number` | 80 | Longueur avant troncature. |
 | `oncopy` | `(path, value) => void` | — |  |

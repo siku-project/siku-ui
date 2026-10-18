@@ -93,6 +93,10 @@
 .sk-tooltip--top{bottom:calc(100% + var(--space-2));transform:translateX(-50%)}
 .sk-tooltip--bottom{top:calc(100% + var(--space-2));transform:translateX(-50%)}
 .sk-tooltip--bottom::after{bottom:auto;top:-4px}
+.sk-tooltip-anchor>.sk-tooltip--start{left:0;transform:none}
+.sk-tooltip-anchor>.sk-tooltip--end{left:auto;right:0;transform:none}
+.sk-tooltip--start::after{left:0.875rem;margin-left:0}
+.sk-tooltip--end::after{left:auto;right:0.625rem;margin-left:0}
 @keyframes sk-fade{from{opacity:0}to{opacity:1}}
 .sk-toaster{position:fixed;top:calc(var(--safe-y) + var(--space-12));right:calc(var(--safe-x) + var(--space-12));z-index:var(--z-toast);display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-2)}
 .sk-toaster__item{animation:sk-in var(--duration-base) var(--ease-standard)}
