@@ -75,8 +75,21 @@
 .sk-drawer__body{flex:1;overflow:auto;padding:0 var(--space-3) var(--space-4)}
 .sk-drawer--md{width:min(28rem,92vw)}.sk-drawer--lg{width:min(40rem,94vw)}
 .sk-drawer__foot{display:flex;align-items:center;justify-content:flex-end;gap:var(--space-2);padding:var(--space-3) var(--space-4);box-shadow:inset 0 1px 0 var(--border-subtle)}
+.sk-drawer--docked{position:relative;top:auto;bottom:auto;height:100%;min-height:0;max-width:100%;animation:none;background:var(--bg-base)}
+.sk-drawer--docked.sk-drawer--left{box-shadow:inset -1px 0 0 var(--border-subtle)}
+.sk-drawer--docked.sk-drawer--right{box-shadow:inset 1px 0 0 var(--border-subtle)}
 @keyframes sk-slide-left{from{transform:translateX(-100%)}to{transform:none}}
 @keyframes sk-slide-right{from{transform:translateX(100%)}to{transform:none}}
+.sk-popover{position:relative;display:inline-flex;flex-direction:column;max-width:100%;vertical-align:middle}
+.sk-popover.is-block{display:flex;width:100%}
+.sk-popover__trigger{display:flex;min-width:0}
+.sk-popover.is-block .sk-popover__trigger>*{flex:1;min-width:0}
+.sk-popover__panel{position:absolute;z-index:var(--z-overlay);min-width:12rem;max-width:min(32rem,92vw);max-height:min(24rem,80vh);overflow:auto;outline:none;border-radius:var(--radius-lg);background:var(--bg-raised);box-shadow:inset 0 0 0 var(--border-hairline) var(--border-subtle),var(--shadow-overlay);animation:sk-fade var(--duration-fast) var(--ease-standard)}
+.sk-popover__panel.is-fill{left:0;right:0;min-width:0;max-width:none}
+.sk-popover__panel--bottom-start{top:calc(100% + var(--space-1));left:0}
+.sk-popover__panel--bottom-end{top:calc(100% + var(--space-1));right:0}
+.sk-popover__panel--top-start{bottom:calc(100% + var(--space-1));left:0}
+.sk-popover__panel--top-end{bottom:calc(100% + var(--space-1));right:0}
 .sk-tooltip-anchor{position:relative;display:inline-flex}
 .sk-tooltip-anchor>.sk-tooltip{position:absolute;left:50%;z-index:var(--z-tooltip);white-space:nowrap;pointer-events:none;animation:sk-fade var(--duration-fast) var(--ease-standard)}
 .sk-tooltip--top{bottom:calc(100% + var(--space-2));transform:translateX(-50%)}

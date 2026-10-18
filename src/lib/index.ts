@@ -56,6 +56,15 @@ export { default as Ring } from './components/Ring.svelte';
 export { default as Tree } from './components/Tree.svelte';
 export type { TreeNode } from './components/Tree.svelte';
 export { default as ShareBar } from './components/ShareBar.svelte';
+export { default as Popover } from './components/Popover.svelte';
+export { default as Combobox } from './components/Combobox.svelte';
+export { default as FilterChip } from './components/FilterChip.svelte';
+export { default as Disclosure } from './components/Disclosure.svelte';
+export { default as TimeHistogram } from './components/TimeHistogram.svelte';
+export { default as JsonTree } from './components/JsonTree.svelte';
+export { default as TraceWaterfall } from './components/TraceWaterfall.svelte';
+export { default as CodeBlock } from './components/CodeBlock.svelte';
+export { default as SeverityDot } from './components/SeverityDot.svelte';
 
 export * from './types';
 export { icons, iconNames, type IconName } from './icons/icons';

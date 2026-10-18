@@ -2,6 +2,24 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.10.0
+
+Explorateur : filtres, histogramme, structure, traces.
+- `Popover` : panneau flottant ancré à son déclencheur (`trigger` snippet avec `{ toggle, open }`), placements `bottom-start` / `bottom-end` / `top-start` / `top-end` avec retournement s’il déborde du bas, `width` en px ou `'trigger'`, `matchWidth`, `block`, fermeture au clic extérieur et à Échap avec retour du focus, `autofocus` dans le panneau.
+- `Combobox` : liste de choix avec recherche, simple ou `multiple` (cases à cocher, compte en mono à droite), `inline` pour un panneau de facettes, `onsearch` + `loading` pour un chargement asynchrone, `max` avec note « +n », clavier complet (flèches, Entrée, Début/Fin, Échap).
+- `FilterChip` : jeton de filtre « clé = valeur », `exclude` (ton danger, « ≠ »), `ontoggle` pour basculer inclure / exclure, retirable (`onremove`, Retour arrière / Suppr), `icon`, `title`.
+- `Disclosure` : section repliable (`open` bindable, `count`, `dense`, snippet `actions`, `ontoggle`), chevron tourné par transform, `aria-expanded`.
+- `TimeHistogram` : barres empilées sur un axe temporel réel (`step` en ms), sélection de plage au pointeur (`brush` bindable, `onbrush`) dessinée en bande, clic sur un intervalle (`onpick`), Maj + flèches pour étendre la sélection au clavier, Échap pour l’effacer, infobulle avec chaque série et le total, légende cliquable, repères de temps et marges alignés sur `TimeChart`, états de données.
+- `JsonTree` : valeur structurée dépliable (`depth` ouvert au départ, `expanded` bindable en chemins `a.b[0]`), rendu typé (chaînes, nombres, booléens, null), clés en mono, longueur des tableaux, chaînes longues tronquées dépliables, barre « Tout déplier / Tout replier » (`toolbar`), `oncopy` et `onfilter` par nœud (boutons et touches C / F), navigation clavier `role="tree"`.
+- `TraceWaterfall` : cascade des spans d’une trace construite depuis `parentId` (parents absents = racines), noms indentés avec service et durée, barres placées par décalage / durée, couleur par service (`chart-1` à `chart-6` par ordre d’apparition), erreurs en ton danger avec marqueur, infobulle (nom, service, durée, part), repères de temps, `selected` et `collapsed` bindables, `rowHeight`, `maxRows` avec note, `formatDuration`, clavier (flèches, ← → replient / déplient, Entrée sélectionne).
+- `CodeBlock` : bloc monospace multi-lignes, `wrap` (sinon défilement horizontal), `lineNumbers`, `maxHeight`, bouton `copy` (presse-papiers + `oncopy`), `label`.
+- `SeverityDot` et vocabulaire de sévérité partagé : type `Severity` (`trace` → `fatal`), `severityTone()` (neutral / info / warning / danger) et `severityLabel()` exportés ; `fatal` en emphase.
+- `LogView` : niveaux `trace`, `warn` et `fatal` acceptés en plus des existants (`warn` → avertissement, `fatal` → erreur en gras, `trace` → atténué).
+- `Drawer` : `docked` rend le panneau dans le flux (colonne d’une grille) sans voile, sans piège de focus ni `aria-modal` ; Échap ferme seulement quand le focus est dedans ; `width` en px.
+- `DataTable` : `virtual` avec `maxHeight` ne rend que la fenêtre visible plus 10 lignes de marge (`rowHeight`, 44 px ou 34 px en dense), tri, sélection et en-tête collant conservés, ligne sélectionnée ramenée dans la fenêtre ; flèches ↑ ↓, Début et Fin entre les lignes sélectionnables.
+- Types : `ComboOption`, `HistogramSeries`, `TimeRange`, `TraceSpan`, `SeverityTone`.
+- Icônes : `play`, `pause`, `star`, `more`, `link`, `columns`, `expand`, `collapse` (90 icônes).
+
 ## 1.9.0
 
 - `Tree` : arborescence dépliable (fichiers d’une ressource, hiérarchie), sélection et dossiers ouverts bindables, navigation au clavier (flèches, Début, Fin, Entrée), point de ton et compteur par nœud, variante dense.
