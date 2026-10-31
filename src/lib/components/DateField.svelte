@@ -4,8 +4,9 @@
   import Popover from './Popover.svelte';
   import Calendar from './Calendar.svelte';
   type Order = 'dmy' | 'mdy' | 'ymd';
-  type Props = { label?: string; value?: string; order?: Order; placeholder?: string; help?: string; error?: string; aside?: string; minYear?: number; maxYear?: number; locale?: string; disabled?: boolean; calendarLabel?: string; onchange?: (value: string) => void };
-  let { label, value = $bindable(''), order = 'dmy', placeholder, help, error, aside, minYear = 1900, maxYear = new Date().getFullYear(), locale = 'fr', disabled = false, calendarLabel = 'Ouvrir le calendrier', onchange }: Props = $props();
+  type Placement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
+  type Props = { label?: string; value?: string; order?: Order; placeholder?: string; help?: string; error?: string; aside?: string; minYear?: number; maxYear?: number; locale?: string; disabled?: boolean; calendarLabel?: string; placement?: Placement; onchange?: (value: string) => void };
+  let { label, value = $bindable(''), order = 'dmy', placeholder, help, error, aside, minYear = 1900, maxYear = new Date().getFullYear(), locale = 'fr', disabled = false, calendarLabel = 'Ouvrir le calendrier', placement = 'bottom-start', onchange }: Props = $props();
   const id = `sk-df-${Math.random().toString(36).slice(2, 8)}`;
   const parts: Record<Order, ('d' | 'm' | 'y')[]> = { dmy: ['d', 'm', 'y'], mdy: ['m', 'd', 'y'], ymd: ['y', 'm', 'd'] };
   const width = { d: 2, m: 2, y: 4 };
@@ -72,7 +73,7 @@
 </script>
 <div class="sk-field sk-datefield" class:is-error={!!error}>
   {#if label}<label class="sk-field__label" for={id}>{label}{#if aside}<span>{aside}</span>{/if}</label>{/if}
-  <Popover bind:open block label={calendarLabel} autofocus={false}>
+  <Popover bind:open block {placement} label={calendarLabel} autofocus={false}>
     {#snippet trigger({ toggle, open: isOpen })}
       <div class={['sk-input', error && 'is-error', disabled && 'is-disabled'].filter(Boolean).join(' ')}>
         <input {id} class="sk-input__control sk-datefield__input" type="text" inputmode="numeric" autocomplete="off" value={display} placeholder={hint} {disabled}

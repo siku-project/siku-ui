@@ -6,7 +6,7 @@ Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompa
 
 Éditeur de personnage : saisie et parcours.
 - `Calendar` : grille d’un mois (navigation par mois et par année bornée par `minYear` / `maxYear`, `locale`, `weekStart`), clavier complet (flèches, Page haut/bas, Début/Fin, Entrée), aujourd’hui marqué, `value` ISO bindable, `onpick`.
-- `DateField` : champ de date à saisie masquée (chiffres seuls, séparateurs posés automatiquement, `order` dmy / mdy / ymd, collage filtré) avec calendrier ancré dans un `Popover` ; `value` ISO vide tant que la date n’est pas complète et valide ; `help`, `error`, `aside`, `disabled`.
+- `DateField` : champ de date à saisie masquée (chiffres seuls, séparateurs posés automatiquement, `order` dmy / mdy / ymd, collage filtré) avec calendrier ancré dans un `Popover` ; `value` ISO vide tant que la date n’est pas complète et valide ; `help`, `error`, `aside`, `disabled`, `placement` du calendrier (au-dessus ou au-dessous).
 - `SwatchPicker` : une couleur parmi une palette (pastilles rondes, anneau de sélection, flèches / Début / Fin), `value` par index, `format` du compteur, `size` sm / md.
 - `SpritePicker` : une case parmi une planche d’images (`image`, `count`, `columns`), ronde ou carrée, `size` en px, même clavier que `SwatchPicker`.
 - `Steps` : parcours en étapes vertical ou horizontal, `current` bindable et `reached` (les étapes au-delà restent verrouillées), `compact` pour un rail d’icônes avec point glacier sous les étapes faites, flèches / Début / Fin. Type `StepItem` exporté.

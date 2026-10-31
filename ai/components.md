@@ -572,7 +572,7 @@ Grille d’un mois : choisir une date, naviguer par mois et par année, clavier 
 
 Date saisie au clavier (chiffres seuls, séparateurs posés automatiquement) ou choisie dans un calendrier ancré au champ.
 
-**Utiliser** : value en ISO (AAAA-MM-JJ), vide tant que la date tapée n’est pas complète et valide ; l’appelant ajoute ses règles (âge) via error. order suit la langue (jour-mois-année en français) ; placeholder par défaut « JJ/MM/AAAA ». Le bouton calendrier ouvre un Popover avec Calendar ; Échap et clic extérieur ferment.
+**Utiliser** : value en ISO (AAAA-MM-JJ), vide tant que la date tapée n’est pas complète et valide ; l’appelant ajoute ses règles (âge) via error. order suit la langue (jour-mois-année en français) ; placeholder par défaut « JJ/MM/AAAA ». Le bouton calendrier ouvre un Popover avec Calendar ; Échap et clic extérieur ferment. placement="top-start" quand le champ est dans la moitié basse d’une fenêtre : le calendrier s’ouvre au-dessus au lieu de pousser le contenu.
 
 **Éviter** : Une date sans contrainte de saisie : TextField suffit rarement, préférer ce champ.
 
@@ -590,6 +590,7 @@ Date saisie au clavier (chiffres seuls, séparateurs posés automatiquement) ou 
 | `locale` | `string` | 'fr' |  |
 | `disabled` | `boolean` | false |  |
 | `calendarLabel` | `string` | 'Ouvrir le calendrier' |  |
+| `placement` | `'bottom-start' \| 'bottom-end' \| 'top-start' \| 'top-end'` | 'bottom-start' | Côté du calendrier ; top-start en bas d’un formulaire qui ne doit pas défiler. |
 | `onchange` | `(value: string) => void` | — |  |
 
 ```svelte
