@@ -1,0 +1,21 @@
+type Order = 'dmy' | 'mdy' | 'ymd';
+type Placement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
+type Props = {
+    label?: string;
+    value?: string;
+    order?: Order;
+    placeholder?: string;
+    help?: string;
+    error?: string;
+    aside?: string;
+    minYear?: number;
+    maxYear?: number;
+    locale?: string;
+    disabled?: boolean;
+    calendarLabel?: string;
+    placement?: Placement;
+    onchange?: (value: string) => void;
+};
+declare const DateField: import("svelte").Component<Props, {}, "value">;
+type DateField = ReturnType<typeof DateField>;
+export default DateField;
