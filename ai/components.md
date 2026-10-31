@@ -69,7 +69,13 @@
 | [`TraceWaterfall`](#tracewaterfall) | Données | Cascade des spans d’une trace : noms indentés, barres placées dans le temps, couleur par service, erreurs marquées. |
 | [`CodeBlock`](#codeblock) | Données | Bloc monospace multi-lignes : message brut, pile d’appels, requête, avec numéros de ligne et copie. |
 | [`SeverityDot`](#severitydot) | Données | Point de sévérité (trace, debug, info, warn, error, fatal) avec libellé optionnel ; vocabulaire partagé severityTone / severityLabel. |
-| [`Icon`](#icon) | Structure | Pictogramme au trait (90 icônes), couleur héritée. |
+| [`Chip`](#chip) | Saisie | Jeton de choix : catégorie d’un éditeur, filtre d’une liste, option à activer. |
+| [`SwatchPicker`](#swatchpicker) | Saisie | Une couleur parmi une palette : cheveux, maquillage, peinture. Flèches entre les pastilles. |
+| [`SpritePicker`](#spritepicker) | Saisie | Une case parmi une planche d’images : couleurs d’yeux, motifs, emblèmes. Flèches entre les cases. |
+| [`Steps`](#steps) | Navigation | Parcours en étapes : rail vertical ou barre horizontale ; étapes faites, courante, atteignables, verrouillées. |
+| [`Calendar`](#calendar) | Saisie | Grille d’un mois : choisir une date, naviguer par mois et par année, clavier complet. |
+| [`DateField`](#datefield) | Saisie | Date saisie au clavier (chiffres seuls, séparateurs posés automatiquement) ou choisie dans un calendrier ancré au champ. |
+| [`Icon`](#icon) | Structure | Pictogramme au trait (128 icônes), couleur héritée. |
 
 ## Actions
 
@@ -77,7 +83,7 @@
 
 Déclenche une action ; le libellé dit exactement ce qui se passe.
 
-**Utiliser** : primary pour l’action qui fait avancer la tâche en cours — en général une par zone de décision. Plusieurs actions de même importance : secondary ou ghost côte à côte, pas plusieurs primary collés. key affiche la touche ; danger pour détruire ; quiet pour Annuler.
+**Utiliser** : primary pour l’action qui fait avancer la tâche en cours — en général une par zone de décision. Plusieurs actions de même importance : secondary ou ghost côte à côte, pas plusieurs primary collés. key affiche la touche ; danger pour détruire ; quiet pour Annuler. round avec iconOnly pour un bouton flottant ou un bouton de barre.
 
 **Éviter** : « OK » ou « Valider » quand l’action a un nom. Un bouton désactivé sans dire pourquoi (ajouter un texte d’aide à côté).
 
@@ -92,6 +98,7 @@ Déclenche une action ; le libellé dit exactement ce qui se passe.
 | `label` | `string` | — | Texte si pas d’enfants. |
 | `loading` | `boolean` | false | Garde la taille, masque le texte, bloque le clic. |
 | `block` | `boolean` | false | Pleine largeur (touche alignée à droite). |
+| `round` | `boolean` | false | Bouton rond (avec iconOnly). |
 | `disabled` | `boolean` | false |  |
 | `onclick` | `(e) => void` | — |  |
 
@@ -310,10 +317,15 @@ Valeur continue (volume, fréquence).
 | `step` | `number` | 1 |  |
 | `label` | `string` | — |  |
 | `format` | `(v) => string` | — |  |
+| `minLabel` | `string` | — | Pôle gauche (« Étroit »). |
+| `maxLabel` | `string` | — | Pôle droit (« Large ») ; le pôle du côté de la valeur s’allume quand centered. |
+| `centered` | `boolean` | false | Remplissage depuis le milieu : traits d’un visage de -1 à 1, mélange entre deux parents. |
 | `disabled` | `boolean` | false |  |
+| `onchange` | `(v: number) => void` | — |  |
 
 ```svelte
 <Slider label="Volume radio" bind:value={volume} format={(v) => `${v} %`} />
+<Slider label="Largeur du nez" bind:value={nose} min={-1} max={1} step={0.05} centered minLabel="Étroit" maxLabel="Large" />
 ```
 
 ### Segmented
@@ -440,6 +452,127 @@ Valeurs d’une dimension avec leur compte : cliquer ajoute ou retire le filtre,
 </Disclosure>
 ```
 
+### Chip
+
+Jeton de choix : catégorie d’un éditeur, filtre d’une liste, option à activer.
+
+**Utiliser** : Une rangée de catégories (cheveux, yeux, nez…) ou de filtres ; selected est piloté par l’appelant (aria-pressed). icon à gauche, count en mono à droite ; size="sm" dans une barre dense.
+
+**Éviter** : Un filtre retirable de barre de requête : FilterChip. Deux à quatre valeurs exclusives : Segmented.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `label` | `string` | — |  |
+| `icon` | `IconName` | — |  |
+| `selected` | `boolean` | false |  |
+| `disabled` | `boolean` | false |  |
+| `count` | `number` | — |  |
+| `size` | `'sm' \| 'md'` | 'md' |  |
+| `children` | `Snippet` | — | Contenu à la place de label. |
+| `onclick` | `(e) => void` | — |  |
+
+```svelte
+{#each categories as c (c.id)}<Chip label={c.label} icon={c.icon} selected={c.id === active} onclick={() => (active = c.id)} />{/each}
+```
+
+### SwatchPicker
+
+Une couleur parmi une palette : cheveux, maquillage, peinture. Flèches entre les pastilles.
+
+**Utiliser** : colors en valeurs CSS (données du jeu, pas des tokens) ; value est l’index choisi. format pour le compteur à droite du libellé (« 12 / 64 » par défaut).
+
+**Éviter** : Choisir une couleur libre : ce n’est pas un sélecteur de couleur.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `colors` | `string[]` | — |  |
+| `value` | `number` | 0 | bind:value (index). |
+| `label` | `string` | — |  |
+| `size` | `'sm' \| 'md'` | 'md' | 22 / 28 px |
+| `disabled` | `boolean` | false |  |
+| `format` | `(index) => string` | « n / total » | Compteur et nom accessible de chaque pastille. |
+| `onchange` | `(index: number) => void` | — |  |
+
+```svelte
+<SwatchPicker label="Couleur des cheveux" colors={HAIR_COLORS} bind:value={hairColor} />
+```
+
+### SpritePicker
+
+Une case parmi une planche d’images : couleurs d’yeux, motifs, emblèmes. Flèches entre les cases.
+
+**Utiliser** : image est une planche de count cases rangées sur columns colonnes ; chaque case est découpée par position. size en px à 1080p (suit l’échelle) ; shape="square" pour des motifs.
+
+**Éviter** : Des images séparées : composer une grille de Chip ou de boutons.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `image` | `string` | — | URL de la planche. |
+| `count` | `number` | — |  |
+| `columns` | `number` | — |  |
+| `value` | `number` | 0 | bind:value (index). |
+| `label` | `string` | — |  |
+| `size` | `number` | 44 | px |
+| `shape` | `'round' \| 'square'` | 'round' |  |
+| `disabled` | `boolean` | false |  |
+| `format` | `(index) => string` | « n / total » |  |
+| `onchange` | `(index: number) => void` | — |  |
+
+```svelte
+<SpritePicker label="Couleur des yeux" image={eyeSheet} count={32} columns={8} bind:value={eyeColor} />
+```
+
+### Calendar
+
+Grille d’un mois : choisir une date, naviguer par mois et par année, clavier complet.
+
+**Utiliser** : value en ISO (AAAA-MM-JJ) ; minYear et maxYear bornent la navigation (date de naissance : âge minimal et maximal). locale pour les noms de mois et de jours ; weekStart 1 (lundi) ou 0 (dimanche). Flèches entre les jours, Page haut/bas entre les mois, Début/Fin dans la semaine, Entrée choisit.
+
+**Éviter** : Saisir une date au clavier : DateField embarque ce calendrier.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `value` | `string` | '' | bind:value (ISO). |
+| `minYear` | `number` | 1900 |  |
+| `maxYear` | `number` | année courante |  |
+| `locale` | `string` | 'fr' |  |
+| `weekStart` | `0 \| 1` | 1 |  |
+| `label` | `string` | 'Calendrier' | Nom accessible. |
+| `labels` | `{ prevYear?, prevMonth?, nextMonth?, nextYear? }` | français | Noms accessibles des boutons. |
+| `onpick` | `(value: string) => void` | — |  |
+
+```svelte
+<Calendar bind:value={birth} minYear={1916} maxYear={2008} locale="fr" />
+```
+
+### DateField
+
+Date saisie au clavier (chiffres seuls, séparateurs posés automatiquement) ou choisie dans un calendrier ancré au champ.
+
+**Utiliser** : value en ISO (AAAA-MM-JJ), vide tant que la date tapée n’est pas complète et valide ; l’appelant ajoute ses règles (âge) via error. order suit la langue (jour-mois-année en français) ; placeholder par défaut « JJ/MM/AAAA ». Le bouton calendrier ouvre un Popover avec Calendar ; Échap et clic extérieur ferment.
+
+**Éviter** : Une date sans contrainte de saisie : TextField suffit rarement, préférer ce champ.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `label` | `string` | — |  |
+| `value` | `string` | '' | bind:value (ISO). |
+| `order` | `'dmy' \| 'mdy' \| 'ymd'` | 'dmy' |  |
+| `placeholder` | `string` | selon order |  |
+| `help` | `string` | — |  |
+| `error` | `string` | — | Active l’état erreur. |
+| `aside` | `string` | — | Indication à droite du libellé. |
+| `minYear` | `number` | 1900 |  |
+| `maxYear` | `number` | année courante |  |
+| `locale` | `string` | 'fr' |  |
+| `disabled` | `boolean` | false |  |
+| `calendarLabel` | `string` | 'Ouvrir le calendrier' |  |
+| `onchange` | `(value: string) => void` | — |  |
+
+```svelte
+<DateField label="Date de naissance" bind:value={birth} minYear={1916} maxYear={2008} error={age !== null && age < 18 ? '18 ans minimum' : undefined} />
+```
+
 ## Navigation
 
 ### Tabs
@@ -507,6 +640,28 @@ Menu contextuel ou liste d’actions : flèches, Entrée, Échap, raccourcis.
   { id: 'use', label: 'Utiliser', icon: 'hand', key: 'E' },
   { id: 'drop', label: 'Jeter', icon: 'trash', key: 'X', danger: true, separatorBefore: true },
 ]} />
+```
+
+### Steps
+
+Parcours en étapes : rail vertical ou barre horizontale ; étapes faites, courante, atteignables, verrouillées.
+
+**Utiliser** : current est l’étape affichée ; reached la plus avancée déjà atteinte : les suivantes restent verrouillées jusqu’à ce que l’appelant avance. compact pour un rail d’icônes (libellé en infobulle native, point glacier sous les étapes faites). Flèches entre les étapes atteignables, Début et Fin.
+
+**Éviter** : Naviguer librement entre sections : Tabs ou NavList.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `steps` | `StepItem[]` | — | { id, label, icon?, disabled? } |
+| `current` | `string` | '' | bind:current |
+| `reached` | `string` | current | Étape la plus avancée atteinte. |
+| `orientation` | `'vertical' \| 'horizontal'` | 'vertical' |  |
+| `compact` | `boolean` | false | Icônes seules. |
+| `label` | `string` | 'Étapes' | Nom accessible. |
+| `onselect` | `(id: string) => void` | — |  |
+
+```svelte
+<Steps bind:current={step} reached={furthest} compact steps={[{ id: 'model', label: 'Modèle', icon: 'user' }, { id: 'heritage', label: 'Héritage', icon: 'dna' }, { id: 'face', label: 'Visage', icon: 'face' }]} />
 ```
 
 ## Retours
@@ -1573,7 +1728,7 @@ Section repliable avec titre, compteur et actions : groupe de facettes, détail 
 
 ### Icon
 
-Pictogramme au trait (90 icônes), couleur héritée.
+Pictogramme au trait (128 icônes), couleur héritée.
 
 **Utiliser** : label s’il porte un sens.
 

@@ -66,6 +66,12 @@ export { default as JsonTree } from './components/JsonTree.svelte';
 export { default as TraceWaterfall } from './components/TraceWaterfall.svelte';
 export { default as CodeBlock } from './components/CodeBlock.svelte';
 export { default as SeverityDot } from './components/SeverityDot.svelte';
+export { default as Chip } from './components/Chip.svelte';
+export { default as SwatchPicker } from './components/SwatchPicker.svelte';
+export { default as SpritePicker } from './components/SpritePicker.svelte';
+export { default as Steps } from './components/Steps.svelte';
+export { default as Calendar } from './components/Calendar.svelte';
+export { default as DateField } from './components/DateField.svelte';
 
 export * from './types';
 export { icons, iconNames, type IconName } from './icons/icons';

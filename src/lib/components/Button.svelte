@@ -19,12 +19,14 @@
     label?: string;
     loading?: boolean;
     block?: boolean;
+    /** Bouton rond : action flottante, bouton de barre. */
+    round?: boolean;
     children?: Snippet;
   };
-  let { href, variant = 'secondary', size = 'md', key, icon, iconOnly = false, label, loading = false, block = false,
+  let { href, variant = 'secondary', size = 'md', key, icon, iconOnly = false, label, loading = false, block = false, round = false,
         disabled = false, type = 'button', children, class: cls = '', ...rest }: Props = $props();
   const classes = $derived(['sk-btn sk-focusable', variant !== 'secondary' && `sk-btn--${variant}`, size !== 'md' && `sk-btn--${size}`,
-    iconOnly && 'sk-btn--icon', block && 'sk-btn--block', block && key && 'sk-btn--split', loading && 'is-loading', (disabled || loading) && href && 'is-disabled', cls].filter(Boolean).join(' '));
+    iconOnly && 'sk-btn--icon', round && 'sk-btn--round', block && 'sk-btn--block', block && key && 'sk-btn--split', loading && 'is-loading', (disabled || loading) && href && 'is-disabled', cls].filter(Boolean).join(' '));
 </script>
 
 {#snippet content()}

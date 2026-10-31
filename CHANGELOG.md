@@ -2,6 +2,19 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.13.0
+
+Éditeur de personnage : saisie et parcours.
+- `Calendar` : grille d’un mois (navigation par mois et par année bornée par `minYear` / `maxYear`, `locale`, `weekStart`), clavier complet (flèches, Page haut/bas, Début/Fin, Entrée), aujourd’hui marqué, `value` ISO bindable, `onpick`.
+- `DateField` : champ de date à saisie masquée (chiffres seuls, séparateurs posés automatiquement, `order` dmy / mdy / ymd, collage filtré) avec calendrier ancré dans un `Popover` ; `value` ISO vide tant que la date n’est pas complète et valide ; `help`, `error`, `aside`, `disabled`.
+- `SwatchPicker` : une couleur parmi une palette (pastilles rondes, anneau de sélection, flèches / Début / Fin), `value` par index, `format` du compteur, `size` sm / md.
+- `SpritePicker` : une case parmi une planche d’images (`image`, `count`, `columns`), ronde ou carrée, `size` en px, même clavier que `SwatchPicker`.
+- `Steps` : parcours en étapes vertical ou horizontal, `current` bindable et `reached` (les étapes au-delà restent verrouillées), `compact` pour un rail d’icônes avec point glacier sous les étapes faites, flèches / Début / Fin. Type `StepItem` exporté.
+- `Chip` : jeton de choix (`selected` en `aria-pressed`, `icon`, `count`, `size`) pour les catégories d’un éditeur ou les filtres d’une liste.
+- `Slider` : `minLabel` / `maxLabel` (pôles sous la piste), `centered` (remplissage depuis le milieu, pôle du côté de la valeur allumé), `onchange`.
+- `Button` : `round` pour un bouton rond ; `iconOnly` en taille `lg` est désormais carré.
+- Icônes : `chevl`, `chevll`, `chevrr`, `dna`, `face`, `shirt`, `glasses`, `pen`, `clipboard`, `scissors`, `eyebrow`, `beard`, `waves`, `nose`, `smile`, `lips`, `jaw`, `chin`, `tie`, `brush`, `sun`, `hanger`, `arm`, `pants`, `shoe`, `mask`, `bag`, `hat`, `ear`, `watch`, `ring`, `necklace`, `head`, `leg`, `back`, `mouse-left`, `mouse-right`, `mouse-wheel` (128 icônes).
+
 ## 1.12.0
 
 - `Tooltip` : la bulle reste dans la fenêtre quel que soit le déclencheur : décalée latéralement quand elle déborde à gauche ou à droite (flèche recalée), retournée vers le bas quand elle dépasse en haut (et inversement).
