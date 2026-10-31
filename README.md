@@ -9,7 +9,7 @@ Fondations, tokens, composants Svelte 5 et outils pour toutes les interfaces de 
 - **Outils** : `siku check` (règles + compatibilité), `siku doctor`, `siku ai sync` (Claude Code / Codex), `siku init`.
 
 ```bash
-bun add "git+ssh://git@github.com/siku-project/siku-ui.git#v1.7.0"     # Bun (tag épinglé, le lockfile fixe le commit)
+bun add "git+https://github.com/siku-project/siku-ui.git#v1.13.0"    # Bun (tag épinglé, le lockfile fixe le commit)
 npm i "github:siku-project/siku-ui#semver:^1.0.0"                     # npm (plage semver)
 ```
 

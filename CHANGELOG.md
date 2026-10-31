@@ -18,6 +18,7 @@ Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompa
 - Base `.sk` : titres, paragraphes, listes et figures sans marge ni puce par défaut (une ressource sans preflight Tailwind héritait des marges du navigateur entre un `h1` et son `p`).
 - `Segmented` : `size="lg"` (hauteur d’un champ) et `block` (pleine largeur, segments égaux) pour un choix posé à côté d’un `TextField` dans un formulaire.
 - Icônes : `chevl`, `chevll`, `chevrr`, `dna`, `face`, `shirt`, `glasses`, `pen`, `clipboard`, `scissors`, `eyebrow`, `beard`, `waves`, `nose`, `smile`, `lips`, `jaw`, `chin`, `tie`, `brush`, `sun`, `hanger`, `arm`, `pants`, `shoe`, `mask`, `bag`, `hat`, `ear`, `watch`, `ring`, `necklace`, `head`, `leg`, `back`, `mouse-left`, `mouse-right`, `mouse-wheel` (128 icônes).
+- Dépôt public : la dépendance se déclare en `git+https://github.com/siku-project/siku-ui.git#vX.Y.Z` (Bun télécharge l'archive du tag sans authentification) ; plus de jeton `SIKU_UI_TOKEN` en CI ni dans Docker. Gabarit de ressource et `ui.yml` alignés, doc mise à jour.
 
 ## 1.12.0
 
