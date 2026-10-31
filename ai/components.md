@@ -48,6 +48,7 @@
 | [`HoldAction`](#holdaction) | Jeu | Action à maintenir : se remplit tant que la touche est tenue, se vide au relâchement. |
 | [`HudAnchor`](#hudanchor) | Jeu | Place un groupe du HUD dans un coin, à l’intérieur de la zone sûre GTA. |
 | [`Screen`](#screen) | Structure | Famille « écran plein » : voile, cadre 16:9 centré, Échap pour fermer. |
+| [`Veil`](#veil) | Structure | Voile dégradé depuis un bord de l’écran, à courbe douce : asseoir une colonne ou un pied d’écran posés sur le jeu sans cadre. |
 | [`Surface`](#surface) | Structure | Un niveau de surface pour composer fenêtres, panneaux et colonnes. |
 | [`Divider`](#divider) | Structure | Filet de structure, horizontal, vertical ou titré. |
 | [`Drawer`](#drawer) | Structure | Panneau latéral posé sur la page : navigation mobile, filtres, inspecteur. |
@@ -1627,6 +1628,28 @@ Famille « écran plein » : voile, cadre 16:9 centré, Échap pour fermer.
 <Screen title="Inventaire" onclose={() => fetchNui('close')}>
   <Surface padding="none" elevated>…</Surface>
 </Screen>
+```
+
+### Veil
+
+Voile dégradé depuis un bord de l’écran, à courbe douce : asseoir une colonne ou un pied d’écran posés sur le jeu sans cadre.
+
+**Utiliser** : Dans un conteneur positionné (fixed inset-0) : side choisit le bord, size l’étendue (% ou rem), hold la part tenue à pleine densité avant le fondu. Deux voiles qui se croisent (gauche + bas) ne laissent aucune cassure : le fondu commence et finit à pente nulle. strength suit les tokens opacity-scrim-* : heavy pour une colonne de texte et de boutons, light pour garder le jeu présent.
+
+**Éviter** : Un voile uniforme derrière une fenêtre : Screen ou Modal. Le voile local d’un groupe HUD : HudAnchor.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `side` | `'left' \| 'right' \| 'top' \| 'bottom'` | 'left' |  |
+| `size` | `string` | '50%' | Largeur (gauche / droite) ou hauteur (haut / bas). |
+| `hold` | `string` | '30%' | Part du voile tenue à pleine densité. |
+| `strength` | `'light' \| 'standard' \| 'heavy'` | 'standard' |  |
+
+```svelte
+<div class="pointer-events-none fixed inset-0">
+  <Veil side="left" size="52%" strength="heavy" />
+  <Veil side="bottom" size="40%" strength="heavy" />
+</div>
 ```
 
 ### Surface

@@ -19,6 +19,13 @@
 .sk-screen--light{background:rgba(7,8,10,var(--opacity-scrim-light))}
 .sk-screen--standard{background:rgba(7,8,10,var(--opacity-scrim))}
 .sk-screen--edges{background:radial-gradient(90% 80% at 50% 48%,rgba(7,8,10,var(--opacity-scrim)),rgba(7,8,10,var(--opacity-scrim-heavy)))}
+.sk-veil{position:absolute;pointer-events:none;--veil-a:var(--opacity-scrim);--veil-dir:to right;background:linear-gradient(var(--veil-dir),rgba(7,8,10,var(--veil-a)) 0%,rgba(7,8,10,var(--veil-a)) var(--veil-hold),rgba(7,8,10,calc(var(--veil-a) * 0.972)) calc(var(--veil-hold) + (100% - var(--veil-hold)) * 0.1),rgba(7,8,10,calc(var(--veil-a) * 0.896)) calc(var(--veil-hold) + (100% - var(--veil-hold)) * 0.2),rgba(7,8,10,calc(var(--veil-a) * 0.784)) calc(var(--veil-hold) + (100% - var(--veil-hold)) * 0.3),rgba(7,8,10,calc(var(--veil-a) * 0.648)) calc(var(--veil-hold) + (100% - var(--veil-hold)) * 0.4),rgba(7,8,10,calc(var(--veil-a) * 0.5)) calc(var(--veil-hold) + (100% - var(--veil-hold)) * 0.5),rgba(7,8,10,calc(var(--veil-a) * 0.352)) calc(var(--veil-hold) + (100% - var(--veil-hold)) * 0.6),rgba(7,8,10,calc(var(--veil-a) * 0.216)) calc(var(--veil-hold) + (100% - var(--veil-hold)) * 0.7),rgba(7,8,10,calc(var(--veil-a) * 0.104)) calc(var(--veil-hold) + (100% - var(--veil-hold)) * 0.8),rgba(7,8,10,calc(var(--veil-a) * 0.028)) calc(var(--veil-hold) + (100% - var(--veil-hold)) * 0.9),rgba(7,8,10,0) 100%)}
+.sk-veil--light{--veil-a:var(--opacity-scrim-light)}
+.sk-veil--heavy{--veil-a:var(--opacity-scrim-heavy)}
+.sk-veil--left{inset:0 auto 0 0;width:var(--veil-size);--veil-dir:to right}
+.sk-veil--right{inset:0 0 0 auto;width:var(--veil-size);--veil-dir:to left}
+.sk-veil--top{inset:0 0 auto 0;height:var(--veil-size);--veil-dir:to bottom}
+.sk-veil--bottom{inset:auto 0 0 0;height:var(--veil-size);--veil-dir:to top}
 .sk-screen__frame{position:relative;width:var(--frame-w);height:var(--frame-h);padding:var(--space-16) var(--space-24);display:flex;flex-direction:column;gap:var(--space-6)}
 [data-density="compact"] .sk-screen__frame{padding:var(--space-8) var(--space-10)}
 .sk-screen__bar{display:flex;align-items:center;gap:var(--space-6);min-height:var(--control-md)}

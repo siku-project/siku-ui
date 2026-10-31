@@ -313,6 +313,8 @@
     <div class="row sk-hud-text"><S.Stat size="xl" value="84" minor=" km/h" hud /><div class="col" style="width:12rem"><S.Gauge kind="health" value={100} /><S.Gauge kind="thirst" value={18} /></div></div></div>
 {:else if name === 'Screen'}
   <p class="note">Screen occupe tout l’écran (voile + cadre 16:9 centré, Échap ferme). Voir la composition « Inventaire » et le gabarit de ressource.</p>
+{:else if name === 'Veil'}
+  <div class="hudbox" style="position:relative;height:16rem;overflow:hidden;padding:0"><S.Veil side={p.side} strength={p.strength} size="60%" /><S.Veil side="bottom" strength={p.strength} size="45%" /><p class="note" style="position:absolute;left:1.5rem;bottom:1rem;margin:0;color:var(--fg-primary)">Deux voiles qui se croisent, sans cassure.</p></div>
 {:else if name === 'Surface'}
   <div class="play"><S.Surface level={p.level} elevated={p.elevated} padding="md"><b class="t-subheading">Surface {p.level}</b><p class="t-body-sm" style="color:var(--fg-secondary);margin:.25rem 0 0">Panneau, fenêtre, colonne de focus.</p></S.Surface></div>
   <div class="row"><S.Surface level="sunken" padding="sm">sunken</S.Surface><S.Surface padding="sm">base</S.Surface><S.Surface level="raised" padding="sm">raised</S.Surface><S.Surface padding="sm" elevated>elevated</S.Surface></div>

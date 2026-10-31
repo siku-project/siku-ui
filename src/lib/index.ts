@@ -44,6 +44,7 @@ export { default as Gauge } from './components/Gauge.svelte';
 export { default as Prompt } from './components/Prompt.svelte';
 export { default as HudAnchor } from './components/HudAnchor.svelte';
 export { default as Screen } from './components/Screen.svelte';
+export { default as Veil } from './components/Veil.svelte';
 export { default as Surface } from './components/Surface.svelte';
 export { default as Divider } from './components/Divider.svelte';
 export { default as Drawer } from './components/Drawer.svelte';
