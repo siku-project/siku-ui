@@ -6,6 +6,8 @@
 
 .sk{font-family:var(--font-sans);color:var(--fg-primary);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 .sk *,.sk *::before,.sk *::after{box-sizing:border-box}
+.sk h1,.sk h2,.sk h3,.sk h4,.sk p,.sk ul,.sk ol,.sk figure{margin:0}
+.sk ul,.sk ol{padding:0;list-style:none}
 .sk-ic{width:var(--icon-md);height:var(--icon-md);fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .sk-ic--sm{width:var(--icon-sm);height:var(--icon-sm)}
 .sk-ic--lg{width:var(--icon-lg);height:var(--icon-lg);stroke-width:1.35}

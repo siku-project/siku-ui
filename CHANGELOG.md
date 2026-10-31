@@ -15,6 +15,7 @@ Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompa
 - `Veil` : voile dégradé depuis un bord (`side`, `size`, `hold`, `strength` sur les tokens `opacity-scrim-*`) à courbe douce : deux voiles qui se croisent ne montrent aucune cassure.
 - `Slider` : `minLabel` / `maxLabel` (pôles sous la piste), `centered` (remplissage depuis le milieu, pôle du côté de la valeur allumé), `onchange`.
 - `Button` : `round` pour un bouton rond ; `iconOnly` en taille `lg` est désormais carré.
+- Base `.sk` : titres, paragraphes, listes et figures sans marge ni puce par défaut (une ressource sans preflight Tailwind héritait des marges du navigateur entre un `h1` et son `p`).
 - `Segmented` : `size="lg"` (hauteur d’un champ) et `block` (pleine largeur, segments égaux) pour un choix posé à côté d’un `TextField` dans un formulaire.
 - Icônes : `chevl`, `chevll`, `chevrr`, `dna`, `face`, `shirt`, `glasses`, `pen`, `clipboard`, `scissors`, `eyebrow`, `beard`, `waves`, `nose`, `smile`, `lips`, `jaw`, `chin`, `tie`, `brush`, `sun`, `hanger`, `arm`, `pants`, `shoe`, `mask`, `bag`, `hat`, `ear`, `watch`, `ring`, `necklace`, `head`, `leg`, `back`, `mouse-left`, `mouse-right`, `mouse-wheel` (128 icônes).
 
