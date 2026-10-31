@@ -73,6 +73,7 @@
 | [`SwatchPicker`](#swatchpicker) | Saisie | Une couleur parmi une palette : cheveux, maquillage, peinture. Flèches entre les pastilles. |
 | [`SpritePicker`](#spritepicker) | Saisie | Une case parmi une planche d’images : couleurs d’yeux, motifs, emblèmes. Flèches entre les cases. |
 | [`Steps`](#steps) | Navigation | Parcours en étapes : rail vertical ou barre horizontale ; étapes faites, courante, atteignables, verrouillées. |
+| [`PickList`](#picklist) | Saisie | Une entrée parmi quelques-unes, posée sur le jeu : personnages, sauvegardes, véhicules d’un garage, serveurs. |
 | [`Calendar`](#calendar) | Saisie | Grille d’un mois : choisir une date, naviguer par mois et par année, clavier complet. |
 | [`DateField`](#datefield) | Saisie | Date saisie au clavier (chiffres seuls, séparateurs posés automatiquement) ou choisie dans un calendrier ancré au champ. |
 | [`Icon`](#icon) | Structure | Pictogramme au trait (128 icônes), couleur héritée. |
@@ -520,6 +521,26 @@ Une case parmi une planche d’images : couleurs d’yeux, motifs, emblèmes. Fl
 
 ```svelte
 <SpritePicker label="Couleur des yeux" image={eyeSheet} count={32} columns={8} bind:value={eyeColor} />
+```
+
+### PickList
+
+Une entrée parmi quelques-unes, posée sur le jeu : personnages, sauvegardes, véhicules d’un garage, serveurs.
+
+**Utiliser** : Chaque entrée est une plaque opaque (bg-base) lisible sur un voile ; l’entrée choisie passe en bg-control avec l’anneau de sélection et un repère blanc à gauche. empty pour un emplacement libre (creux, pastille cerclée) ; meta en mono à droite (numéro, date) ; detail sur la deuxième ligne. Flèches ↑ ↓, Début et Fin déplacent la sélection ; Entrée ou double clic déclenche onactivate.
+
+**Éviter** : Naviguer entre des sections d’une fenêtre : NavList. Une liste longue d’opérations : DataRow ou DataTable. Un choix de 2 à 4 valeurs : Segmented.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `items` | `PickItem[]` | — | { value, label, detail?, icon?, meta?, empty?, disabled? } |
+| `value` | `string` | '' | bind:value |
+| `label` | `string` | 'Choix' | Nom accessible. |
+| `onchange` | `(value: string) => void` | — |  |
+| `onactivate` | `(value: string) => void` | — | Entrée ou double clic sur l’entrée choisie. |
+
+```svelte
+<PickList bind:value={slot} label="Personnages" onactivate={play} items={slots.map((s) => s.character ? { value: String(s.slot), label: s.character.name, detail: s.character.job, icon: 'user', meta: s.slot.toString().padStart(2, '0') } : { value: String(s.slot), label: 'Emplacement libre', detail: 'Créer un personnage', icon: 'plus', empty: true, meta: s.slot.toString().padStart(2, '0') })} />
 ```
 
 ### Calendar

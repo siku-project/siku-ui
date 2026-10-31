@@ -87,6 +87,8 @@
   const eyeSheet = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">' + Array.from({ length: 32 }, (_, i) => `<circle cx="${(i % 8) * 100 + 50}" cy="${Math.floor(i / 8) * 100 + 50}" r="42" fill="hsl(${i * 11} 55% ${35 + (i % 4) * 8}%)"/><circle cx="${(i % 8) * 100 + 50}" cy="${Math.floor(i / 8) * 100 + 50}" r="16" fill="#0c0e12"/>`).join('') + '</svg>');
   let eyeColor = $state(3);
   let stepCur = $state('face');
+  let pickSlot = $state('1');
+  const pickItems: S.PickItem[] = [{ value: '1', label: 'Nathan Rousseau', detail: 'Mécanicien', icon: 'user', meta: '01' }, { value: '2', label: 'Léa Martin', detail: 'Sans emploi', icon: 'user', meta: '02' }, { value: '3', label: 'Emplacement libre', detail: 'Créer un personnage', icon: 'plus', meta: '03', empty: true }];
   const stepList = [{ id: 'model', label: 'Modèle', icon: 'user' as const }, { id: 'heritage', label: 'Héritage', icon: 'dna' as const }, { id: 'face', label: 'Visage', icon: 'face' as const }, { id: 'clothes', label: 'Vêtements', icon: 'shirt' as const }, { id: 'accessories', label: 'Accessoires', icon: 'glasses' as const }, { id: 'tattoos', label: 'Tatouages', icon: 'pen' as const }, { id: 'summary', label: 'Récapitulatif', icon: 'clipboard' as const }];
   let birth = $state('');
   let calDate = $state('1996-03-14');
@@ -430,6 +432,9 @@
 {:else if name === 'Steps'}
   <div class="play" style="align-items:flex-start"><S.Steps bind:current={stepCur} reached="accessories" steps={stepList} orientation={p.orientation} compact={p.compact} /></div>
   <p class="note">Étape : <code>{stepCur}</code> — « Tatouages » et « Récapitulatif » restent verrouillées tant que l’appelant n’avance pas <code>reached</code>.</p>
+{:else if name === 'PickList'}
+  <div class="play" style="align-items:flex-start"><div style="width:22rem"><S.PickList bind:value={pickSlot} label="Personnages" items={pickItems} /></div></div>
+  <p class="note">Emplacement : <code>{pickSlot}</code> — flèches ↑ ↓ entre les entrées, Entrée ou double clic pour <code>onactivate</code>.</p>
 {:else if name === 'Calendar'}
   <div class="play" style="align-items:flex-start"><S.Calendar bind:value={calDate} minYear={1916} maxYear={birthYearMax} weekStart={Number(p.weekStart ?? 1) === 0 ? 0 : 1} /></div>
   <p class="note">Date : <code>{calDate || '—'}</code></p>

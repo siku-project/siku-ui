@@ -72,6 +72,7 @@ export { default as SpritePicker } from './components/SpritePicker.svelte';
 export { default as Steps } from './components/Steps.svelte';
 export { default as Calendar } from './components/Calendar.svelte';
 export { default as DateField } from './components/DateField.svelte';
+export { default as PickList } from './components/PickList.svelte';
 
 export * from './types';
 export { icons, iconNames, type IconName } from './icons/icons';
