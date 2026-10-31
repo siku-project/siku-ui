@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.12.0
+# Composants @siku/ui 1.13.0
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 

@@ -2,6 +2,10 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.13.1
+
+- Barres de défilement : toute zone qui défile dans `.sk` a une barre fine (piste transparente, poignée `border-strong` arrondie avec marge, `fg-tertiary` au survol, sans flèches), dans le CEF (`::-webkit-scrollbar`) comme sur le web (`scrollbar-width: thin`, `scrollbar-color`). Une ressource n'a plus à la styler.
+
 ## 1.13.0
 
 Éditeur de personnage : saisie et parcours.
