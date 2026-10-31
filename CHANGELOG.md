@@ -2,6 +2,24 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.13.0
+
+Éditeur de personnage : saisie et parcours.
+- `Calendar` : grille d’un mois (navigation par mois et par année bornée par `minYear` / `maxYear`, `locale`, `weekStart`), clavier complet (flèches, Page haut/bas, Début/Fin, Entrée), aujourd’hui marqué, `value` ISO bindable, `onpick`.
+- `DateField` : champ de date à saisie masquée (chiffres seuls, séparateurs posés automatiquement, `order` dmy / mdy / ymd, collage filtré) avec calendrier ancré dans un `Popover` ; `value` ISO vide tant que la date n’est pas complète et valide ; `help`, `error`, `aside`, `disabled`, `placement` du calendrier (au-dessus ou au-dessous).
+- `SwatchPicker` : une couleur parmi une palette (pastilles rondes, anneau de sélection, flèches / Début / Fin), `value` par index, `format` du compteur, `size` sm / md.
+- `SpritePicker` : une case parmi une planche d’images (`image`, `count`, `columns`), ronde ou carrée, `size` en px, même clavier que `SwatchPicker`.
+- `Steps` : parcours en étapes vertical ou horizontal, `current` bindable et `reached` (les étapes au-delà restent verrouillées), `compact` pour un rail d’icônes avec point glacier sous les étapes faites, flèches / Début / Fin. Type `StepItem` exporté.
+- `Chip` : jeton de choix (`selected` en `aria-pressed`, `icon`, `count`, `size`) pour les catégories d’un éditeur ou les filtres d’une liste.
+- `PickList` : une entrée parmi quelques-unes posée sur le jeu (personnages, sauvegardes, véhicules) : plaques opaques lisibles sur un voile, entrée choisie en `bg-control` avec anneau de sélection et repère à gauche, `empty` pour un emplacement libre, `meta` en mono, flèches / Début / Fin, `onactivate` (Entrée, double clic) ; aucune entrée marquée tant que `value` ne correspond à rien ; la grille interne n’élargit jamais son conteneur (libellés tronqués). Type `PickItem` exporté.
+- `Veil` : voile dégradé depuis un bord (`side`, `size`, `hold`, `strength` sur les tokens `opacity-scrim-*`) à courbe douce : deux voiles qui se croisent ne montrent aucune cassure.
+- `Slider` : `minLabel` / `maxLabel` (pôles sous la piste), `centered` (remplissage depuis le milieu, pôle du côté de la valeur allumé), `onchange`.
+- `Button` : `round` pour un bouton rond ; `iconOnly` en taille `lg` est désormais carré.
+- Base `.sk` : titres, paragraphes, listes et figures sans marge ni puce par défaut (une ressource sans preflight Tailwind héritait des marges du navigateur entre un `h1` et son `p`).
+- `Segmented` : `size="lg"` (hauteur d’un champ) et `block` (pleine largeur, segments égaux) pour un choix posé à côté d’un `TextField` dans un formulaire.
+- Icônes : `chevl`, `chevll`, `chevrr`, `dna`, `face`, `shirt`, `glasses`, `pen`, `clipboard`, `scissors`, `eyebrow`, `beard`, `waves`, `nose`, `smile`, `lips`, `jaw`, `chin`, `tie`, `brush`, `sun`, `hanger`, `arm`, `pants`, `shoe`, `mask`, `bag`, `hat`, `ear`, `watch`, `ring`, `necklace`, `head`, `leg`, `back`, `mouse-left`, `mouse-right`, `mouse-wheel` (128 icônes).
+- Dépôt public : la dépendance se déclare en `git+https://github.com/siku-project/siku-ui.git#vX.Y.Z` (Bun télécharge l'archive du tag sans authentification) ; plus de jeton `SIKU_UI_TOKEN` en CI ni dans Docker. Gabarit de ressource et `ui.yml` alignés, doc mise à jour.
+
 ## 1.12.0
 
 - `Tooltip` : la bulle reste dans la fenêtre quel que soit le déclencheur : décalée latéralement quand elle déborde à gauche ou à droite (flèche recalée), retournée vers le bas quand elle dépasse en haut (et inversement).

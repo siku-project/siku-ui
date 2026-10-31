@@ -78,6 +78,22 @@
   const histWarn = Array.from({ length: 30 }, (_, i) => ({ t: t0 + i * minute, v: i % 4 === 0 ? 6 : 2 }));
   const histError = Array.from({ length: 30 }, (_, i) => ({ t: t0 + i * minute, v: i >= 17 && i <= 19 ? 14 - Math.abs(18 - i) * 5 : i % 7 === 0 ? 1 : 0 }));
   let brush = $state<S.TimeRange | null>(null);
+  let noseWidth = $state(0.2);
+  let blend = $state(50);
+  let chipActive = $state('hair');
+  const chipCats = [{ id: 'hair', label: 'Cheveux', icon: 'scissors' as const }, { id: 'eyebrows', label: 'Sourcils', icon: 'eyebrow' as const }, { id: 'beard', label: 'Barbe', icon: 'beard' as const }, { id: 'eyes', label: 'Yeux', icon: 'eye' as const }, { id: 'nose', label: 'Nez', icon: 'nose' as const }, { id: 'lips', label: 'Lèvres', icon: 'lips' as const }];
+  const hairColors = ['#1c1f21', '#272a2c', '#312e2c', '#35261c', '#4b321f', '#5c3b24', '#6d4c35', '#765c45', '#99815d', '#af9c70', '#d6b97b', '#dac38e', '#845039', '#682b1f', '#a02e19', '#b64b28', '#626262', '#808080', '#aaaaaa', '#c5c5c5', '#463955', '#763c76', '#ed74e3', '#04959e', '#023974', '#3fa16a', '#b6c034', '#e5b103', '#f28831', '#ce3120'];
+  let hairColor = $state(4);
+  const eyeSheet = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">' + Array.from({ length: 32 }, (_, i) => `<circle cx="${(i % 8) * 100 + 50}" cy="${Math.floor(i / 8) * 100 + 50}" r="42" fill="hsl(${i * 11} 55% ${35 + (i % 4) * 8}%)"/><circle cx="${(i % 8) * 100 + 50}" cy="${Math.floor(i / 8) * 100 + 50}" r="16" fill="#0c0e12"/>`).join('') + '</svg>');
+  let eyeColor = $state(3);
+  let stepCur = $state('face');
+  let pickSlot = $state('1');
+  const pickItems: S.PickItem[] = [{ value: '1', label: 'Nathan Rousseau', detail: 'Mécanicien', icon: 'user', meta: '01' }, { value: '2', label: 'Léa Martin', detail: 'Sans emploi', icon: 'user', meta: '02' }, { value: '3', label: 'Emplacement libre', detail: 'Créer un personnage', icon: 'plus', meta: '03', empty: true }];
+  const stepList = [{ id: 'model', label: 'Modèle', icon: 'user' as const }, { id: 'heritage', label: 'Héritage', icon: 'dna' as const }, { id: 'face', label: 'Visage', icon: 'face' as const }, { id: 'clothes', label: 'Vêtements', icon: 'shirt' as const }, { id: 'accessories', label: 'Accessoires', icon: 'glasses' as const }, { id: 'tattoos', label: 'Tatouages', icon: 'pen' as const }, { id: 'summary', label: 'Récapitulatif', icon: 'clipboard' as const }];
+  let birth = $state('');
+  let calDate = $state('1996-03-14');
+  const birthYearMax = new Date().getFullYear() - 18;
+  const ageOf = (iso: string) => { const d = new Date(iso); if (!iso || Number.isNaN(d.getTime())) return null; const n = new Date(); return n.getFullYear() - d.getFullYear() - (n.getMonth() < d.getMonth() || (n.getMonth() === d.getMonth() && n.getDate() < d.getDate()) ? 1 : 0); };
   let picked = $state<number | null>(null);
   const attributes = { event: { name: 'player.connect', id: 'ev_0af3c2d19e4b', received_at: '2026-10-15T10:17:40.221Z' }, player: { id: 42, name: 'Lina Moreau', identifiers: ['license:3f9a2c…', 'discord:2210…'], ping_ms: 48, vip: false, ban: null }, resource: 'siku_core', tags: ['join', 'queue'], user_agent: 'CitizenFX/1.0 (FiveM b12345; Windows NT 10.0; Win64; x64) fx/13 Chromium/103 (KHTML, like Gecko) Safari/537.36 long user agent string for the truncation demo' };
   let jsonLog = $state('—');
@@ -122,6 +138,8 @@
     {#snippet k()}<S.Button variant="primary" loading>Envoyer</S.Button>{/snippet}{@render st('chargement', k)}
     {#snippet l()}<div style="width:15rem"><S.Button variant="primary" block key="E">Équiper</S.Button></div>{/snippet}{@render st('block + touche', l)}
   </div>
+  <h4>Boutons ronds (round, iconOnly)</h4>
+  <div class="play"><S.Button variant="secondary" iconOnly round icon="code" label="Stack" /><S.Button variant="secondary" size="lg" iconOnly round icon="layers" label="Interfaces" /><S.Button variant="primary" size="sm" iconOnly round icon="plus" label="Ajouter" /></div>
 {:else if name === 'ButtonGroup'}
   <div class="play" style="width:28rem"><S.ButtonGroup><S.Button variant="quiet">Annuler</S.Button><S.Button variant="primary">Envoyer 1 250,00 $</S.Button></S.ButtonGroup></div>
   <div class="row" style="width:28rem"><S.ButtonGroup align="stretch"><S.Button variant="ghost">Donner</S.Button><S.Button variant="ghost">Vers le coffre</S.Button></S.ButtonGroup></div>
@@ -154,9 +172,13 @@
 {:else if name === 'Stepper'}
   <div class="play"><S.Stepper bind:value={qty} max={48} label="Quantité à diviser" /><S.Stepper value={1} max={5} /></div>
 {:else if name === 'Slider'}
-  <div class="play" style="width:24rem"><S.Slider label="Volume radio" bind:value={vol} format={(v) => `${v} %`} /></div>
+  <div class="play" style="width:24rem"><S.Slider label="Volume radio" bind:value={vol} format={(v) => `${v} %`} centered={p.centered} disabled={p.disabled} /></div>
+  <h4>Trait d’un visage (centered, pôles)</h4>
+  <div class="play" style="width:24rem"><S.Slider label="Largeur du nez" bind:value={noseWidth} min={-1} max={1} step={0.05} centered minLabel="Étroit" maxLabel="Large" format={(v) => v.toFixed(2)} /></div>
+  <h4>Mélange entre deux pôles</h4>
+  <div class="play" style="width:24rem"><S.Slider label="Ressemblance" bind:value={blend} min={0} max={100} centered minLabel="Mère" maxLabel="Père" format={(v) => `${100 - v} % · ${v} %`} /></div>
 {:else if name === 'Segmented'}
-  <div class="play"><S.Segmented bind:value={seg} label="Période" options={[{ value: '7', label: '7 jours' }, { value: '30', label: '30 jours' }, { value: 'y', label: 'Année' }]} /></div>
+  <div class="play"><div style={p.block ? 'width:24rem' : ''}><S.Segmented bind:value={seg} label="Période" size={p.size} block={p.block} options={[{ value: '7', label: '7 jours' }, { value: '30', label: '30 jours' }, { value: 'y', label: 'Année' }]} /></div></div>
 {:else if name === 'Tabs'}
   <div class="play" style="width:40rem"><S.Tabs variant={p.variant} bind:value={tab} label="Catégories" tabs={[{ value: 'all', label: 'Tout', count: 13 }, { value: 'weapons', label: 'Armes', count: 2 }, { value: 'care', label: 'Soins', count: 3 }, { value: 'food', label: 'Nourriture', count: 3 }, { value: 'keys', label: 'Clés', count: 0, disabled: true }]} /></div>
   <p class="note">Onglet : <code>{tab}</code> — flèches ←/→ quand un onglet a le focus.</p>
@@ -291,6 +313,8 @@
     <div class="row sk-hud-text"><S.Stat size="xl" value="84" minor=" km/h" hud /><div class="col" style="width:12rem"><S.Gauge kind="health" value={100} /><S.Gauge kind="thirst" value={18} /></div></div></div>
 {:else if name === 'Screen'}
   <p class="note">Screen occupe tout l’écran (voile + cadre 16:9 centré, Échap ferme). Voir la composition « Inventaire » et le gabarit de ressource.</p>
+{:else if name === 'Veil'}
+  <div class="hudbox" style="position:relative;height:16rem;overflow:hidden;padding:0"><S.Veil side={p.side} strength={p.strength} size="60%" /><S.Veil side="bottom" strength={p.strength} size="45%" /><p class="note" style="position:absolute;left:1.5rem;bottom:1rem;margin:0;color:var(--fg-primary)">Deux voiles qui se croisent, sans cassure.</p></div>
 {:else if name === 'Surface'}
   <div class="play"><S.Surface level={p.level} elevated={p.elevated} padding="md"><b class="t-subheading">Surface {p.level}</b><p class="t-body-sm" style="color:var(--fg-secondary);margin:.25rem 0 0">Panneau, fenêtre, colonne de focus.</p></S.Surface></div>
   <div class="row"><S.Surface level="sunken" padding="sm">sunken</S.Surface><S.Surface padding="sm">base</S.Surface><S.Surface level="raised" padding="sm">raised</S.Surface><S.Surface padding="sm" elevated>elevated</S.Surface></div>
@@ -397,6 +421,28 @@
   <div class="row">{#each ['trace', 'debug', 'info', 'warn', 'error', 'fatal'] as sev (sev)}<S.SeverityDot severity={sev as S.Severity} label={S.severityLabel(sev as S.Severity)} />{/each}</div>
   <div class="row">{#each ['trace', 'debug', 'info', 'warn', 'error', 'fatal'] as sev (sev)}<S.SeverityDot severity={sev as S.Severity} size="sm" />{/each}</div>
   <div class="row">{#each ['trace', 'info', 'warn', 'error', 'fatal'] as sev (sev)}<S.Badge tone={S.severityTone(sev as S.Severity) === 'info' ? 'info' : S.severityTone(sev as S.Severity)} label={S.severityLabel(sev as S.Severity)} />{/each}</div>
+{:else if name === 'Chip'}
+  <div class="play"><S.Chip label={p.label || 'Cheveux'} icon="scissors" selected={p.selected} size={p.size} disabled={p.disabled} count={12} /></div>
+  <div class="play" style="width:36rem">{#each chipCats as c (c.id)}<S.Chip label={c.label} icon={c.icon} selected={c.id === chipActive} onclick={() => (chipActive = c.id)} />{/each}</div>
+  <p class="note">Catégorie : <code>{chipActive}</code></p>
+{:else if name === 'SwatchPicker'}
+  <div class="play" style="width:30rem;align-items:flex-start"><div style="width:100%"><S.SwatchPicker label="Couleur des cheveux" colors={hairColors} bind:value={hairColor} size={p.size} disabled={p.disabled} /></div></div>
+  <p class="note">Index : <code>{hairColor}</code> — flèches, Début, Fin entre les pastilles.</p>
+{:else if name === 'SpritePicker'}
+  <div class="play" style="width:30rem;align-items:flex-start"><div style="width:100%"><S.SpritePicker label="Couleur des yeux" image={eyeSheet} count={32} columns={8} bind:value={eyeColor} shape={p.shape} disabled={p.disabled} /></div></div>
+  <p class="note">Index : <code>{eyeColor}</code> — la planche de démonstration est dessinée en SVG ; en jeu, une image de 8 × 4 cases.</p>
+{:else if name === 'Steps'}
+  <div class="play" style="align-items:flex-start"><S.Steps bind:current={stepCur} reached="accessories" steps={stepList} orientation={p.orientation} compact={p.compact} /></div>
+  <p class="note">Étape : <code>{stepCur}</code> — « Tatouages » et « Récapitulatif » restent verrouillées tant que l’appelant n’avance pas <code>reached</code>.</p>
+{:else if name === 'PickList'}
+  <div class="play" style="align-items:flex-start"><div style="width:22rem"><S.PickList bind:value={pickSlot} label="Personnages" items={pickItems} /></div></div>
+  <p class="note">Emplacement : <code>{pickSlot}</code> — flèches ↑ ↓ entre les entrées, Entrée ou double clic pour <code>onactivate</code>.</p>
+{:else if name === 'Calendar'}
+  <div class="play" style="align-items:flex-start"><S.Calendar bind:value={calDate} minYear={1916} maxYear={birthYearMax} weekStart={Number(p.weekStart ?? 1) === 0 ? 0 : 1} /></div>
+  <p class="note">Date : <code>{calDate || '—'}</code></p>
+{:else if name === 'DateField'}
+  <div class="play" style="width:22rem;min-height:22rem;align-items:flex-start"><div style="width:100%"><S.DateField label="Date de naissance" bind:value={birth} minYear={1916} maxYear={birthYearMax} help={p.help || (birth ? `${ageOf(birth)} ans` : undefined)} error={p.error || (birth && (ageOf(birth) ?? 0) < 18 ? '18 ans minimum' : undefined)} disabled={p.disabled} /></div></div>
+  <p class="note">Valeur ISO : <code>{birth || '—'}</code> — tape les chiffres, les séparateurs se posent seuls ; le bouton ouvre le calendrier.</p>
 {:else if name === 'Icon'}
   <div class="icons">{#each S.iconNames as n (n)}<div class="ic"><S.Icon name={n} /><span>{n}</span></div>{/each}</div>
 {/if}

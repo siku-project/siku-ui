@@ -6,7 +6,7 @@ Ce guide explique où vit le design system, comment l’installer dans une resso
 
 ## 1. Où vit le design system
 
-**Un dépôt GitHub privé : `siku-project/siku-ui`.** Il contient un seul package, `@siku/ui`, plus sa doc et ses outils.
+**Un dépôt GitHub public : `siku-project/siku-ui`.** Il contient un seul package, `@siku/ui`, plus sa doc et ses outils.
 
 ```
 siku-ui/
@@ -34,14 +34,14 @@ siku-ui/
 
 **Créer le dépôt** (une fois) :
 
-Le dépôt `siku-project/siku-ui` existe (privé) ; chaque version passe par le workflow release.
+Le dépôt `siku-project/siku-ui` est public ; chaque version passe par le workflow release.
 
 ## 1 bis. Installer dans une application web (SvelteKit, Bun)
 
-Bun ne comprend pas `#semver:` et traite une URL `git+https://github.com/…` comme un raccourci GitHub (tarball API, sans authentification) : on déclare l'URL `git+ssh://` d'un tag, le lockfile fixe le commit. En local, la clé SSH GitHub suffit.
+Bun ne comprend pas `#semver:` et traite une URL `git+https://github.com/…` comme un raccourci GitHub (tarball du tag, sans authentification puisque le dépôt est public) : on déclare l'URL HTTPS d'un tag, le lockfile fixe le commit. Aucune clé ni jeton, ni en local, ni en CI, ni dans Docker.
 
 ```bash
-bun add "git+ssh://git@github.com/siku-project/siku-ui.git#v1.2.0"
+bun add "git+https://github.com/siku-project/siku-ui.git#v1.13.0"
 bunx siku ai sync . --web          # CLAUDE.md, AGENTS.md, skill web, hook (mode web)
 ```
 
@@ -56,7 +56,7 @@ bunx siku ai sync . --web          # CLAUDE.md, AGENTS.md, skill web, hook (mode
 import { Button, Surface, Table } from '@siku/ui';   // pas d'initSiku() : la page suit le navigateur
 ```
 
-Scripts : `"lint": "… && siku check src --web"`. En CI et dans Docker (sans clé SSH), le dépôt privé se lit avec un jeton (Contents : lecture) qui réécrit l'URL SSH en HTTPS : `git config --global url."https://x-access-token:$TOKEN@github.com/".insteadOf "ssh://git@github.com/"` avant `bun install` (dans un Dockerfile : `--mount=type=secret` et variables `GIT_CONFIG_*` le temps de la commande), jamais dans l'image ni dans le code. Mise à jour : `bun add git+ssh://git@github.com/siku-project/siku-ui.git#v1.2.0` puis `bunx siku ai sync . --web`.
+Scripts : `"lint": "… && siku check src --web"`. En CI et dans Docker, `bun install --frozen-lockfile` suffit : le dépôt est public. Mise à jour : `bun add git+https://github.com/siku-project/siku-ui.git#v1.13.0` puis `bunx siku ai sync . --web`.
 
 ## 2. Installer dans une ressource existante
 
@@ -72,7 +72,7 @@ siku_inventory/
 
 ```bash
 cd siku_inventory/web
-bun add "git+ssh://git@github.com/siku-project/siku-ui.git#v1.2.0"
+bun add "git+https://github.com/siku-project/siku-ui.git#v1.13.0"
 bunx siku doctor .          # liste ce qui manque dans la configuration
 bunx siku ai sync ..        # CLAUDE.md, AGENTS.md, skill et hook Claude Code à la racine de la ressource
 ```
@@ -150,8 +150,8 @@ Les polices sont référencées par `styles.css` ; Vite les copie dans `html/ass
 
 | Changement | Dans la ressource |
 |---|---|
-| Correctif ou mineure (1.0.0 → 1.3.2) | `bun add git+ssh://git@github.com/siku-project/siku-ui.git#vX.Y.Z` puis `bunx siku ai sync ..`, `bun run check`, `bun run build` |
-| Majeure (1.x → 2.0) | Lire `node_modules/@siku/ui/CHANGELOG.md` (section Migration), `bun add "git+ssh://git@github.com/siku-project/siku-ui.git#v2.0.0"`, `bunx siku ai sync ..`, `bun run check` |
+| Correctif ou mineure (1.0.0 → 1.3.2) | `bun add git+https://github.com/siku-project/siku-ui.git#vX.Y.Z` puis `bunx siku ai sync ..`, `bun run check`, `bun run build` |
+| Majeure (1.x → 2.0) | Lire `node_modules/@siku/ui/CHANGELOG.md` (section Migration), `bun add "git+https://github.com/siku-project/siku-ui.git#v2.0.0"`, `bunx siku ai sync ..`, `bun run check` |
 | Vérifier sa version | `bunx siku --version` |
 
 `#semver:^1.0.0` + `package-lock.json` : chaque ressource reste sur la version verrouillée jusqu’à ce que tu fasses `npm update`. Une évolution du design system ne casse jamais une ressource existante sans action de ta part. La CI de la ressource exécute `bunx siku ai check ..` : elle échoue si les instructions des assistants ne correspondent plus à la version installée (rappel de lancer `ai sync`).
@@ -222,5 +222,5 @@ Une exception reste possible, mais visible : `/* siku-allow : <raison, lien d’
 - **`siku check` lit le code, pas le rendu.** Il attrape les couleurs en dur, les flous, les fonctions CSS hors CEF, les composants recréés ; il ne juge pas une composition. Pour l’aspect : `bun run dev` à 1920×1080 et 1280×720, et revue humaine des captures dans la PR.
 - **CEF réel** : les règles ciblent Chromium 103 (version du CEF FiveM au moment de la rédaction). Si FiveM met à jour son CEF, ajuster `target` et les règles dans `bin/siku.mjs` ; tester une fois en jeu après chaque majeure.
 - **Lisibilité du HUD** : vérifiée sur des décors simulés (doc, page « Lisibilité en jeu ») ; la validation finale se fait en jeu (neige de jour, néons, couchant).
-- **Dépôt privé** : chaque machine/CI qui installe @siku/ui doit pouvoir lire `siku-project/siku-ui` (clé SSH ou jeton). En CI, secret `SIKU_UI_TOKEN` (lecture seule) déjà prévu dans `ui.yml`.
+- **Dépôt public** : toute machine ou CI installe @siku/ui depuis le tag HTTPS sans clé ni jeton ; le secret `SIKU_UI_TOKEN` des anciens workflows n'a plus de raison d'être.
 - **Comportement des outils** : la syntaxe d’import de CLAUDE.md, les hooks et les skills de Claude Code, et la lecture d’AGENTS.md par Codex correspondent à leur documentation au moment de la rédaction ; en cas de doute, consulter la doc officielle de chaque outil.

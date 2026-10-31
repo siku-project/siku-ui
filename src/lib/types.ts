@@ -27,3 +27,7 @@ export type HistogramSeries = { label: string; tone?: ChartTone; points: { t: nu
 export type TimeRange = { from: number; to: number };
 export type FacetItem = { value: string; label?: string; count?: number; active?: boolean; unavailable?: boolean; title?: string };
 export type TraceSpan = { id: string; parentId: string | null; name: string; service?: string; startMs: number; durationMs: number; status: 'ok' | 'error' | 'unset'; depth?: number; attributes?: Record<string, unknown> };
+/** Une étape d'un parcours (Steps). */
+export type StepItem = { id: string; label: string; icon?: IconName; disabled?: boolean };
+/** Une entrée d'une PickList : empty pour un emplacement libre, meta en mono à droite. */
+export type PickItem = { value: string; label: string; detail?: string; icon?: IconName; meta?: string; empty?: boolean; disabled?: boolean };

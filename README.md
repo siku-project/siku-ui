@@ -3,13 +3,13 @@
 Fondations, tokens, composants Svelte 5 et outils pour toutes les interfaces de l’écosystème SIKU : ressources FiveM (NUI) et applications web (SvelteKit).
 
 - **Identité** : neutres graphite froids, blanc glace comme lumière (texte, action, sélection, focus), glacier rare pour ce qui est en cours. Instrument Sans + Geist Mono.
-- **65 composants** typés et accessibles (clavier, manette, ARIA) : actions, saisie, navigation, retours, données, jeu (emplacements, grilles, jauges, invites, actions maintenues, HUD), structure.
+- **73 composants** typés et accessibles (clavier, manette, ARIA) : actions, saisie, navigation, retours, données, jeu (emplacements, grilles, jauges, invites, actions maintenues, HUD), structure.
 - **Runtime FiveM** : échelle 720p → 4K avec planchers de texte et densité compacte, zone sûre GTA et mini-carte, pont NUI, manette → clavier, notifications.
 - **CEF** : tout cible Chromium 103 ; aucun flou d’arrière-plan.
 - **Outils** : `siku check` (règles + compatibilité), `siku doctor`, `siku ai sync` (Claude Code / Codex), `siku init`.
 
 ```bash
-bun add "git+ssh://git@github.com/siku-project/siku-ui.git#v1.7.0"     # Bun (tag épinglé, le lockfile fixe le commit)
+bun add "git+https://github.com/siku-project/siku-ui.git#v1.13.0"    # Bun (tag épinglé, le lockfile fixe le commit)
 npm i "github:siku-project/siku-ui#semver:^1.0.0"                     # npm (plage semver)
 ```
 
