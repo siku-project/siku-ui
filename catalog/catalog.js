@@ -70,8 +70,9 @@ export const components = [
     controls: [{ prop: 'centered', bool: true }, { prop: 'disabled', bool: true }],
     example: `<Slider label="Volume radio" bind:value={volume} format={(v) => \`\${v} %\`} />\n<Slider label="Largeur du nez" bind:value={nose} min={-1} max={1} step={0.05} centered minLabel="Étroit" maxLabel="Large" />` },
   { name: 'Segmented', group: 'forms', summary: 'Une valeur parmi deux à quatre, visible d’un coup d’œil.',
-    use: ['Période d’un graphique, mode d’affichage.'], avoid: ['Naviguer entre sections : Tabs.'],
-    props: [p('value', 'string', "''", 'bind:value'), p('options', '{ value, label, disabled? }[]', '—', ''), p('label', 'string', '—', ''), p('size', "'sm' | 'md'", "'md'", ''), p('onchange', '(v: string) => void', '—', '')],
+    use: ['Période d’un graphique, mode d’affichage.', 'size="lg" et block dans un formulaire, à côté d’un champ : même hauteur qu’un TextField, segments à parts égales.'], avoid: ['Naviguer entre sections : Tabs.'],
+    props: [p('value', 'string', "''", 'bind:value'), p('options', '{ value, label, disabled? }[]', '—', ''), p('label', 'string', '—', ''), p('size', "'sm' | 'md' | 'lg'", "'md'", 'lg : hauteur d’un champ.'), p('block', 'boolean', 'false', 'Pleine largeur, segments égaux.'), p('onchange', '(v: string) => void', '—', '')],
+    controls: [{ prop: 'size', options: ['sm', 'md', 'lg'] }, { prop: 'block', bool: true }],
     example: `<Segmented bind:value={period} options={[{ value: '7', label: '7 jours' }, { value: '30', label: '30 jours' }, { value: 'y', label: 'Année' }]} />` },
   // ───────── Navigation
   { name: 'Tabs', group: 'navigation', summary: 'Onglets soulignés (sections) ou pastilles (filtres d’écran), Q/E en option.',

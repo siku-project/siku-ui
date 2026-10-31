@@ -334,7 +334,7 @@ Valeur continue (volume, fréquence).
 
 Une valeur parmi deux à quatre, visible d’un coup d’œil.
 
-**Utiliser** : Période d’un graphique, mode d’affichage.
+**Utiliser** : Période d’un graphique, mode d’affichage. size="lg" et block dans un formulaire, à côté d’un champ : même hauteur qu’un TextField, segments à parts égales.
 
 **Éviter** : Naviguer entre sections : Tabs.
 
@@ -343,7 +343,8 @@ Une valeur parmi deux à quatre, visible d’un coup d’œil.
 | `value` | `string` | '' | bind:value |
 | `options` | `{ value, label, disabled? }[]` | — |  |
 | `label` | `string` | — |  |
-| `size` | `'sm' \| 'md'` | 'md' |  |
+| `size` | `'sm' \| 'md' \| 'lg'` | 'md' | lg : hauteur d’un champ. |
+| `block` | `boolean` | false | Pleine largeur, segments égaux. |
 | `onchange` | `(v: string) => void` | — |  |
 
 ```svelte

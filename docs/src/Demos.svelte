@@ -178,7 +178,7 @@
   <h4>Mélange entre deux pôles</h4>
   <div class="play" style="width:24rem"><S.Slider label="Ressemblance" bind:value={blend} min={0} max={100} centered minLabel="Mère" maxLabel="Père" format={(v) => `${100 - v} % · ${v} %`} /></div>
 {:else if name === 'Segmented'}
-  <div class="play"><S.Segmented bind:value={seg} label="Période" options={[{ value: '7', label: '7 jours' }, { value: '30', label: '30 jours' }, { value: 'y', label: 'Année' }]} /></div>
+  <div class="play"><div style={p.block ? 'width:24rem' : ''}><S.Segmented bind:value={seg} label="Période" size={p.size} block={p.block} options={[{ value: '7', label: '7 jours' }, { value: '30', label: '30 jours' }, { value: 'y', label: 'Année' }]} /></div></div>
 {:else if name === 'Tabs'}
   <div class="play" style="width:40rem"><S.Tabs variant={p.variant} bind:value={tab} label="Catégories" tabs={[{ value: 'all', label: 'Tout', count: 13 }, { value: 'weapons', label: 'Armes', count: 2 }, { value: 'care', label: 'Soins', count: 3 }, { value: 'food', label: 'Nourriture', count: 3 }, { value: 'keys', label: 'Clés', count: 0, disabled: true }]} /></div>
   <p class="note">Onglet : <code>{tab}</code> — flèches ←/→ quand un onglet a le focus.</p>
