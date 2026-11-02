@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.13.0
+# Composants @siku/ui 1.13.1
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -77,7 +77,7 @@
 | [`PickList`](#picklist) | Saisie | Une entrée parmi quelques-unes, posée sur le jeu : personnages, sauvegardes, véhicules d’un garage, serveurs. |
 | [`Calendar`](#calendar) | Saisie | Grille d’un mois : choisir une date, naviguer par mois et par année, clavier complet. |
 | [`DateField`](#datefield) | Saisie | Date saisie au clavier (chiffres seuls, séparateurs posés automatiquement) ou choisie dans un calendrier ancré au champ. |
-| [`Icon`](#icon) | Structure | Pictogramme au trait (128 icônes), couleur héritée. |
+| [`Icon`](#icon) | Structure | Pictogramme au trait (137 icônes), couleur héritée. |
 
 ## Actions
 
@@ -1774,7 +1774,7 @@ Section repliable avec titre, compteur et actions : groupe de facettes, détail 
 
 ### Icon
 
-Pictogramme au trait (128 icônes), couleur héritée.
+Pictogramme au trait (137 icônes), couleur héritée.
 
 **Utiliser** : label s’il porte un sens.
 

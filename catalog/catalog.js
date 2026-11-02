@@ -353,7 +353,7 @@ export const components = [
     props: [p('label', 'string', '—', ''), p('value', 'string', "''", 'bind:value (ISO).'), p('order', "'dmy' | 'mdy' | 'ymd'", "'dmy'", ''), p('placeholder', 'string', 'selon order', ''), p('help', 'string', '—', ''), p('error', 'string', '—', 'Active l’état erreur.'), p('aside', 'string', '—', 'Indication à droite du libellé.'), p('minYear', 'number', '1900', ''), p('maxYear', 'number', 'année courante', ''), p('locale', 'string', "'fr'", ''), p('disabled', 'boolean', 'false', ''), p('calendarLabel', 'string', "'Ouvrir le calendrier'", ''), p('placement', "'bottom-start' | 'bottom-end' | 'top-start' | 'top-end'", "'bottom-start'", 'Côté du calendrier ; top-start en bas d’un formulaire qui ne doit pas défiler.'), p('onchange', '(value: string) => void', '—', '')],
     controls: [{ prop: 'error', text: true }, { prop: 'help', text: true }, { prop: 'disabled', bool: true }],
     example: `<DateField label="Date de naissance" bind:value={birth} minYear={1916} maxYear={2008} error={age !== null && age < 18 ? '18 ans minimum' : undefined} />` },
-  { name: 'Icon', group: 'layout', summary: 'Pictogramme au trait (128 icônes), couleur héritée.',
+  { name: 'Icon', group: 'layout', summary: 'Pictogramme au trait (137 icônes), couleur héritée.',
     use: ['label s’il porte un sens.'], avoid: ['Icônes pleines, emoji.'],
     props: [p('name', 'IconName', '—', ''), p('size', "'sm' | 'md' | 'lg' | number", "'md'", '16 / 20 / 32 ou px'), p('label', 'string', '—', ''), p('class', 'string', "''", '')],
     example: `<Icon name="medkit" size="lg" />` },

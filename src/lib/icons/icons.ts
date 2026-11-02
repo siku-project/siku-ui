@@ -127,7 +127,16 @@ export const icons = {
   "back": "<path d=\"M6 20.5v-5a6 6 0 0 1 12 0v5\"/><path d=\"M12 9.5V20M9 13.5v3M15 13.5v3\"/><circle cx=\"12\" cy=\"5.5\" r=\"2.5\"/>",
   "mouse-left": "<rect x=\"7\" y=\"3.5\" width=\"10\" height=\"17\" rx=\"5\"/><path d=\"M12 3.5v6M7 9.5h10\"/><path d=\"M7.6 8.5A4.5 4.5 0 0 1 11.5 4v5.5H7.6z\" fill=\"currentColor\" stroke=\"none\"/>",
   "mouse-right": "<rect x=\"7\" y=\"3.5\" width=\"10\" height=\"17\" rx=\"5\"/><path d=\"M12 3.5v6M7 9.5h10\"/><path d=\"M12.5 4a4.5 4.5 0 0 1 3.9 5.5h-3.9z\" fill=\"currentColor\" stroke=\"none\"/>",
-  "mouse-wheel": "<rect x=\"7\" y=\"3.5\" width=\"10\" height=\"17\" rx=\"5\"/><path d=\"M7 9.5h10\"/><rect x=\"10.75\" y=\"5.5\" width=\"2.5\" height=\"4\" rx=\"1.25\" fill=\"currentColor\" stroke=\"none\"/>"
+  "mouse-wheel": "<rect x=\"7\" y=\"3.5\" width=\"10\" height=\"17\" rx=\"5\"/><path d=\"M7 9.5h10\"/><rect x=\"10.75\" y=\"5.5\" width=\"2.5\" height=\"4\" rx=\"1.25\" fill=\"currentColor\" stroke=\"none\"/>",
+  "bell": "<path d=\"M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2H4.5z\"/><path d=\"M10 20.5a2 2 0 0 0 4 0\"/>",
+  "image": "<rect x=\"3\" y=\"4.5\" width=\"18\" height=\"15\" rx=\"2\"/><circle cx=\"8.5\" cy=\"9.5\" r=\"1.5\"/><path d=\"m3.5 17 5-5 4 4 3-3 5 5\"/>",
+  "video": "<rect x=\"3\" y=\"6\" width=\"13\" height=\"12\" rx=\"2\"/><path d=\"m16 10 5-3v10l-5-3z\"/>",
+  "archive": "<rect x=\"3\" y=\"4\" width=\"18\" height=\"4.5\" rx=\"1\"/><path d=\"M4.5 8.5v10A1.5 1.5 0 0 0 6 20h12a1.5 1.5 0 0 0 1.5-1.5v-10M10 12.5h4\"/>",
+  "upload": "<path d=\"M12 15.5v-11M7.5 9 12 4.5 16.5 9\"/><path d=\"M4.5 17v2a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-2\"/>",
+  "grid": "<rect x=\"3.5\" y=\"3.5\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"13.5\" y=\"3.5\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"3.5\" y=\"13.5\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"13.5\" y=\"13.5\" width=\"7\" height=\"7\" rx=\"1.5\"/>",
+  "list": "<path d=\"M8.5 6h12M8.5 12h12M8.5 18h12\"/><path d=\"M3.5 6h.2M3.5 12h.2M3.5 18h.2\"/>",
+  "sort": "<path d=\"M4 7h16M7 12h10M10 17h4\"/>",
+  "file": "<path d=\"M6 3h8l4 4v14H6z\"/><path d=\"M14 3v4h4\"/>"
 } as const;
 
 export type IconName = keyof typeof icons;
