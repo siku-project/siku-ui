@@ -1,0 +1,26 @@
+import type { ChartBand, ChartSeries, ChartThreshold, DataState } from '../types';
+type Props = {
+    series: ChartSeries[];
+    labels?: string[];
+    from?: number;
+    to?: number;
+    min?: number;
+    max?: number;
+    unit?: string;
+    format?: (v: number) => string;
+    formatTime?: (t: number) => string;
+    height?: number;
+    area?: boolean;
+    rows?: number;
+    legend?: boolean;
+    label?: string;
+    thresholds?: ChartThreshold[];
+    bands?: ChartBand[];
+    state?: DataState;
+    message?: string;
+    interactive?: boolean;
+    onhover?: (t: number | null) => void;
+};
+declare const TimeChart: import("svelte").Component<Props, {}, "">;
+type TimeChart = ReturnType<typeof TimeChart>;
+export default TimeChart;
