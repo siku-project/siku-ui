@@ -466,7 +466,7 @@ button.sk-slot{border:0;padding:0;font:inherit;cursor:pointer;text-align:left;ap
 .sk-donut__dial{position:relative;flex:none}
 .sk-donut__dial svg{display:block;overflow:visible}
 .sk-donut__track{fill:none;stroke:var(--bg-sunken)}
-.sk-donut__seg{fill:none;stroke:currentColor;transition:opacity var(--duration-fast) var(--ease-standard),stroke-width var(--duration-fast) var(--ease-standard)}
+.sk-donut__seg{fill:none;stroke:currentColor;transition:opacity var(--duration-fast) var(--ease-standard)}
 .sk-donut__seg.is-dim{opacity:0.35}
 .sk-donut__center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-0-5);text-align:center;padding:18%;overflow:hidden;pointer-events:none}
 .sk-donut__value{font-size:var(--fs-title);font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;color:var(--fg-primary);white-space:nowrap}
