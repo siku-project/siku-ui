@@ -345,6 +345,10 @@
   <div class="play" style="width:36rem"><div style="width:100%"><S.ShareBar label="Ticks par classe" legend={p.legend} state={p.state} message="Aucun tick mesuré" segments={[{ id: 'ok', label: 'Dans le budget', value: 59120, tone: 'success', hint: '≤ 50 ms' }, { id: 'late', label: 'En retard', value: 420, tone: 'warning', hint: '50 à 150 ms' }, { id: 'hitch', label: 'Hitchs', value: 3, tone: 'danger', hint: '> 150 ms' }]} /></div></div>
   <h4>Palette catégorielle</h4>
   <div class="play" style="width:36rem"><div style="width:100%"><S.ShareBar label="Mémoire par usage" height={14} segments={[{ id: 'a', label: 'FXServer', value: 2.1 }, { id: 'b', label: 'Base de données', value: 1.4 }, { id: 'c', label: 'Système', value: 3.2 }, { id: 'd', label: 'Libre', value: 25.3 }]} format={(v) => `${v.toFixed(1)} Go`} /></div></div>
+{:else if name === 'DonutChart'}
+  <div class="play" style="width:36rem"><div style="width:100%"><S.DonutChart label="Fichiers par type" legend={p.legend} state={p.state} message="Aucun fichier" valueLabel="12 540" caption="fichiers" segments={[{ id: 'image', label: 'Images', value: 7360, hint: 'WebP, PNG, JPG' }, { id: 'video', label: 'Vidéos', value: 3025 }, { id: 'doc', label: 'Documents', value: 791 }, { id: 'zip', label: 'Archives', value: 640 }, { id: 'other', label: 'Autres', value: 724 }]} /></div></div>
+  <h4>Classes avec un sens</h4>
+  <div class="play" style="width:36rem"><div style="width:100%"><S.DonutChart label="Ticks par classe" size={120} thickness={14} valueLabel="99,3 %" caption="dans le budget" segments={[{ id: 'ok', label: 'Dans le budget', value: 59120, tone: 'success' }, { id: 'late', label: 'En retard', value: 420, tone: 'warning' }, { id: 'hitch', label: 'Hitchs', value: 3, tone: 'danger' }]} /></div></div>
 {:else if name === 'PeriodPicker'}
   <div class="play"><S.PeriodPicker bind:value={period} updatedAt={Date.now() - 42_000} refreshing={p.refreshing} onrefresh={() => {}} /></div>
   <p class="cap">Période : {period}</p>

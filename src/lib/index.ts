@@ -57,6 +57,7 @@ export { default as Ring } from './components/Ring.svelte';
 export { default as Tree } from './components/Tree.svelte';
 export type { TreeNode } from './components/Tree.svelte';
 export { default as ShareBar } from './components/ShareBar.svelte';
+export { default as DonutChart } from './components/DonutChart.svelte';
 export { default as Popover } from './components/Popover.svelte';
 export { default as Combobox } from './components/Combobox.svelte';
 export { default as FilterChip } from './components/FilterChip.svelte';
