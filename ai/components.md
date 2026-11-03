@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.14.0
+# Composants @siku/ui 1.15.0
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -1162,7 +1162,7 @@ Journal monospace défilant : horodatage, niveau par ligne, suivi automatique du
 
 Indicateur clé en tuile : valeur et unité, variation signée, tendance, état de données.
 
-**Utiliser** : Repères d’un tableau de bord (CPU moyen, pic de joueurs, erreurs sur une heure). delta en pourcentage avec good pour dire si une hausse est bonne (joueurs) ou mauvaise (erreurs). children pour une Sparkline ; state loading / empty / unavailable avec message plutôt qu’une valeur inventée.
+**Utiliser** : Repères d’un tableau de bord (CPU moyen, pic de joueurs, erreurs sur une heure). delta en pourcentage avec good pour dire si une hausse est bonne (joueurs) ou mauvaise (erreurs). children pour une Sparkline ; state loading / empty / unavailable avec message plutôt qu’une valeur inventée. onclick et selected : une rangée de tuiles qui choisit la mesure détaillée par le graphique dessous.
 
 **Éviter** : Plus d’une valeur par tuile : deux tuiles. Une tuile sans libellé.
 
@@ -1178,7 +1178,9 @@ Indicateur clé en tuile : valeur et unité, variation signée, tendance, état 
 | `state` | `'ready' \| 'loading' \| 'empty' \| 'unavailable'` | 'ready' |  |
 | `message` | `string` | '' |  |
 | `icon` | `IconName` | — |  |
-| `href` | `string` | — | Rend la tuile cliquable. |
+| `href` | `string` | — | Rend la tuile cliquable (lien). |
+| `selected` | `boolean` | false | Tuile choisie parmi plusieurs (aria-pressed), avec onclick. |
+| `onclick` | `(e: MouseEvent) => void` | — | Rend la tuile bouton : choisir la mesure qu’un graphique détaille. |
 | `size` | `'md' \| 'lg'` | 'md' |  |
 | `help` | `string` | — | Explication courte de la mesure : icône info avec Tooltip. |
 | `helpLabel` | `string` | 'Explication' | Nom accessible du bouton d’aide. |

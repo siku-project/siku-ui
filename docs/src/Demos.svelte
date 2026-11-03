@@ -328,6 +328,11 @@
     <div style="width:14rem"><S.StatTile label="Tick moyen" value="4.8" unit="ms" delta={9} good="down" icon="timer" /></div>
     <div style="width:14rem"><S.StatTile label="Disque" state="unavailable" message="Non collecté par l’agent" icon="database" /></div>
   </div>
+  <h4>Sélectionnable</h4>
+  <div class="row">
+    <div style="width:14rem"><S.StatTile label="Bande passante" value="172" unit="GB" delta={14.6} good="down" icon="activity" selected onclick={() => {}} /></div>
+    <div style="width:14rem"><S.StatTile label="Requêtes" value="498 k" delta={10.2} good="up" icon="code" onclick={() => {}} /></div>
+  </div>
 {:else if name === 'StatusTimeline'}
   <div class="play" style="width:40rem"><div style="width:100%"><S.StatusTimeline label="Disponibilité, 24 h" uptime={0.983} start="-24 h" end="now" legend={p.legend} state={p.state} message="Aucune mesure de disponibilité" {buckets} /></div></div>
 {:else if name === 'Tree'}
