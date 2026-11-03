@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.13.1
+# Composants @siku/ui 1.14.0
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -57,6 +57,7 @@
 | [`Ring`](#ring) | Données | Anneau de progression : une part (0–1) avec sa valeur au centre, un libellé et un état de données. |
 | [`Tree`](#tree) | Données | Arborescence dépliable : fichiers d’une ressource, hiérarchie d’objets, avec sélection au clavier. |
 | [`ShareBar`](#sharebar) | Données | Répartition en parts : une barre empilée horizontale avec la part de chaque segment et sa légende. |
+| [`DonutChart`](#donutchart) | Données | Répartition en parts sur un anneau : chaque segment avec sa part, une valeur au centre et une légende. |
 | [`PeriodPicker`](#periodpicker) | Saisie | Période d’analyse d’un graphique, bouton de rafraîchissement et fraîcheur des données. |
 | [`DataTable`](#datatable) | Données | Tableau de données triable : colonnes sortable, lignes sélectionnables au clavier, états de chargement et d’absence, en-tête collant. |
 | [`DescriptionList`](#descriptionlist) | Données | Paires clé / valeur d’un détail : attributs d’un événement, propriétés d’un objet, identifiants à copier. |
@@ -1283,6 +1284,33 @@ Répartition en parts : une barre empilée horizontale avec la part de chaque se
 
 ```svelte
 <ShareBar label="Ticks par classe" segments={[{ id: 'ok', label: 'Dans le budget', value: 59_120, tone: 'success' }, { id: 'late', label: 'En retard', value: 420, tone: 'warning' }, { id: 'hitch', label: 'Hitchs', value: 3, tone: 'danger' }]} />
+```
+
+### DonutChart
+
+Répartition en parts sur un anneau : chaque segment avec sa part, une valeur au centre et une légende.
+
+**Utiliser** : Composition d’un total quand la forme ronde porte le message : fichiers par type, stockage par espace, trafic par origine. Le centre affiche le total (valueLabel, caption) ou, au survol d’un segment, sa part et son nom ; children pour un centre libre. tone par segment quand les classes ont un sens ; sinon la palette chart-1 à chart-6, comme ShareBar.
+
+**Éviter** : Plus de six segments ou des parts très proches : ShareBar ou un tableau. Une évolution dans le temps : BarChart empilé.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `segments` | `{ id, label, value, tone?, hint? }[]` | — | Valeurs absolues ; les parts sont calculées. |
+| `label` | `string` | — | Nom accessible. |
+| `size` | `number` | 160 | Diamètre en px. |
+| `thickness` | `number` | 18 | Épaisseur de l’anneau en px. |
+| `legend` | `boolean` | true | Légende à côté, une ligne par segment. |
+| `valueLabel` | `string` | — | Texte du centre (par défaut 100 %). |
+| `caption` | `string` | — | Sous la valeur du centre. |
+| `format` | `(value, share) => string` | pourcentage arrondi | Texte de chaque part. |
+| `state` | `'ready' \| 'loading' \| 'empty' \| 'unavailable'` | 'ready' |  |
+| `message` | `string` | '' |  |
+| `onselect` | `(id: string \| null) => void` | — | Segment survolé. |
+| `children` | `Snippet` | — | Contenu du centre au repos. |
+
+```svelte
+<DonutChart label="Fichiers par type" valueLabel="12 540" caption="fichiers" segments={[{ id: 'image', label: 'Images', value: 7360 }, { id: 'video', label: 'Vidéos', value: 3025 }, { id: 'doc', label: 'Documents', value: 791 }]} />
 ```
 
 ### DataTable
