@@ -2,6 +2,10 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.16.0
+
+- `StatTile` : `onclick` rend la tuile bouton et `selected` marque la tuile choisie (`aria-pressed`, anneau `selection`, fond `bg-control`) : une rangée de tuiles qui choisit la mesure détaillée par un graphique.
+
 ## 1.15.0
 
 - `DonutChart` : répartition en parts sur un anneau (segments avec `tone` ou palette chart-1 à 6, centre avec `valueLabel` / `caption` ou `children`, part et nom du segment survolé au centre, légende alignée, états de données, `onselect`).
