@@ -2,6 +2,10 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.17.0
+
+- `FlowChart` : flux entre colonnes de nœuds (`nodes` avec `column`, `links` `from` / `to` / `value`, `columns` avec libellé de tête), rubans en dégradé de la teinte de départ à celle d’arrivée, survol qui isole les flux d’un nœud, `onselect` / `onpick`, états de données. Types `FlowNode`, `FlowLink`, `FlowColumn` exportés.
+
 ## 1.16.0
 
 - `StatTile` : `onclick` rend la tuile bouton et `selected` marque la tuile choisie (`aria-pressed`, anneau `selection`, fond `bg-control`) : une rangée de tuiles qui choisit la mesure détaillée par un graphique.

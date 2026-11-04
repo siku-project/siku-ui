@@ -482,6 +482,20 @@ button.sk-slot{border:0;padding:0;font:inherit;cursor:pointer;text-align:left;ap
 .sk-donut__key i{width:0.625rem;height:0.625rem;flex:none;border-radius:var(--radius-full);background:currentColor}
 .sk-donut__name{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sk-donut__key b{color:var(--fg-primary);font-weight:600;font-variant-numeric:tabular-nums}
+.sk-flow{position:relative;width:100%;min-width:0}
+.sk-flow svg{display:block;overflow:visible}
+.sk-flow__state{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:var(--space-4)}
+.sk-flow__state--text{font-size:var(--fs-caption);color:var(--fg-tertiary)}
+.sk-flow__head{font-size:var(--fs-caption);font-weight:500;fill:var(--fg-tertiary);text-transform:uppercase;letter-spacing:0.04em}
+.sk-flow__link{opacity:0.32;transition:opacity var(--duration-fast) var(--ease-standard)}
+.sk-flow__link.is-active{opacity:0.62}
+.sk-flow__link.is-dim{opacity:0.08}
+.sk-flow__node{transition:opacity var(--duration-fast) var(--ease-standard)}
+.sk-flow__node.is-dim{opacity:0.3}
+.sk-flow__node.is-pickable{cursor:pointer}
+.sk-flow__bar{fill:currentColor}
+.sk-flow__label{font-size:var(--fs-caption);fill:var(--fg-secondary);paint-order:stroke;stroke:var(--sk-flow-halo,var(--bg-raised));stroke-width:3px;stroke-linejoin:round;pointer-events:none}
+.sk-flow__value{fill:var(--fg-primary);font-weight:600;font-variant-numeric:tabular-nums}
 
 
 /* ───────── Explorateur ───────── */

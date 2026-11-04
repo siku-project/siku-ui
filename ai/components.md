@@ -58,6 +58,7 @@
 | [`Tree`](#tree) | Données | Arborescence dépliable : fichiers d’une ressource, hiérarchie d’objets, avec sélection au clavier. |
 | [`ShareBar`](#sharebar) | Données | Répartition en parts : une barre empilée horizontale avec la part de chaque segment et sa légende. |
 | [`DonutChart`](#donutchart) | Données | Répartition en parts sur un anneau : chaque segment avec sa part, une valeur au centre et une légende. |
+| [`FlowChart`](#flowchart) | Données | Flux entre colonnes de nœuds : d’où vient quoi et où ça va, rubans proportionnels aux volumes. |
 | [`PeriodPicker`](#periodpicker) | Saisie | Période d’analyse d’un graphique, bouton de rafraîchissement et fraîcheur des données. |
 | [`DataTable`](#datatable) | Données | Tableau de données triable : colonnes sortable, lignes sélectionnables au clavier, états de chargement et d’absence, en-tête collant. |
 | [`DescriptionList`](#descriptionlist) | Données | Paires clé / valeur d’un détail : attributs d’un événement, propriétés d’un objet, identifiants à copier. |
@@ -1313,6 +1314,36 @@ Répartition en parts sur un anneau : chaque segment avec sa part, une valeur au
 
 ```svelte
 <DonutChart label="Fichiers par type" valueLabel="12 540" caption="fichiers" segments={[{ id: 'image', label: 'Images', value: 7360 }, { id: 'video', label: 'Vidéos', value: 3025 }, { id: 'doc', label: 'Documents', value: 791 }]} />
+```
+
+### FlowChart
+
+Flux entre colonnes de nœuds : d’où vient quoi et où ça va, rubans proportionnels aux volumes.
+
+**Utiliser** : Trafic d’un CDN par origine, espace et type de fichier ; dépenses d’une économie par source et destination ; joueurs par entrée et sortie. nodes avec column (ordre des colonnes dans columns, label de colonne optionnel), links from / to avec une valeur absolue ; la hauteur d’un nœud est le maximum de ses entrées et de ses sorties. Survol d’un nœud ou d’un ruban : les flux liés restent pleins, les autres s’effacent ; onselect suit le survol, onpick rend les nœuds cliquables. tone par nœud quand les classes ont un sens ; sinon la palette chart-1 à chart-6. Les rubans vont de la teinte de départ à celle d’arrivée.
+
+**Éviter** : Plus de trois colonnes ou plus d’une dizaine de nœuds par colonne : un tableau. Une part d’un total sans destination : DonutChart ou ShareBar.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `nodes` | `FlowNode[]` | — | { id, label, column, tone?, hint? } |
+| `links` | `FlowLink[]` | — | { from, to, value } |
+| `columns` | `FlowColumn[]` | ordre d’apparition | { id, label? } ; label en tête de colonne. |
+| `label` | `string` | — | Nom accessible. |
+| `height` | `number` | 280 | px |
+| `nodeWidth` | `number` | 10 | Largeur des nœuds en px. |
+| `gap` | `number` | 10 | Espace vertical entre nœuds en px. |
+| `format` | `(value: number) => string` | entier | Texte des valeurs. |
+| `state` | `'ready' \| 'loading' \| 'empty' \| 'unavailable'` | 'ready' |  |
+| `message` | `string` | '' |  |
+| `onselect` | `(id: string \| null) => void` | — | Nœud survolé. |
+| `onpick` | `(id: string) => void` | — | Nœud cliqué ; rend les nœuds cliquables. |
+
+```svelte
+<FlowChart label="Trafic par origine, espace et type" format={gb}
+  columns={[{ id: 'origin', label: 'Origine' }, { id: 'space', label: 'Espace' }, { id: 'kind', label: 'Type' }]}
+  nodes={[{ id: 'web', label: 'Site web', column: 'origin' }, { id: 'studio', label: 'siku_studio', column: 'space' }, { id: 'image', label: 'Images', column: 'kind' }]}
+  links={[{ from: 'web', to: 'studio', value: 412 }, { from: 'studio', to: 'image', value: 412 }]} />
 ```
 
 ### DataTable
