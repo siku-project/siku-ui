@@ -31,3 +31,6 @@ export type TraceSpan = { id: string; parentId: string | null; name: string; ser
 export type StepItem = { id: string; label: string; icon?: IconName; disabled?: boolean };
 /** Une entrée d'une PickList : empty pour un emplacement libre, meta en mono à droite. */
 export type PickItem = { value: string; label: string; detail?: string; icon?: IconName; meta?: string; empty?: boolean; disabled?: boolean };
+export type FlowNode = { id: string; label: string; column: string; tone?: ChartTone; hint?: string };
+export type FlowLink = { from: string; to: string; value: number };
+export type FlowColumn = { id: string; label?: string };
