@@ -1,0 +1,6 @@
+/* SIKU — point d’entrée unique : import '@siku/ui/styles.css' */
+@import "./fonts.css";
+@import "./tokens.css";
+@import "./base.css";
+@import "./components.css";
+@import "./layout.css";
