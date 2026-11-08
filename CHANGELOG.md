@@ -2,6 +2,10 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.17.1
+
+- `Popover` : le panneau est posé en `position: fixed` par rapport à la fenêtre, calculé depuis le déclencheur, suivi au défilement et au redimensionnement. Il n'est plus coupé par un conteneur qui défile (tableau, colonne, carte) et se retourne toujours quand il déborde du bas de l'écran.
+
 ## 1.17.0
 
 - `FlowChart` : flux entre colonnes de nœuds (`nodes` avec `column`, `links` `from` / `to` / `value`, `columns` avec libellé de tête), rubans en dégradé de la teinte de départ à celle d’arrivée, survol qui isole les flux d’un nœud, `onselect` / `onpick`, états de données. Types `FlowNode`, `FlowLink`, `FlowColumn` exportés.
