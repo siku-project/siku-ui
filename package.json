@@ -47,7 +47,6 @@
     "tokens": "node scripts/build-tokens.mjs",
     "ai": "node scripts/build-ai.mjs",
     "build": "bun run tokens && svelte-package -i src/lib -o dist && bun run ai && node -e \"require('fs').writeFileSync('dist/.version', require('./package.json').version)\"",
-    "prepare": "node scripts/prepare.mjs",
     "check": "bun run tokens && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings && node bin/siku.mjs check src/lib docs/src --self",
     "test": "vitest run",
     "docs:dev": "vite --config docs/vite.config.ts",
