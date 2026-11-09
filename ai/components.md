@@ -20,6 +20,7 @@
 | [`NavList`](#navlist) | Navigation | Navigation latérale d’une fenêtre (comptes, catégories). |
 | [`Menu`](#menu) | Navigation | Menu contextuel ou liste d’actions : flèches, Entrée, Échap, raccourcis. |
 | [`Modal`](#modal) | Retours | Confirmation d’une action irréversible ou coûteuse. |
+| [`Lightbox`](#lightbox) | Retours | Image ou média en très grand au-dessus de la page, sans la quitter : aperçu d’une photo, d’une capture, d’un plan. |
 | [`Tooltip`](#tooltip) | Retours | Aide d’une phrase, blanche, au survol ou au focus. |
 | [`Notice`](#notice) | Retours | Message en ligne qui reste dans le flux : erreur de formulaire, retour d’une action, information. |
 | [`Toast`](#toast) | Retours | Une notification (présentation). Pour la file : toast.push() + <Toaster />. |
@@ -720,6 +721,29 @@ Confirmation d’une action irréversible ou coûteuse.
 </Modal>
 ```
 
+### Lightbox
+
+Image ou média en très grand au-dessus de la page, sans la quitter : aperçu d’une photo, d’une capture, d’un plan.
+
+**Utiliser** : Ouvrir au double-clic sur une vignette ou une ligne (onopen de DataTable), ou sur un bouton « Agrandir » ; title = nom du fichier, caption = dimensions et poids. children pour une vidéo ou un rendu sur mesure à la place de src. Pas plein écran : l’image garde ses proportions dans la fenêtre, la croix reste en haut à droite.
+
+**Éviter** : Une confirmation ou un formulaire : Modal. Une galerie à parcourir : composer la navigation dans la ressource.
+
+| Prop | Type | Défaut | Description |
+|---|---|---|---|
+| `open` | `boolean` | false | bind:open |
+| `src` | `string` | — | Image affichée. |
+| `alt` | `string` | '' |  |
+| `title` | `string` | — | Légende principale. |
+| `caption` | `string` | — | Détail sous la légende. |
+| `children` | `Snippet` | — | Remplace l’image. |
+| `closeLabel` | `string` | 'Fermer' | Nom accessible de la croix. |
+| `onclose` | `() => void` | — |  |
+
+```svelte
+<Lightbox bind:open={zoom} src={photo.url} title={photo.name} caption="512 × 512 · 38 Ko" />
+```
+
 ### Tooltip
 
 Aide d’une phrase, blanche, au survol ou au focus.
@@ -1372,6 +1396,7 @@ Tableau de données triable : colonnes sortable, lignes sélectionnables au clav
 | `rowHeight` | `number` | 44 (34 dense) | Hauteur fixe des lignes en virtuel. |
 | `cell` | `Snippet<[row, column]>` | — |  |
 | `onselect` | `(row, index) => void` | — | Rend les lignes sélectionnables. |
+| `onopen` | `(row, index) => void` | — | Double-clic ou Entrée sur une ligne : ouvrir le détail (aperçu, page). |
 | `onsort` | `(sort) => void` | — | Tri délégué. |
 
 ```svelte

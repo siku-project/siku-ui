@@ -2,6 +2,11 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.18.0
+
+- `Lightbox` : image ou média en très grand au-dessus de la page sans la quitter (`src` / `alt` ou `children`, `title` et `caption` en légende, croix en haut à droite, Échap et voile ferment, focus piégé).
+- `DataTable` : `onopen` déclenché au double-clic ou à Entrée sur une ligne, en plus de `onselect` au clic simple.
+
 ## 1.17.1
 
 - `Popover` : le panneau est posé en `position: fixed` par rapport à la fenêtre, calculé depuis le déclencheur, suivi au défilement et au redimensionnement. Il n'est plus coupé par un conteneur qui défile (tableau, colonne, carte) et se retourne toujours quand il déborde du bas de l'écran.

@@ -23,6 +23,7 @@
   let nav = $state('main');
   let menuLog = $state('—');
   let modal = $state(false);
+  let zoom = $state(false);
   let drawer = $state(false);
   let facetActive = $state<string | null>('siku_inventory');
   let navPage = $state('overview');
@@ -196,6 +197,11 @@
     L’objet sera posé au sol à tes pieds. N’importe qui pourra le ramasser pendant 10 minutes, puis il disparaîtra.
     {#snippet actions()}<S.Button variant="quiet" data-autofocus onclick={() => (modal = false)}>Annuler</S.Button><S.Button variant="primary" onclick={() => (modal = false)}>Jeter au sol</S.Button>{/snippet}
   </S.Modal>
+{:else if name === 'Lightbox'}
+  <div class="play"><S.Button variant="secondary" icon="expand" onclick={() => (zoom = true)}>Agrandir la capture</S.Button><p class="note">Double-clic sur une vignette dans une vraie interface ; ici un bouton. Échap, la croix ou le voile ferment.</p></div>
+  <S.Lightbox bind:open={zoom} title="siku_studio · 12.webp" caption="512 × 512 · 38 Ko">
+    <svg class="sk-lightbox__media" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Capture fictive"><rect width="512" height="512" fill="var(--bg-sunken)" /><circle cx="256" cy="200" r="88" fill="var(--bg-control)" /><path d="M96 440c24-96 96-144 160-144s136 48 160 144z" fill="var(--bg-control)" /><circle cx="226" cy="190" r="10" fill="var(--accent)" /><circle cx="286" cy="190" r="10" fill="var(--accent)" /></svg>
+  </S.Lightbox>
 {:else if name === 'Tooltip'}
   <div class="play" style="padding-top:4rem"><S.Tooltip text="Diviser la pile" key="⇧"><S.Button iconOnly icon="split" label="Diviser" /></S.Tooltip><S.Tooltip text="Glisse sur le coffre pour transférer" placement="bottom"><S.Button variant="ghost">Survole-moi</S.Button></S.Tooltip></div>
 {:else if name === 'Notice'}

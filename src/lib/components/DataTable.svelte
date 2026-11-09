@@ -5,8 +5,8 @@
   import type { DataColumn, DataState, SortState } from '../types';
   import Skeleton from './Skeleton.svelte';
   import Icon from './Icon.svelte';
-  type Props = { columns: DataColumn[]; rows: Row[]; sort?: SortState | null; rowKey?: (row: Row, index: number) => string | number; selected?: string | number | null; caption?: string; empty?: string; state?: DataState; message?: string; dense?: boolean; sticky?: boolean; maxHeight?: string; virtual?: boolean; rowHeight?: number; cell?: Snippet<[Row, DataColumn]>; onselect?: (row: Row, index: number) => void; onsort?: (sort: SortState) => void };
-  let { columns, rows, sort = $bindable(null), rowKey = (_, i) => i, selected = $bindable(null), caption, empty = 'Aucune ligne', state: dataState = 'ready', message = '', dense = false, sticky = false, maxHeight, virtual = false, rowHeight, cell, onselect, onsort }: Props = $props();
+  type Props = { columns: DataColumn[]; rows: Row[]; sort?: SortState | null; rowKey?: (row: Row, index: number) => string | number; selected?: string | number | null; caption?: string; empty?: string; state?: DataState; message?: string; dense?: boolean; sticky?: boolean; maxHeight?: string; virtual?: boolean; rowHeight?: number; cell?: Snippet<[Row, DataColumn]>; onselect?: (row: Row, index: number) => void; onopen?: (row: Row, index: number) => void; onsort?: (sort: SortState) => void };
+  let { columns, rows, sort = $bindable(null), rowKey = (_, i) => i, selected = $bindable(null), caption, empty = 'Aucune ligne', state: dataState = 'ready', message = '', dense = false, sticky = false, maxHeight, virtual = false, rowHeight, cell, onselect, onopen, onsort }: Props = $props();
   const OVERSCAN = 10;
   const ordered = $derived.by(() => {
     if (!sort || onsort) return rows;
@@ -51,7 +51,8 @@
   }
   function onkey(e: KeyboardEvent, r: Row, i: number) {
     if (!onselect) return;
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(r, i); }
+    if (e.key === 'Enter' && onopen) { e.preventDefault(); pick(r, i); onopen(r, i); }
+    else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(r, i); }
     else if (e.key === 'ArrowDown') { e.preventDefault(); focusRow(i + 1); }
     else if (e.key === 'ArrowUp') { e.preventDefault(); focusRow(i - 1); }
     else if (e.key === 'Home') { e.preventDefault(); focusRow(0); }
@@ -89,7 +90,7 @@
         {#each slice as r, k (rowKey(r, start + k))}
           {@const i = start + k}
           <!-- svelte-ignore a11y_no_noninteractive_tabindex (ligne sélectionnable seulement quand onselect est fourni) -->
-          <tr data-i={i} class:is-selected={selected !== null && selected === rowKey(r, i)} class:is-selectable={!!onselect} tabindex={onselect ? 0 : undefined} style:height={windowed ? `${rh}px` : undefined} onclick={() => pick(r, i)} onkeydown={(e) => onkey(e, r, i)}>
+          <tr data-i={i} class:is-selected={selected !== null && selected === rowKey(r, i)} class:is-selectable={!!onselect} tabindex={onselect ? 0 : undefined} style:height={windowed ? `${rh}px` : undefined} onclick={() => pick(r, i)} ondblclick={onopen ? () => onopen(r, i) : undefined} onkeydown={(e) => onkey(e, r, i)}>
             {#each columns as c (c.key)}<td class:num={c.align === 'right'} class:mono={c.mono}>{#if cell}{@render cell(r, c)}{:else}{text(r, c)}{/if}</td>{/each}
           </tr>
         {/each}

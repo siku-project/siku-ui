@@ -16,6 +16,7 @@ export { default as Tabs } from './components/Tabs.svelte';
 export { default as NavList } from './components/NavList.svelte';
 export { default as Menu } from './components/Menu.svelte';
 export { default as Modal } from './components/Modal.svelte';
+export { default as Lightbox } from './components/Lightbox.svelte';
 export { default as Tooltip } from './components/Tooltip.svelte';
 export { default as Toast } from './components/Toast.svelte';
 export { default as Toaster } from './components/Toaster.svelte';
