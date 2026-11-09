@@ -1,2 +1,2 @@
 // SIKU — generated from package.json. Ne pas modifier.
-export const version = '1.17.1';
+export const version = '1.18.0';
