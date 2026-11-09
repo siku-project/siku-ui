@@ -73,6 +73,8 @@
 .sk-modal-layer.has-scrim{background:var(--scrim)}
 .sk-modal{animation:sk-in var(--duration-slow) var(--ease-standard)}
 @keyframes sk-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.sk-lightbox-layer{position:fixed;inset:0;z-index:var(--z-overlay);display:flex;align-items:center;justify-content:center;padding:var(--space-8);background:var(--scrim)}
+.sk-lightbox{animation:sk-in var(--duration-slow) var(--ease-standard)}
 .sk-drawer-layer{position:fixed;inset:0;z-index:var(--z-overlay);background:var(--scrim)}
 .sk-drawer{position:absolute;top:0;bottom:0;width:min(18rem,85vw);display:flex;flex-direction:column;background:var(--bg-raised);outline:none;will-change:transform}
 .sk-drawer--left{left:0;box-shadow:inset -1px 0 0 var(--border-subtle),var(--shadow-overlay)}
