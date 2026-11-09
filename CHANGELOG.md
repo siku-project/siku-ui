@@ -2,6 +2,11 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.19.0
+
+- `CodeBlock` : `language` colore le code (json, javascript, typescript, css, html, xml, lua, yaml, shell, markdown) avec un tokenizer léger sans dépendance ; `highlight()` et `languageOf()` exportés.
+- Tokens `syntax-comment`, `syntax-string`, `syntax-number`, `syntax-keyword`, `syntax-name`, `syntax-attr`, `syntax-punct` (alias des tokens sémantiques existants).
+
 ## 1.18.0
 
 - `Lightbox` : image ou média en très grand au-dessus de la page sans la quitter (`src` / `alt` ou `children`, `title` et `caption` en légende, croix en haut à droite, Échap et voile ferment, focus piégé).

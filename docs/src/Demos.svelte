@@ -24,6 +24,7 @@
   let menuLog = $state('—');
   let modal = $state(false);
   let zoom = $state(false);
+  const luaSample = ["-- Ouvre le coffre du véhicule le plus proche", "local radius <const> = 2.5", "", "RegisterCommand('trunk', function(src)", "  local vehicle = Siku.vehicles.nearest(src, radius)", "  if not vehicle then", "    return Siku.notify(src, 'Aucun véhicule à portée')", "  end", "  Siku.inventory.open(src, ('trunk:%s'):format(vehicle.plate), { slots = 20, weight = 60.0 })", "end, false)"].join('\n');
   let drawer = $state(false);
   let facetActive = $state<string | null>('siku_inventory');
   let navPage = $state('overview');
@@ -436,7 +437,9 @@
 {:else if name === 'CodeBlock'}
   <div class="play" style="width:40rem;align-items:flex-start"><div style="width:100%"><S.CodeBlock label="Pile d’appels" code={stack} wrap={p.wrap} lineNumbers={p.lineNumbers} copy={p.copy} maxHeight={200} /></div></div>
   <h4>Corps brut</h4>
-  <div class="play" style="width:40rem;align-items:flex-start"><div style="width:100%"><S.CodeBlock code={JSON.stringify(attributes.player, null, 2)} copy lineNumbers /></div></div>
+  <div class="play" style="width:40rem;align-items:flex-start"><div style="width:100%"><S.CodeBlock code={JSON.stringify(attributes.player, null, 2)} language="json" copy lineNumbers /></div></div>
+  <h4>Coloration syntaxique</h4>
+  <div class="play" style="width:40rem;align-items:flex-start"><div style="width:100%"><S.CodeBlock label="server/main.lua" language="lua" lineNumbers code={luaSample} /></div></div>
 {:else if name === 'SeverityDot'}
   <div class="play"><S.SeverityDot severity={p.severity} size={p.size} label={S.severityLabel(p.severity)} /></div>
   <div class="row">{#each ['trace', 'debug', 'info', 'warn', 'error', 'fatal'] as sev (sev)}<S.SeverityDot severity={sev as S.Severity} label={S.severityLabel(sev as S.Severity)} />{/each}</div>
