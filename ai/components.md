@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.17.0
+# Composants @siku/ui 1.18.0
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -71,7 +71,7 @@
 | [`TimeHistogram`](#timehistogram) | Données | Barres empilées sur un axe temporel réel avec sélection de plage : volume de logs par sévérité, événements par minute. |
 | [`JsonTree`](#jsontree) | Données | Valeur structurée dépliable : attributs d’un événement, corps d’une requête, avec copie et filtre par feuille. |
 | [`TraceWaterfall`](#tracewaterfall) | Données | Cascade des spans d’une trace : noms indentés, barres placées dans le temps, couleur par service, erreurs marquées. |
-| [`CodeBlock`](#codeblock) | Données | Bloc monospace multi-lignes : message brut, pile d’appels, requête, avec numéros de ligne et copie. |
+| [`CodeBlock`](#codeblock) | Données | Bloc monospace multi-lignes : message brut, pile d’appels, requête, fichier de configuration, avec numéros de ligne, coloration syntaxique et copie. |
 | [`SeverityDot`](#severitydot) | Données | Point de sévérité (trace, debug, info, warn, error, fatal) avec libellé optionnel ; vocabulaire partagé severityTone / severityLabel. |
 | [`Chip`](#chip) | Saisie | Jeton de choix : catégorie d’un éditeur, filtre d’une liste, option à activer. |
 | [`SwatchPicker`](#swatchpicker) | Saisie | Une couleur parmi une palette : cheveux, maquillage, peinture. Flèches entre les pastilles. |
@@ -1507,15 +1507,16 @@ Cascade des spans d’une trace : noms indentés, barres placées dans le temps,
 
 ### CodeBlock
 
-Bloc monospace multi-lignes : message brut, pile d’appels, requête, avec numéros de ligne et copie.
+Bloc monospace multi-lignes : message brut, pile d’appels, requête, fichier de configuration, avec numéros de ligne, coloration syntaxique et copie.
 
-**Utiliser** : wrap pour une ligne longue ; sinon défilement horizontal. copy ajoute le bouton de copie (presse-papiers + oncopy) ; maxHeight borne la hauteur.
+**Utiliser** : wrap pour une ligne longue ; sinon défilement horizontal. copy ajoute le bouton de copie (presse-papiers + oncopy) ; maxHeight borne la hauteur. language colore le code (json, javascript, typescript, css, html, xml, lua, yaml, shell, markdown) avec les tokens syntax-* ; languageOf(nom) le déduit de l’extension.
 
 **Éviter** : Un identifiant court : Code. Un journal vivant : LogView.
 
 | Prop | Type | Défaut | Description |
 |---|---|---|---|
 | `code` | `string` | — |  |
+| `language` | `'json' \| 'javascript' \| 'typescript' \| 'css' \| 'html' \| 'xml' \| 'lua' \| 'yaml' \| 'shell' \| 'markdown' \| 'text'` | — | Coloration syntaxique. |
 | `wrap` | `boolean` | false |  |
 | `lineNumbers` | `boolean` | false |  |
 | `maxHeight` | `number \| string` | — | px ou valeur CSS. |
@@ -1527,6 +1528,7 @@ Bloc monospace multi-lignes : message brut, pile d’appels, requête, avec num�
 
 ```svelte
 <CodeBlock label="Pile d’appels" code={error.stack} lineNumbers copy maxHeight={240} />
+<CodeBlock code={source} language={languageOf(file.name)} lineNumbers />
 ```
 
 ### SeverityDot

@@ -50,6 +50,13 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
   --color-chart-6: var(--chart-6);
+  --color-syntax-comment: var(--syntax-comment);
+  --color-syntax-string: var(--syntax-string);
+  --color-syntax-number: var(--syntax-number);
+  --color-syntax-keyword: var(--syntax-keyword);
+  --color-syntax-name: var(--syntax-name);
+  --color-syntax-attr: var(--syntax-attr);
+  --color-syntax-punct: var(--syntax-punct);
   --color-gauge-fill: var(--gauge-fill);
   --color-gauge-track: var(--gauge-track);
   --color-hold-progress: var(--hold-progress);

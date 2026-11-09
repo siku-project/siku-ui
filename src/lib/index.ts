@@ -86,5 +86,6 @@ export { initSiku, applyEnv, type GtaEnv } from './runtime/env';
 export { fetchNui, onNuiMessage, debugNui, isBrowser, resourceName } from './runtime/nui';
 export { initInput, inputMode, fromGamepad, type InputMode } from './runtime/input';
 export { trapFocus, gridMove } from './runtime/focus';
+export { highlight, languageOf, type Language, type Token, type TokenType } from './runtime/highlight';
 export { toast, toasts, type ToastItem, type ToastTone } from './runtime/toast';
 export { version } from './version';

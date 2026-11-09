@@ -80,6 +80,13 @@ Utiliser en CSS : `var(--nom)`. En Tailwind : `bg-bg-base`, `text-fg-secondary`,
 | `chart-4` | `#7ad7c4` | Sémantique. Palette catégorielle des graphiques, série 4 (turquoise). |
 | `chart-5` | `#f0a0b8` | Sémantique. Palette catégorielle des graphiques, série 5 (rose). |
 | `chart-6` | `#cfc0a0` | Sémantique. Palette catégorielle des graphiques, série 6 (sable). |
+| `syntax-comment` | `{fg-tertiary}` | Sémantique. Code : commentaires. |
+| `syntax-string` | `{chart-4}` | Sémantique. Code : chaînes de caractères. |
+| `syntax-number` | `{chart-3}` | Sémantique. Code : nombres, couleurs, unités. |
+| `syntax-keyword` | `{chart-2}` | Sémantique. Code : mots-clés et règles. |
+| `syntax-name` | `{accent}` | Sémantique. Code : clés, balises, propriétés, variables, appels. |
+| `syntax-attr` | `{chart-5}` | Sémantique. Code : attributs, sélecteurs. |
+| `syntax-punct` | `{fg-secondary}` | Sémantique. Code : ponctuation et opérateurs. |
 | `gauge-fill` | `{n-25}` | Composant. Remplissage des jauges neutres (charge sur soi, état, progression). |
 | `gauge-track` | `{track}` | Composant. Piste des jauges. |
 | `hold-progress` | `{accent}` | Composant. Progression d’une action maintenue. |
