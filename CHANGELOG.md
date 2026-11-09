@@ -2,6 +2,10 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.19.1
+
+- `Switch`, `Checkbox`, `RadioGroup` : le libellé est positionné, donc le champ natif masqué reste ancré à son interrupteur. Dans une colonne qui défile sous un conteneur `overflow: hidden`, le focus du champ faisait défiler le conteneur parent et poussait l'en-tête hors du cadre.
+
 ## 1.19.0
 
 - `CodeBlock` : `language` colore le code (json, javascript, typescript, css, html, xml, lua, yaml, shell, markdown) avec un tokenizer léger sans dépendance ; `highlight()` et `languageOf()` exportés.
