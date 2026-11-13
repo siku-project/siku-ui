@@ -84,7 +84,7 @@ Puis appliquer ce que `doctor` signale :
 export default defineConfig({
   plugins: [svelte()],
   base: './',
-  build: { outDir: '../html', emptyOutDir: true, target: 'chrome103', cssTarget: 'chrome103', assetsInlineLimit: 0 },
+  build: { outDir: '../html', emptyOutDir: true, target: 'chrome144', cssTarget: 'chrome144', assetsInlineLimit: 0 },
 });
 ```
 
@@ -210,7 +210,7 @@ Une exception reste possible, mais visible : `/* siku-allow : <raison, lien d’
 ## 10. Faire évoluer sans perdre la cohérence
 
 - Un besoin nouveau devient une **proposition** dans `siku-ui` (issue), pas une copie dans la ressource. Le détail est dans `CONTRIBUTING.md` : quand c’est un correctif, une mineure, une majeure, comment ajouter un composant (code + export + catalogue + démo + vérification), comment faire évoluer un token (une intention par token, alias pendant une mineure avant suppression).
-- `bun run verify` dans siku-ui contrôle : types, règles de compatibilité, contrastes de tous les couples texte/fond, cohérence catalogue ↔ composants, échelle, CLI, build du package, build de la doc, et une ressource complète générée depuis le gabarit et buildée pour Chromium 103 (audit du JS et du CSS produits).
+- `bun run verify` dans siku-ui contrôle : types, règles de compatibilité, contrastes de tous les couples texte/fond, cohérence catalogue ↔ composants, échelle, CLI, build du package, build de la doc, et une ressource complète générée depuis le gabarit et buildée pour Chromium 144 (audit du CSS produit).
 - Le versionnage sémantique protège les ressources : elles avancent quand tu décides.
 - La doc interactive (`bun run docs:dev`, et l’artifact « SIKU ») est construite avec les vrais composants : ce qu’on y voit est ce que les ressources reçoivent.
 
@@ -220,7 +220,7 @@ Une exception reste possible, mais visible : `/* siku-allow : <raison, lien d’
 
 - **Les assistants peuvent ignorer une instruction.** Les fichiers d’instructions augmentent fortement la probabilité de conformité, ils ne la garantissent pas. Les garanties réelles sont mécaniques : hook (Claude Code), `bun run check`, CI.
 - **`siku check` lit le code, pas le rendu.** Il attrape les couleurs en dur, les flous, les fonctions CSS hors CEF, les composants recréés ; il ne juge pas une composition. Pour l’aspect : `bun run dev` à 1920×1080 et 1280×720, et revue humaine des captures dans la PR.
-- **CEF réel** : les règles ciblent Chromium 103 (version du CEF FiveM au moment de la rédaction). Si FiveM met à jour son CEF, ajuster `target` et les règles dans `bin/siku.mjs` ; tester une fois en jeu après chaque majeure.
+- **CEF réel** : la cible est Chromium 144, version du CEF FiveM à la rédaction, et pas plus haut. Si FiveM met à jour son CEF, ajuster `target` dans le gabarit, la doc et `siku doctor` (`bin/siku.mjs`), puis `ai/SIKU.md` ; tester une fois en jeu après chaque majeure.
 - **Lisibilité du HUD** : vérifiée sur des décors simulés (doc, page « Lisibilité en jeu ») ; la validation finale se fait en jeu (neige de jour, néons, couchant).
 - **Dépôt public** : toute machine ou CI installe @siku/ui depuis le tag HTTPS sans clé ni jeton ; le secret `SIKU_UI_TOKEN` des anciens workflows n'a plus de raison d'être.
 - **Comportement des outils** : la syntaxe d’import de CLAUDE.md, les hooks et les skills de Claude Code, et la lecture d’AGENTS.md par Codex correspondent à leur documentation au moment de la rédaction ; en cas de doute, consulter la doc officielle de chaque outil.

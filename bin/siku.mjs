@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SIKU CLI — vérifications et intégration.
-//   siku check [chemins…]        règles du design system + compatibilité CEF (Chromium 103)
+//   siku check [chemins…]        règles du design system (cible CEF : Chromium 144, pas plus haut)
 //   siku doctor [dossier-web]    configuration Vite/Tailwind/entrée d'une ressource
 //   siku ai sync [dossier]       installe/actualise CLAUDE.md, AGENTS.md, skill et hook Claude Code
 //   siku ai check [dossier]      échoue si les instructions IA ne correspondent pas à la version installée
@@ -22,14 +22,6 @@ const LIB_COMPONENTS = ['Button', 'ButtonGroup', 'Key', 'Hint', 'TextField', 'Ch
 // level: error = bloque la CI ; warn = à justifier. self: s'applique aussi au dépôt du design system.
 const RULES = [
   { id: 'no-backdrop-blur', level: 'error', self: true, cef: true, re: /backdrop-filter|filter\s*:\s*blur|\bbackdrop-blur\b|\bblur-(sm|md|lg|xl|2xl|3xl|none)\b/, msg: 'Aucun flou en jeu (backdrop-filter / blur) : utiliser un voile bg-void + opacity-scrim-*.' },
-  { id: 'cef-has', level: 'error', self: true, cef: true, re: /:has\(/, msg: ':has() n’existe pas dans Chromium 103 (CEF FiveM).' },
-  { id: 'cef-container', level: 'error', self: true, cef: true, re: /@container|container-type\s*:/, msg: 'Container queries absentes de Chromium 103.' },
-  { id: 'cef-color-mix', level: 'error', self: true, cef: true, re: /color-mix\(/, msg: 'color-mix() absent de Chromium 103 : utiliser un token *-subtle.' },
-  { id: 'cef-viewport-units', level: 'error', self: true, cef: true, re: /\b\d+(\.\d+)?(dvh|svh|lvh|dvw|svw|lvw)\b/, msg: 'Unités dvh/svh/lvh absentes de Chromium 103 : utiliser vh/vw.' },
-  { id: 'cef-text-wrap', level: 'error', self: true, cef: true, re: /text-wrap\s*:\s*(balance|pretty)/, msg: 'text-wrap: balance/pretty absent de Chromium 103.' },
-  { id: 'cef-css-nesting', level: 'error', self: true, cef: true, ext: ['.css'], re: /^\s*&[\s.:[>]/m, msg: 'Nesting CSS natif absent de Chromium 103 (passer par PostCSS ou aplatir).' },
-  { id: 'cef-js-api', level: 'error', self: true, cef: true, ext: ['.ts', '.js', '.svelte'], re: /\.(toSorted|toReversed|toSpliced)\(|Object\.groupBy|Map\.groupBy|Promise\.withResolvers|\.isWellFormed\(|Array\.fromAsync/, msg: 'API JavaScript postérieure à Chromium 103.' },
-  { id: 'cef-popover', level: 'error', self: true, cef: true, re: /\bpopover=|showPopover\(/, msg: 'API popover absente de Chromium 103 : utiliser Menu / Tooltip.' },
   { id: 'no-literal-color', level: 'error', self: false, ext: ['.css', '.svelte'], re: /#[0-9a-fA-F]{3,8}\b(?![\w-])|\brgba?\(\s*\d|\bhsla?\(\s*\d/, msg: 'Couleur codée en dur : utiliser un token (var(--bg-base), var(--fg-secondary)…).' },
   { id: 'no-arbitrary-tw-color', level: 'error', self: false, re: /\b(bg|text|border|ring|fill|stroke|from|to|via|shadow)-\[(#|rgb|hsl)/, msg: 'Couleur Tailwind arbitraire : utiliser une classe du preset SIKU (bg-bg-raised, text-fg-secondary…).' },
   { id: 'no-font-family', level: 'error', self: false, ext: ['.css', '.svelte'], re: /font-family\s*:\s*(?!var\(--font-|inherit)/, msg: 'Police hors système : var(--font-sans) ou var(--font-mono).' },
@@ -109,7 +101,7 @@ function cmdDoctor() {
   ok(!dep || !/#(main|master|HEAD)$/.test(dep), 'version figée (tag ou semver), pas une branche', 'Utiliser #semver:^1.0.0');
   const vite = read('vite.config.ts') ?? read('vite.config.js') ?? '';
   ok(/base\s*:\s*['"]\.\/['"]/.test(vite), "vite : base './' (chemins relatifs pour nui://)", "base: './'");
-  ok(/chrome10[0-3]|['"]chrome103['"]|sikuVite|target\s*:\s*\[?\s*['"]chrome/.test(vite), 'vite : build.target chrome103 (CEF)', "build: { target: 'chrome103' }");
+  ok(/['"]chrome144['"]|sikuVite/.test(vite), 'vite : build.target chrome144 (CEF FiveM, pas plus haut)', "build: { target: 'chrome144', cssTarget: 'chrome144' }");
   ok(/outDir/.test(vite), 'vite : outDir vers le dossier servi par fxmanifest', "build: { outDir: '../html' }");
   const tw = read('tailwind.config.js') ?? read('tailwind.config.cjs') ?? read('tailwind.config.ts');
   ok(!tw || /@siku\/ui\/tailwind-preset/.test(tw), 'tailwind : preset SIKU', "presets: [require('@siku/ui/tailwind-preset')]");
@@ -132,7 +124,7 @@ Cette application web utilise le design system officiel SIKU, commun aux interfa
 1. Lire \`node_modules/@siku/ui/ai/SIKU.md\` (règles, identité, interdits), puis \`ai/components.md\` (composants, props, exemples) et \`ai/tokens.md\` (tokens).
 2. **Réutiliser** les composants de \`@siku/ui\` (\`import { Button, Surface, Table } from '@siku/ui'\`). Ne jamais recréer un composant générique qui existe (Button, Badge, Surface, TextField…). Composant générique manquant ou variante manquante : l’ajouter dans le dépôt \`siku-ui\` (branche, PR, release), puis mettre à jour la dépendance. Seuls les composants métier propres à l’application restent dans le projet.
 3. Styles : uniquement des tokens (\`var(--bg-base)\`, classes Tailwind du thème SIKU \`bg-bg-raised text-fg-secondary\`, styles \`t-*\`). Aucune couleur, police ou taille de texte codée en dur. Ne pas surcharger les classes \`sk-*\`.
-4. Contexte web : \`@siku/ui/web.css\` (pas \`styles.css\`), ne jamais appeler \`initSiku()\` ni les fonctions NUI (\`fetchNui\`, \`onNuiMessage\`). Les règles Chromium 103 ne s’appliquent pas ; la mise en page est responsive (desktop, tablette, mobile).
+4. Contexte web : \`@siku/ui/web.css\` (pas \`styles.css\`), ne jamais appeler \`initSiku()\` ni les fonctions NUI (\`fetchNui\`, \`onNuiMessage\`). La cible CEF et l’interdiction du flou en jeu ne s’appliquent pas ; la mise en page est responsive (desktop, tablette, mobile).
 5. Après chaque modification d’interface : \`bun run lint\` (inclut \`siku check src --web\`) et \`bun run check\` doivent passer.
 ` : `## Design system SIKU (@siku/ui ${v}) — obligatoire pour toute interface
 
@@ -141,7 +133,7 @@ Cette ressource utilise le design system officiel SIKU. Avant de créer ou modif
 1. Lire \`node_modules/@siku/ui/ai/SIKU.md\` (règles, architecture, interdits), puis \`ai/components.md\` (composants, props, exemples) et \`ai/tokens.md\` (tokens).
 2. **Réutiliser** les composants de \`@siku/ui\` (\`import { Button, SlotGrid } from '@siku/ui'\`). Ne jamais recréer un composant qui existe ; si une variante manque, la proposer (voir « Faire évoluer » dans SIKU.md) au lieu de la coder localement.
 3. Styles : uniquement des tokens (\`var(--bg-base)\`, classes Tailwind du preset SIKU, styles \`t-*\`). Aucune couleur, police ou taille de texte codée en dur.
-4. Cible : CEF FiveM (Chromium 103). Aucun \`backdrop-filter\`/flou, pas de \`:has()\`, \`@container\`, \`color-mix()\`, \`dvh\`.
+4. Cible : CEF FiveM = Chromium 144, pas plus haut (\`target: 'chrome144'\` dans Vite). Aucun \`backdrop-filter\`/flou : un voile \`bg-void\` + \`opacity-scrim-*\`.
 5. Après chaque modification d’interface : \`bun run check\` dans \`web/\` (lance \`siku check\` + \`siku doctor\`) doit passer.
 `;
   const claude = `${common}

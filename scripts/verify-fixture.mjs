@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Vérification de bout en bout : le package tel qu'il sera installé dans une ressource FiveM.
 // 1. bun pm pack  2. ressource créée depuis templates/resource  3. installation du tarball
-// 4. siku ai sync + check + doctor  5. build Vite (chrome103)  6. audit du build pour CEF
+// 4. siku ai sync + check + doctor  5. build Vite (chrome144)  6. audit du build pour le jeu
 import { execSync } from 'node:child_process';
 import { cpSync, mkdtempSync, readFileSync, writeFileSync, readdirSync, existsSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -32,12 +32,7 @@ const problems = [];
 if (!files.some((f) => f.endsWith('.woff2'))) problems.push('polices absentes du build');
 const js = files.filter((f) => f.endsWith('.js')).map((f) => readFileSync(join(html, 'assets', f), 'utf8')).join('\n');
 const css = files.filter((f) => f.endsWith('.css')).map((f) => readFileSync(join(html, 'assets', f), 'utf8')).join('\n');
-for (const [re, label] of [[/\.toSorted\(|\.toReversed\(|\.toSpliced\(/, 'Array change-by-copy (Chrome 110)'], [/Object\.groupBy|Map\.groupBy/, 'groupBy (Chrome 117)'], [/Promise\.withResolvers/, 'Promise.withResolvers (Chrome 119)'], [/static\s*\{/, 'bloc static de classe (Chrome 94, ok) — info']]) {
-  if (re.test(js) && !label.includes('info')) problems.push(`JS : ${label}`);
-}
-for (const [re, label] of [[/:has\(/, ':has()'], [/@container/, '@container'], [/color-mix\(/, 'color-mix()'], [/backdrop-filter/, 'backdrop-filter'], [/\b\d+dvh\b/, 'dvh'], [/&\s*[.:]/, 'nesting CSS']]) {
-  if (re.test(css)) problems.push(`CSS : ${label}`);
-}
+if (/backdrop-filter/.test(css)) problems.push('CSS : backdrop-filter (le flou est interdit en jeu)');
 const index = readFileSync(join(html, 'index.html'), 'utf8');
 if (/(src|href)="\//.test(index)) problems.push('chemins absolus dans index.html (base doit être ./)');
 console.log(`\nBuild : ${files.length} fichiers dans html/assets — ${(js.length / 1024).toFixed(0)} Ko JS, ${(css.length / 1024).toFixed(0)} Ko CSS`);

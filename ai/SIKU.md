@@ -11,13 +11,13 @@ Fichiers associés (même dossier) :
 
 1. **Réutiliser avant de créer.** Cherche d’abord dans `components.md`. Si un composant couvre le besoin (même avec une variante), importe-le : `import { Button, SlotGrid, Modal } from '@siku/ui'`. Ne recrée jamais `Button.svelte`, `Modal.svelte`, etc. dans la ressource (`siku check` le bloque).
 2. **Tokens uniquement.** Couleurs, rayons, espacements, ombres, durées, typographie : `var(--token)` en CSS, classes du preset en Tailwind (`bg-bg-raised`, `text-fg-secondary`, `border-border-subtle`, `rounded-md`, `p-4`, `text-body`), ou styles `t-*`. Jamais de `#hex`, `rgb()`, `font-family` ou `font-size` en px dans la ressource.
-3. **CEF = Chromium 103.** Interdits : `backdrop-filter` et tout flou, `:has()`, `@container`, `color-mix()`, unités `dvh/svh/lvh`, `text-wrap: balance`, nesting CSS natif, `popover`, `Array.prototype.toSorted/toReversed`, `Object.groupBy`, `Promise.withResolvers`. Build Vite : `target: 'chrome103'`.
+3. **CEF = Chromium 144, pas plus haut.** Build Vite : `target: 'chrome144'` et `cssTarget: 'chrome144'`, qui ramènent toute syntaxe plus récente à ce niveau. Tout ce que Chromium 144 rend est permis : `:has()`, `@container`, `color-mix()`, unités `dvh/svh/lvh`, `text-wrap: balance`, nesting CSS natif, `popover`, `mask-image`, `Array.prototype.toSorted`, `Object.groupBy`, `Promise.withResolvers`. Le flou reste interdit par l’identité, pas par le moteur : `backdrop-filter` et `filter: blur` sont bloqués par `siku check`, un voile se fait avec `bg-void` et `opacity-scrim-*`.
 4. **Clavier et manette.** Toute action a sa touche visible (`Key`, `Hint`, prop `key` des boutons). Tout ce qui est interactif est focusable et montre l’anneau `.is-focus`/`:focus-visible`. Rien d’indispensable au seul survol.
 5. **Vérifier.** Après chaque modification : `bun run check` dans le dossier `web/` (`siku check` + `siku doctor`). Corriger toutes les erreurs avant de rendre la main.
 
 ## 1 bis. Application web (SvelteKit)
 
-Mêmes règles 1, 2 et 4 ; la règle 3 (Chromium 103) ne s’applique pas, la règle 5 devient `bun run lint` (qui lance `siku check src --web`).
+Mêmes règles 1, 2 et 4 ; la règle 3 (cible Chromium 144, pas de flou en jeu) ne s’applique pas, la règle 5 devient `bun run lint` (qui lance `siku check src --web`).
 - Styles : `import '@siku/ui/web.css'` (jamais `styles.css`) dans le layout racine ; Tailwind v4 : `@import "tailwindcss"; @import "@siku/ui/tailwind.css";`.
 - Ne jamais appeler `initSiku()`, `applyScale()`, `fetchNui()`, `onNuiMessage()` : la page suit le navigateur (1 rem = 16 px, responsive, zoom natif). `Screen`, `HudAnchor`, `Prompt`, `HoldAction`, `Key`, `Hint`, `Slot*`, `Gauge` sont des composants de jeu ; les autres sont génériques.
 - Identité : sombre (`bg-base`), blanc glace pour le texte et l’action principale, glacier rare. Une application web n’a pas de thème clair.
@@ -42,7 +42,7 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 export default defineConfig({
   plugins: [svelte()],
   base: './',                                            // nui://ressource/html/…
-  build: { outDir: '../html', emptyOutDir: true, target: 'chrome103', assetsInlineLimit: 0 },
+  build: { outDir: '../html', emptyOutDir: true, target: 'chrome144', cssTarget: 'chrome144', assetsInlineLimit: 0 },
 });
 ```
 

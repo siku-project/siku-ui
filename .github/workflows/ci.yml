@@ -1,5 +1,5 @@
 # siku-ui : types, règles, tests (contrastes, catalogue, échelle, CLI), build du package et de la doc,
-# puis vérification de bout en bout dans une ressource générée depuis le gabarit (build Chromium 103).
+# puis vérification de bout en bout dans une ressource générée depuis le gabarit (build Chromium 144).
 name: ci
 on: [push, pull_request]
 jobs:

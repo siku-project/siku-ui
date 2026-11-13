@@ -9,9 +9,9 @@ const file = (name: string, src: string) => { const p = join(dir, name); writeFi
 const rules = (p: string) => checkFiles([p]).map((f: { rule: string }) => f.rule);
 
 describe('siku check', () => {
-  it('bloque le flou et les fonctionnalités hors Chromium 103', () => {
+  it('bloque le flou et laisse passer ce que Chromium 144 rend', () => {
     const r = rules(file('a.css', '.x{backdrop-filter:blur(8px)}\n.y:has(.z){color:var(--fg-primary)}\n.w{height:100dvh}\n@container (min-width: 1px){}'));
-    expect(r).toEqual(expect.arrayContaining(['no-backdrop-blur', 'cef-has', 'cef-viewport-units', 'cef-container']));
+    expect(r).toEqual(['no-backdrop-blur']);
   });
   it('bloque les couleurs et polices codées en dur', () => {
     const r = rules(file('b.svelte', '<div class="bg-[#ff0000]"></div>\n<style>.a{color:#12151a;font-family:Arial;font-size:10px}</style>'));

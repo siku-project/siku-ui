@@ -2,6 +2,12 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.20.0
+
+- Cible CEF officielle : Chromium 144, la version du CEF FiveM, et pas plus haut. Les règles `cef-*` de `siku check` (`:has()`, `@container`, `color-mix()`, `dvh`, `text-wrap`, nesting natif, `popover`, API JavaScript) disparaissent : ce que Chromium 144 rend est permis. Le flou reste interdit par l’identité (`no-backdrop-blur`).
+- `siku doctor` attend `build.target: 'chrome144'` dans la configuration Vite de la ressource ; le gabarit, la doc interactive et la ressource de test de `bun run verify` passent à cette cible.
+- Migration d’une ressource : `target` et `cssTarget` à `'chrome144'` dans `web/vite.config.ts`, puis `bunx siku ai sync ..` pour actualiser les instructions.
+
 ## 1.19.1
 
 - `Switch`, `Checkbox`, `RadioGroup` : le libellé est positionné, donc le champ natif masqué reste ancré à son interrupteur. Dans une colonne qui défile sous un conteneur `overflow: hidden`, le focus du champ faisait défiler le conteneur parent et poussait l'en-tête hors du cadre.
