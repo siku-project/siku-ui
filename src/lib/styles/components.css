@@ -1,5 +1,5 @@
-/* SIKU — composants (@siku/ui). Toutes les valeurs viennent de tokens.css. Compatible Chromium 103 (CEF FiveM) :
-   pas de :has(), pas de nesting, pas de @container, pas de color-mix(), pas d’unités dvh/svh, pas de backdrop-filter.
+/* SIKU — composants (@siku/ui). Toutes les valeurs viennent de tokens.css. Cible Chromium 144 (CEF FiveM), pas plus haut ;
+   pas de backdrop-filter : le flou est exclu par l’identité.
    SIKU — composants. Chaque valeur vient de tokens.css (var(--…)). Préfixe : sk-.
    États démontrables par classe (.is-hover, .is-active, .is-focus, .is-disabled, .is-loading, .is-error, .is-selected)
    en plus des pseudo-classes réelles. */

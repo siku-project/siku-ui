@@ -8,8 +8,8 @@ export default defineConfig({
   build: {
     outDir: '../html',
     emptyOutDir: true,
-    target: 'chrome103',            // CEF de FiveM
-    cssTarget: 'chrome103',
+    target: 'chrome144',            // CEF de FiveM, pas plus haut
+    cssTarget: 'chrome144',
     assetsInlineLimit: 0,           // polices en fichiers, pas en base64
   },
   server: { port: 5173 },

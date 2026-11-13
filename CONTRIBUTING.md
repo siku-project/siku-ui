@@ -20,7 +20,7 @@ Le design system est la source de vérité de toutes les interfaces SIKU. Il év
 2. Écrire le composant dans `src/lib/components/<Nom>.svelte` : props typées, états (`is-hover`, `is-focus`, `is-disabled`…), clavier, ARIA, styles uniquement en `var(--token)` dans `src/lib/styles/`.
 3. L’exporter dans `src/lib/index.ts` et l’ajouter dans la liste `LIB_COMPONENTS` de `bin/siku.mjs`.
 4. Le documenter dans `catalog/catalog.js` (rôle, utiliser/éviter, props, contrôles, exemple) et ajouter sa démo dans `docs/src/Demos.svelte`. Le test `catalog.test.ts` échoue tant que le catalogue et le composant ne correspondent pas.
-5. `bun run verify` (types, règles, tests, build, ressource de test en Chromium 103).
+5. `bun run verify` (types, règles, tests, build, ressource de test en Chromium 144).
 6. Entrée dans `CHANGELOG.md`, PR, revue, fusion, puis workflow **release**.
 
 ## Faire évoluer un token

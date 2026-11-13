@@ -5,7 +5,7 @@ Fondations, tokens, composants Svelte 5 et outils pour toutes les interfaces de 
 - **Identité** : neutres graphite froids, blanc glace comme lumière (texte, action, sélection, focus), glacier rare pour ce qui est en cours. Instrument Sans + Geist Mono.
 - **73 composants** typés et accessibles (clavier, manette, ARIA) : actions, saisie, navigation, retours, données, jeu (emplacements, grilles, jauges, invites, actions maintenues, HUD), structure.
 - **Runtime FiveM** : échelle 720p → 4K avec planchers de texte et densité compacte, zone sûre GTA et mini-carte, pont NUI, manette → clavier, notifications.
-- **CEF** : tout cible Chromium 103 ; aucun flou d’arrière-plan.
+- **CEF** : tout cible Chromium 144, la version du CEF FiveM, et pas plus haut ; aucun flou d’arrière-plan.
 - **Outils** : `siku check` (règles + compatibilité), `siku doctor`, `siku ai sync` (Claude Code / Codex), `siku init`.
 
 ```bash
@@ -33,5 +33,5 @@ import { Button, Surface } from '@siku/ui';
 ```bash
 bun install
 bun run docs:dev     # doc interactive
-bun run verify       # types, règles, tests, build, ressource de test Chromium 103
+bun run verify       # types, règles, tests, build, ressource de test Chromium 144
 ```
