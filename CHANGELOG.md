@@ -2,6 +2,11 @@
 
 Format : [semver](https://semver.org/lang/fr/). **Majeure** = changement incompatible (prop renommée ou retirée, token supprimé ou renommé, comportement changé). **Mineure** = composant, variante ou token ajouté. **Correctif** = rendu ou bug corrigé sans changer d’API.
 
+## 1.21.0
+
+- `Toast` : `image` affiche une photo, en vignette à la place de l’icône (`imageMode="side"`) ou en fond de la carte sous un voile `bg-void` (`imageMode="background"`) ; `count` montre les répétitions (×N) ; `duration` remplace le minuteur figé par un minuteur qui se vide en CSS, sans travail par image, relancé quand `count` change.
+- `Toaster` : chaque notification affiche son minuteur ; `toast.push()` accepte `image` et `imageMode`.
+
 ## 1.20.0
 
 - Cible CEF officielle : Chromium 144, la version du CEF FiveM, et pas plus haut. Les règles `cef-*` de `siku check` (`:has()`, `@container`, `color-mix()`, `dvh`, `text-wrap`, nesting natif, `popover`, API JavaScript) disparaissent : ce que Chromium 144 rend est permis. Le flou reste interdit par l’identité (`no-backdrop-blur`).

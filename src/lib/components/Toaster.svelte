@@ -9,6 +9,6 @@
 </script>
 <div class="sk-toaster" aria-live="polite">
   {#each list.slice(0, max) as t, i (t.id)}
-    <div class="sk-toaster__item"><Toast title={t.title} body={t.body} value={t.value} time={t.time ?? 'maintenant'} icon={t.icon} tone={t.tone} compact={i > 0} dim={i > 0} /></div>
+    <div class="sk-toaster__item"><Toast title={t.title} body={t.body} value={t.value} time={t.time ?? 'maintenant'} icon={t.icon} tone={t.tone} image={t.image} imageMode={t.imageMode} duration={t.duration} compact={i > 0} dim={i > 0} /></div>
   {/each}
 </div>

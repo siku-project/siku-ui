@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="Vignette fictive">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a3442"/>
+      <stop offset="1" stop-color="#121820"/>
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" fill="url(#sky)"/>
+  <circle cx="112" cy="46" r="18" fill="#c9d6e6" opacity="0.85"/>
+  <path d="M0 128 L34 88 L62 112 L94 70 L124 102 L160 78 L160 160 L0 160 Z" fill="#1b2430"/>
+  <path d="M0 140 L40 108 L72 126 L104 96 L160 120 L160 160 L0 160 Z" fill="#283446"/>
+</svg>

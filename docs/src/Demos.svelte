@@ -2,6 +2,7 @@
 <script lang="ts">
   import * as S from '../../src/lib/index';
   import type { SlotItem, MenuItem } from '../../src/lib/types';
+  import toastMedia from './assets/toast-media.svg';
   type Props = { name: string; p: Record<string, any> };
   let { name, p }: Props = $props();
 
@@ -215,13 +216,14 @@
     <S.Notice tone="danger" title="Connexion refusée">Trop de tentatives. Réessaie dans 60 secondes.</S.Notice>
   </div>
 {:else if name === 'Toast'}
-  <div class="play"><S.Toast tone={p.tone} compact={p.compact} title="Maze Bank" body="Virement reçu de Lina Moreau" value="+1 250 $" time="maintenant" icon="bank" progress={0.64} /></div>
+  <div class="play"><S.Toast tone={p.tone} compact={p.compact} title="Maze Bank" body="Virement reçu de Lina Moreau" value="+1 250 $" time="maintenant" icon="bank" image={toastMedia} imageMode={p.imageMode} duration={8000} /></div>
   <div class="grid2">
-    <S.Toast title="Ray Kowalski" body="Je suis devant le Bean Machine." time="il y a 1 min" icon="msg" />
-    <S.Toast tone="danger" title="Inventaire plein" body="Il reste 0,6 kg : la caisse à outils pèse 6,5 kg." icon="alert" />
+    <S.Toast title="Ray Kowalski" body="Je suis devant le Bean Machine." time="il y a 1 min" icon="msg" count={3} />
+    <S.Toast tone="danger" title="Inventaire plein" body="Il reste 0,6 kg : la caisse à outils pèse 6,5 kg." icon="alert" progress={0.64} />
     <S.Toast tone="live" title="Radio" body="Canal 2 · 104.3 — 4 personnes" time="en direct" icon="radio" />
-    <S.Toast tone="warning" title="Réserve d’essence" body="Station la plus proche : 600 m" icon="fuel" />
+    <S.Toast tone="success" title="Objet reçu" body="Trousse de soin" value="×1" image={toastMedia} />
   </div>
+  <p class="note">Le minuteur de la première carte se vide en CSS (<code>duration</code>) ; <code>count</code> affiche les répétitions ; <code>image</code> remplace l’icône ou tapisse la carte selon <code>imageMode</code>.</p>
 {:else if name === 'Toaster'}
   <div class="play"><S.Button variant="primary" onclick={() => S.toast.push({ title: 'Maze Bank', body: 'Virement reçu de Lina Moreau', value: '+1 250 $', icon: 'bank', tone: 'success' })}>Envoyer une notification</S.Button><S.Button onclick={() => S.toast.push({ title: 'Radio', body: 'Tu as rejoint le canal 2', icon: 'radio', tone: 'live' })}>Une autre</S.Button></div>
   <p class="note">La pile s’affiche en haut à droite de la fenêtre (zone sûre GTA en jeu).</p>
