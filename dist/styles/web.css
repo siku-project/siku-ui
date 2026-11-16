@@ -1,0 +1,7 @@
+/* SIKU — point d’entrée pour les applications web (SvelteKit, navigateurs modernes) : import '@siku/ui/web.css'.
+   Même tokens, composants et structure que styles.css ; seule la base change (voir base-web.css). Ne pas appeler initSiku(). */
+@import "./fonts.css";
+@import "./tokens.css";
+@import "./base-web.css";
+@import "./components.css";
+@import "./layout.css";

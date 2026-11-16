@@ -1,0 +1,21 @@
+import type { DataState, HistogramSeries, TimeRange } from '../types';
+type Props = {
+    series: HistogramSeries[];
+    from?: number;
+    to?: number;
+    step: number;
+    height?: number;
+    format?: (v: number) => string;
+    formatTime?: (t: number) => string;
+    unit?: string;
+    label?: string;
+    state?: DataState;
+    message?: string;
+    legend?: boolean;
+    brush?: TimeRange | null;
+    onpick?: (t: number) => void;
+    onbrush?: (range: TimeRange | null) => void;
+};
+declare const TimeHistogram: import("svelte").Component<Props, {}, "brush">;
+type TimeHistogram = ReturnType<typeof TimeHistogram>;
+export default TimeHistogram;

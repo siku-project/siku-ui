@@ -1,0 +1,22 @@
+import type { SlotItem } from '../types';
+type Props = {
+    item?: SlotItem | null;
+    hotkey?: number;
+    size?: 'sm' | 'md';
+    selected?: boolean;
+    focused?: boolean;
+    locked?: boolean;
+    dropState?: 'none' | 'valid' | 'invalid';
+    dragging?: boolean;
+    tabindex?: number;
+    onselect?: () => void;
+    oncontext?: (e: MouseEvent) => void;
+    ondragstart?: (e: DragEvent) => void;
+    ondragend?: (e: DragEvent) => void;
+    ondragover?: (e: DragEvent) => void;
+    ondragleave?: (e: DragEvent) => void;
+    ondrop?: (e: DragEvent) => void;
+};
+declare const Slot: import("svelte").Component<Props, {}, "">;
+type Slot = ReturnType<typeof Slot>;
+export default Slot;

@@ -1,0 +1,20 @@
+import type { ComboOption } from '../types';
+type Props = {
+    options: ComboOption[];
+    value?: string | string[];
+    multiple?: boolean;
+    search?: string;
+    onsearch?: (q: string) => void;
+    loading?: boolean;
+    placeholder?: string;
+    label?: string;
+    empty?: string;
+    inline?: boolean;
+    max?: number;
+    disabled?: boolean;
+    searchLabel?: string;
+    onchange?: (value: string | string[]) => void;
+};
+declare const Combobox: import("svelte").Component<Props, {}, "search" | "value">;
+type Combobox = ReturnType<typeof Combobox>;
+export default Combobox;
