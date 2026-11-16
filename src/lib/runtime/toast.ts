@@ -3,7 +3,8 @@ import { writable, type Readable } from './store';
 import type { IconName } from '../icons/icons';
 
 export type ToastTone = 'neutral' | 'success' | 'danger' | 'warning' | 'live';
-export type ToastItem = { id: number; title: string; body?: string; value?: string; time?: string; icon?: IconName; tone?: ToastTone; duration?: number; createdAt: number };
+export type ToastImageMode = 'side' | 'background';
+export type ToastItem = { id: number; title: string; body?: string; value?: string; time?: string; icon?: IconName; tone?: ToastTone; image?: string; imageMode?: ToastImageMode; duration?: number; createdAt: number };
 
 const list = writable<ToastItem[]>([]);
 export const toasts: Readable<ToastItem[]> = list;

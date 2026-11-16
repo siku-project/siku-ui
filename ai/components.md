@@ -1,4 +1,4 @@
-# Composants @siku/ui 1.19.0
+# Composants @siku/ui 1.20.0
 
 > Généré depuis catalog/catalog.js. Import : `import { Nom } from '@siku/ui'`. Styles : `import '@siku/ui/styles.css'` une fois dans main.ts.
 
@@ -801,8 +801,12 @@ Une notification (présentation). Pour la file : toast.push() + <Toaster />.
 | `time` | `string` | — |  |
 | `icon` | `IconName` | 'info' |  |
 | `tone` | `'neutral' \| 'success' \| 'danger' \| 'warning' \| 'live'` | 'neutral' |  |
+| `image` | `string` | — | Photo : vignette à la place de l’icône, ou fond de la carte selon imageMode. |
+| `imageMode` | `'side' \| 'background'` | 'side' |  |
+| `count` | `number` | — | Répétitions : ×N à côté de l’heure. |
 | `compact` | `boolean` | false |  |
-| `progress` | `number` | — | 0–1, minuteur |
+| `progress` | `number` | — | 0–1, minuteur figé. |
+| `duration` | `number` | — | ms : minuteur qui se vide en CSS, relancé quand count change. |
 | `dim` | `boolean` | false |  |
 
 ```svelte
